@@ -10,6 +10,106 @@ using UnityEngine;
 
 namespace Common.World
 {
+    // DO NOT EDIT - generated from Generator/EC/World/Avatar.cs
+    public sealed class Avatar : IComponent
+    {
+        public int OwnerUserId;
+        public void Reset()
+        {
+            OwnerUserId = default(int);
+        }
+        public static bool DifferForPack(Avatar c1, Avatar c2)
+        {
+            bool null1, null2;
+            if (c1.OwnerUserId != c2.OwnerUserId) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is Avatar && (Avatar) obj == this;
+        }
+        public static void CopyAvatar(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromAvatar2 = fromEntity.Avatar;
+            if (fromAvatar2 == null)
+            {
+                to[id].DelAvatar();
+                return;
+            }
+            var toAvatar1 = toEntity.Avatar;
+            if (toAvatar1 == null)
+            {
+                toAvatar1 = to[id].AddAvatar();
+            }
+            toAvatar1.OwnerUserId = fromAvatar2.OwnerUserId;
+        }
+        public static void CopyAvatarPassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromAvatar2 = fromEntity.Avatar;
+            if (fromAvatar2 == null)
+            {
+                return;
+            }
+            var toAvatar1 = toEntity.Avatar;
+            if (toAvatar1 == null)
+            {
+                return;
+            }
+            toAvatar1.OwnerUserId = fromAvatar2.OwnerUserId;
+        }
+        public static bool operator ==(Avatar a, Avatar b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (a.OwnerUserId != b.OwnerUserId)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(Avatar a, Avatar b)
+        {
+            return !(a == b);
+        }
+    }
     // DO NOT EDIT - generated from Generator/EC/World/Player.cs
     public sealed class Player : IComponent
     {
@@ -119,15 +219,15 @@ namespace Common.World
             return !(a == b);
         }
     }
-    // DO NOT EDIT - generated from Generator/EC/World/TestObject.cs
-    public sealed class TestObject : IComponent
+    // DO NOT EDIT - generated from Generator/EC/World/Transform.cs
+    public sealed class Transform : IComponent
     {
         public Vector3 Position;
         public void Reset()
         {
             Position = default(Vector3);
         }
-        public static bool DifferForPack(TestObject c1, TestObject c2)
+        public static bool DifferForPack(Transform c1, Transform c2)
         {
             bool null1, null2;
             if (c1.Position.x != c2.Position.x || c1.Position.y != c2.Position.y || c1.Position.z != c2.Position.z) return true;
@@ -142,9 +242,9 @@ namespace Common.World
         }
         public override bool Equals(object obj)
         {
-            return obj is TestObject && (TestObject) obj == this;
+            return obj is Transform && (Transform) obj == this;
         }
-        public static void CopyTestObject(TableSet from, TableSet to, uint id)
+        public static void CopyTransform(TableSet from, TableSet to, uint id)
         {
             var fromEntity = from[id];
             if (fromEntity == null)
@@ -156,20 +256,20 @@ namespace Common.World
             {
                 return;
             }
-            var fromTestObject2 = fromEntity.TestObject;
-            if (fromTestObject2 == null)
+            var fromTransform2 = fromEntity.Transform;
+            if (fromTransform2 == null)
             {
-                to[id].DelTestObject();
+                to[id].DelTransform();
                 return;
             }
-            var toTestObject1 = toEntity.TestObject;
-            if (toTestObject1 == null)
+            var toTransform1 = toEntity.Transform;
+            if (toTransform1 == null)
             {
-                toTestObject1 = to[id].AddTestObject();
+                toTransform1 = to[id].AddTransform();
             }
-            toTestObject1.Position = fromTestObject2.Position;
+            toTransform1.Position = fromTransform2.Position;
         }
-        public static void CopyTestObjectPassive(TableSet from, TableSet to, uint id)
+        public static void CopyTransformPassive(TableSet from, TableSet to, uint id)
         {
             var fromEntity = from[id];
             if (fromEntity == null)
@@ -181,19 +281,19 @@ namespace Common.World
             {
                 return;
             }
-            var fromTestObject2 = fromEntity.TestObject;
-            if (fromTestObject2 == null)
+            var fromTransform2 = fromEntity.Transform;
+            if (fromTransform2 == null)
             {
                 return;
             }
-            var toTestObject1 = toEntity.TestObject;
-            if (toTestObject1 == null)
+            var toTransform1 = toEntity.Transform;
+            if (toTransform1 == null)
             {
                 return;
             }
-            toTestObject1.Position = fromTestObject2.Position;
+            toTransform1.Position = fromTransform2.Position;
         }
-        public static bool operator ==(TestObject a, TestObject b)
+        public static bool operator ==(Transform a, Transform b)
         {
             if ((object)a == null && (object)b == null)
             {
@@ -214,7 +314,7 @@ namespace Common.World
             }
             return true;
         }
-        public static bool operator !=(TestObject a, TestObject b)
+        public static bool operator !=(Transform a, Transform b)
         {
             return !(a == b);
         }
@@ -228,8 +328,9 @@ namespace Common.World
         {
             public Pool<Entity> Entity = new Pool<Entity>();
             public uint[] EntityUseCount = new uint[1024];
+            public Pool<Avatar> Avatar = new Pool<Avatar>();
             public Pool<Player> Player = new Pool<Player>();
-            public Pool<TestObject> TestObject = new Pool<TestObject>();
+            public Pool<Transform> Transform = new Pool<Transform>();
             public Pools()
             {
             }
@@ -242,8 +343,9 @@ namespace Common.World
             public struct Stats
             {
                 public int Entities;
+                public int Avatar;
                 public int Player;
-                public int TestObject;
+                public int Transform;
             }
             public void Pack(TableSet ts, BitPacker p)
             {
@@ -273,6 +375,25 @@ namespace Common.World
                 }
                 stats.Entities += p.BitCount;
                 var entityIndexBits = BitMath.CalcUsedBits((uint)ts._entityCount + 1u);
+                stats.Avatar = -p.BitCount;
+                if (ts.Avatar.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.Avatar.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.Avatar.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackSInt32(c.OwnerUserId);
+                    }
+                }
+                stats.Avatar += p.BitCount;
                 stats.Player = -p.BitCount;
                 if (ts.Player.Count == 0)
                 {
@@ -293,25 +414,25 @@ namespace Common.World
                     }
                 }
                 stats.Player += p.BitCount;
-                stats.TestObject = -p.BitCount;
-                if (ts.TestObject.Count == 0)
+                stats.Transform = -p.BitCount;
+                if (ts.Transform.Count == 0)
                 {
                     p.PackByte(0, 1);
                 }
                 else
                 {
                     p.PackByte(1, 1);
-                    var tableCount = ts.TestObject.Count;
+                    var tableCount = ts.Transform.Count;
                     p.PackUInt32((uint)tableCount, entityIndexBits);
                     for (var i = 0; i < tableCount; i++)
                     {
-                        var kv = ts.TestObject.At(i);
+                        var kv = ts.Transform.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
                         p.PackVector3(c.Position);
                     }
                 }
-                stats.TestObject += p.BitCount;
+                stats.Transform += p.BitCount;
             }
             public void PersonalizedPack(TableSet ts, BitPacker p, uint clientId, ref Stats stats)
             {
@@ -337,6 +458,25 @@ namespace Common.World
                 }
                 stats.Entities += p.BitCount;
                 var entityIndexBits = BitMath.CalcUsedBits((uint)ts._entityCount + 1u);
+                stats.Avatar = -p.BitCount;
+                if (ts.Avatar.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.Avatar.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.Avatar.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackSInt32(c.OwnerUserId);
+                    }
+                }
+                stats.Avatar += p.BitCount;
                 stats.Player = -p.BitCount;
                 if (ts.Player.Count == 0)
                 {
@@ -357,25 +497,25 @@ namespace Common.World
                     }
                 }
                 stats.Player += p.BitCount;
-                stats.TestObject = -p.BitCount;
-                if (ts.TestObject.Count == 0)
+                stats.Transform = -p.BitCount;
+                if (ts.Transform.Count == 0)
                 {
                     p.PackByte(0, 1);
                 }
                 else
                 {
                     p.PackByte(1, 1);
-                    var tableCount = ts.TestObject.Count;
+                    var tableCount = ts.Transform.Count;
                     p.PackUInt32((uint)tableCount, entityIndexBits);
                     for (var i = 0; i < tableCount; i++)
                     {
-                        var kv = ts.TestObject.At(i);
+                        var kv = ts.Transform.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
                         p.PackVector3(c.Position);
                     }
                 }
-                stats.TestObject += p.BitCount;
+                stats.Transform += p.BitCount;
             }
             public void Unpack(TableSet ts, BitUnpacker p)
             {
@@ -396,6 +536,23 @@ namespace Common.World
                 var entityIndexBits = BitMath.CalcUsedBits((uint)ts._entityCount + 1u);
                 if (p.UnpackByte(1) == 0)
                 {
+                    ts.Avatar.Clear();
+                }
+                else
+                {
+                    count = (int)p.UnpackUInt32(entityIndexBits);
+                    ts.Avatar.DestructiveResize(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
+                        int id2index;
+                        bool isDefault;
+                        var c = ts.Avatar.SetAtIndex(i, id);
+                        c.OwnerUserId = p.UnpackSInt32();
+                    }
+                }
+                if (p.UnpackByte(1) == 0)
+                {
                     ts.Player.Clear();
                 }
                 else
@@ -414,22 +571,22 @@ namespace Common.World
                 }
                 if (p.UnpackByte(1) == 0)
                 {
-                    ts.TestObject.Clear();
+                    ts.Transform.Clear();
                 }
                 else
                 {
                     count = (int)p.UnpackUInt32(entityIndexBits);
-                    ts.TestObject.DestructiveResize(count);
+                    ts.Transform.DestructiveResize(count);
                     for (int i = 0; i < count; i++)
                     {
                         uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
                         int id2index;
                         bool isDefault;
-                        var c = ts.TestObject.SetAtIndex(i, id);
+                        var c = ts.Transform.SetAtIndex(i, id);
                         c.Position = p.UnpackVector3();
                     }
                 }
-                ts.TestObjectPredicted.Clear();
+                ts.TransformPredicted.Clear();
             }
             public void PackDiff(TableSet ts1, TableSet ts2, BitPacker p)
             {
@@ -495,12 +652,15 @@ namespace Common.World
                     prevId = id;
                 }
                 stats.Entities += p.BitCount;
+                stats.Avatar = -p.BitCount;
+                PackDiffAvatar(ts1, ts2, p);
+                stats.Avatar += p.BitCount;
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
-                stats.TestObject = -p.BitCount;
-                PackDiffTestObject(ts1, ts2, p);
-                stats.TestObject += p.BitCount;
+                stats.Transform = -p.BitCount;
+                PackDiffTransform(ts1, ts2, p);
+                stats.Transform += p.BitCount;
             }
             public void PersonalizedPackDiff(TableSet ts1, TableSet ts2, BitPacker p, uint clientId, ref Stats stats)
             {
@@ -562,12 +722,15 @@ namespace Common.World
                     prevId = id;
                 }
                 stats.Entities += p.BitCount;
+                stats.Avatar = -p.BitCount;
+                PackDiffAvatar(ts1, ts2, p);
+                stats.Avatar += p.BitCount;
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
-                stats.TestObject = -p.BitCount;
-                PackDiffTestObject(ts1, ts2, p);
-                stats.TestObject += p.BitCount;
+                stats.Transform = -p.BitCount;
+                PackDiffTransform(ts1, ts2, p);
+                stats.Transform += p.BitCount;
             }
             public void UnpackDiff(TableSet ts1, TableSet ts2, BitUnpacker p)
             {
@@ -617,9 +780,10 @@ namespace Common.World
                     ts2._entityIds[idx2++] = _addIds[iadd++];
                 }
                 for (int i = 0; i < ts2._entityCount; i++) ts2._entityData[i].Id = ts2._entityIds[i];
+                UnpackDiffAvatar(ts1, ts2, p);
                 UnpackDiffPlayer(ts1, ts2, p);
-                UnpackDiffTestObject(ts1, ts2, p);
-                ts2.TestObjectPredicted.Clear();
+                UnpackDiffTransform(ts1, ts2, p);
+                ts2.TransformPredicted.Clear();
             }
             private struct UpdatedIndex
             {
@@ -645,14 +809,142 @@ namespace Common.World
             private List<AddedIndex> _addPersonalIndices = new List<AddedIndex>(12);
             private List<DeletedIndex> _delPersonalIndices = new List<DeletedIndex>(12);
             private List<UpdatedIndex> _updPersonalIndices = new List<UpdatedIndex>(12);
+            private void PackAvatar(TableSet ts, Avatar c, BitPacker p)
+            {
+                p.PackSInt32(c.OwnerUserId);
+            }
             private void PackPlayer(TableSet ts, Player c, BitPacker p)
             {
                 p.PackBool(c.InputIsAcknowledged);
                 p.PackSInt32(c.UserId);
             }
-            private void PackTestObject(TableSet ts, TestObject c, BitPacker p)
+            private void PackTransform(TableSet ts, Transform c, BitPacker p)
             {
                 p.PackVector3(c.Position);
+            }
+            private void PackDiffAvatar(TableSet ts1, TableSet ts2, BitPacker p)
+            {
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                var count1 = ts1.Avatar.Count;
+                var count2 = ts2.Avatar.Count;
+                {
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var t1end = count1 == 0;
+                    var t2end = count2 == 0;
+                    while (!t1end && !t2end)
+                    {
+                        var kv1 = ts1.Avatar.At(idx1);
+                        var kv2 = ts2.Avatar.At(idx2);
+                        if (kv1.Key == kv2.Key)
+                        {
+                            if (Common.World.Avatar.DifferForPack(kv1.Value, kv2.Value))
+                            {
+                                _updIndices.Add(idx1);
+                            }
+                            idx1++; t1end = idx1 >= count1;
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else if (kv1.Key > kv2.Key)
+                        {
+                            _addIds.Add(kv2.Key);
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else
+                        {
+                            _delIndices.Add(idx1);
+                            idx1++; t1end = idx1 >= count1;
+                        }
+                    }
+                    while (!t1end)
+                    {
+                        _delIndices.Add(idx1);
+                        idx1++; t1end = idx1 >= count1;
+                    }
+                    while (!t2end)
+                    {
+                        _addIds.Add(ts2.Avatar.IdAt(idx2));
+                        idx2++; t2end = idx2 >= count2;
+                    }
+                }
+                if (_delIndices.Count + _addIds.Count + _updIndices.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                    return;
+                }
+                p.PackByte(1, 1);
+                if (_delIndices.Count + _addIds.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    p.PackUInt32((uint)_delIndices.Count, _entityBits);
+                    p.PackUInt32((uint)_addIds.Count, _entityBits);
+                }
+                p.PackUInt32((uint)_updIndices.Count, _entityBits);
+                var ts2Count = ts2.Avatar.Count;
+                if (ts2Count == 0) return;
+                for (int i = 0; i < _delIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_delIndices[i], _entityBits);
+                }
+                for (int i = 0; i < _addIds.Count; i++)
+                {
+                    p.PackUInt32((uint)ts2._entityIds.BinarySearch(ts2._entityCount, _addIds[i]), _entityBits);
+                }
+                for (int i = 0; i < _updIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_updIndices[i], _entityBits);
+                }
+                {
+                    int iadd = 0, iupd = 0, idel = 0;
+                    int idx1 = 0, idx2 = 0;
+                    for (int i = 0; i < count1; i++)
+                    {
+                        var kv1 = ts1.Avatar.At(i);
+                        while (iadd < _addIds.Count && _addIds[iadd] < kv1.Key)
+                        {
+                            var cur = ts2.Avatar.CmpAt(idx2);
+                            PackAvatar(ts2, cur, p);
+                            idx2++;
+                            iadd++;
+                        }
+                        if (idel < _delIndices.Count)
+                        {
+                            if (_delIndices[idel] == idx1)
+                            {
+                                idel++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        if (iupd < _updIndices.Count)
+                        {
+                            if (_updIndices[iupd] == idx1)
+                            {
+                                var cur = ts2.Avatar.CmpAt(idx2);
+                                PackAvatar(ts2, cur, p);
+                                idx2++;
+                                iupd++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        idx2++;
+                        idx1++;
+                    }
+                    while (iadd < _addIds.Count)
+                    {
+                        var cur = ts2.Avatar.CmpAt(idx2);
+                        PackAvatar(ts2, cur, p);
+                        idx2++;
+                        iadd++;
+                    }
+                }
             }
             private void PackDiffPlayer(TableSet ts1, TableSet ts2, BitPacker p)
             {
@@ -778,13 +1070,13 @@ namespace Common.World
                     }
                 }
             }
-            private void PackDiffTestObject(TableSet ts1, TableSet ts2, BitPacker p)
+            private void PackDiffTransform(TableSet ts1, TableSet ts2, BitPacker p)
             {
                 _addIds.Clear();
                 _delIndices.Clear();
                 _updIndices.Clear();
-                var count1 = ts1.TestObject.Count;
-                var count2 = ts2.TestObject.Count;
+                var count1 = ts1.Transform.Count;
+                var count2 = ts2.Transform.Count;
                 {
                     var idx1 = 0;
                     var idx2 = 0;
@@ -792,11 +1084,11 @@ namespace Common.World
                     var t2end = count2 == 0;
                     while (!t1end && !t2end)
                     {
-                        var kv1 = ts1.TestObject.At(idx1);
-                        var kv2 = ts2.TestObject.At(idx2);
+                        var kv1 = ts1.Transform.At(idx1);
+                        var kv2 = ts2.Transform.At(idx2);
                         if (kv1.Key == kv2.Key)
                         {
-                            if (Common.World.TestObject.DifferForPack(kv1.Value, kv2.Value))
+                            if (Common.World.Transform.DifferForPack(kv1.Value, kv2.Value))
                             {
                                 _updIndices.Add(idx1);
                             }
@@ -821,7 +1113,7 @@ namespace Common.World
                     }
                     while (!t2end)
                     {
-                        _addIds.Add(ts2.TestObject.IdAt(idx2));
+                        _addIds.Add(ts2.Transform.IdAt(idx2));
                         idx2++; t2end = idx2 >= count2;
                     }
                 }
@@ -842,7 +1134,7 @@ namespace Common.World
                     p.PackUInt32((uint)_addIds.Count, _entityBits);
                 }
                 p.PackUInt32((uint)_updIndices.Count, _entityBits);
-                var ts2Count = ts2.TestObject.Count;
+                var ts2Count = ts2.Transform.Count;
                 if (ts2Count == 0) return;
                 for (int i = 0; i < _delIndices.Count; i++)
                 {
@@ -861,11 +1153,11 @@ namespace Common.World
                     int idx1 = 0, idx2 = 0;
                     for (int i = 0; i < count1; i++)
                     {
-                        var kv1 = ts1.TestObject.At(i);
+                        var kv1 = ts1.Transform.At(i);
                         while (iadd < _addIds.Count && _addIds[iadd] < kv1.Key)
                         {
-                            var cur = ts2.TestObject.CmpAt(idx2);
-                            PackTestObject(ts2, cur, p);
+                            var cur = ts2.Transform.CmpAt(idx2);
+                            PackTransform(ts2, cur, p);
                             idx2++;
                             iadd++;
                         }
@@ -882,8 +1174,8 @@ namespace Common.World
                         {
                             if (_updIndices[iupd] == idx1)
                             {
-                                var cur = ts2.TestObject.CmpAt(idx2);
-                                PackTestObject(ts2, cur, p);
+                                var cur = ts2.Transform.CmpAt(idx2);
+                                PackTransform(ts2, cur, p);
                                 idx2++;
                                 iupd++;
                                 idx1++;
@@ -895,12 +1187,18 @@ namespace Common.World
                     }
                     while (iadd < _addIds.Count)
                     {
-                        var cur = ts2.TestObject.CmpAt(idx2);
-                        PackTestObject(ts2, cur, p);
+                        var cur = ts2.Transform.CmpAt(idx2);
+                        PackTransform(ts2, cur, p);
                         idx2++;
                         iadd++;
                     }
                 }
+            }
+            private void UnpackAvatar(TableSet ts, Avatar c, BitUnpacker p)
+            {
+                int id2index;
+                bool isDefault;
+                c.OwnerUserId = p.UnpackSInt32();
             }
             private void UnpackPlayer(TableSet ts, Player c, BitUnpacker p)
             {
@@ -909,11 +1207,94 @@ namespace Common.World
                 c.InputIsAcknowledged = p.UnpackBool();
                 c.UserId = p.UnpackSInt32();
             }
-            private void UnpackTestObject(TableSet ts, TestObject c, BitUnpacker p)
+            private void UnpackTransform(TableSet ts, Transform c, BitUnpacker p)
             {
                 int id2index;
                 bool isDefault;
                 c.Position = p.UnpackVector3();
+            }
+            private void UnpackDiffAvatar(TableSet ts1, TableSet ts2, BitUnpacker p)
+            {
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts2.CopyAvatar(ts1);
+                    return;
+                }
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                int delCount = 0;
+                int addCount = 0;
+                if (p.UnpackByte(1) != 0)
+                {
+                    delCount = (int)p.UnpackUInt32(_entityBits);
+                    addCount = (int)p.UnpackUInt32(_entityBits);
+                }
+                int updCount = (int)p.UnpackUInt32(_entityBits);
+                int table2count = ts1.Avatar.Count + addCount - delCount;
+                if (table2count == 0)
+                {
+                    ts2.Avatar.Clear();
+                    return;
+                }
+                for (int i = 0; i < delCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _delIndices.Add(idx);
+                }
+                for (int i = 0; i < addCount; i++)
+                {
+                    uint id = ts2._entityIds[p.UnpackUInt32(_entityBits)];
+                    _addIds.Add(id);
+                }
+                for (int i = 0; i < updCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _updIndices.Add(idx);
+                }
+                ts2.Avatar.DestructiveResize(table2count);
+                int iadd = 0, idel = 0, iupd = 0;
+                int idx1 = 0, idx2 = 0;
+                var count1 = ts1.Avatar.Count;
+                for (var i = 0; i < count1; i++)
+                {
+                    var kv1 = ts1.Avatar.At(i);
+                    while (iadd < addCount && _addIds[iadd] < kv1.Key)
+                    {
+                        var c = ts2.Avatar.SetAtIndex(idx2++, _addIds[iadd++]);
+                        UnpackAvatar(ts2, c, p);
+                    }
+                    if (idel < delCount)
+                    {
+                        if (_delIndices[idel] == idx1)
+                        {
+                            idel++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    if (iupd < updCount)
+                    {
+                        if (_updIndices[iupd] == idx1)
+                        {
+                            var c = ts2.Avatar.SetAtIndex(idx2++, kv1.Key);
+                            UnpackAvatar(ts2, c, p);
+                            iupd++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    {
+                        var c = ts2.Avatar.SetAtIndex(idx2++, kv1.Key);
+                        ts2.CopyAvatar(c, kv1.Value);
+                    }
+                    idx1++;
+                }
+                while (iadd < addCount)
+                {
+                    var c = ts2.Avatar.SetAtIndex(idx2++, _addIds[iadd++]);
+                    UnpackAvatar(ts2, c, p);
+                }
             }
             private void UnpackDiffPlayer(TableSet ts1, TableSet ts2, BitUnpacker p)
             {
@@ -998,11 +1379,11 @@ namespace Common.World
                     UnpackPlayer(ts2, c, p);
                 }
             }
-            private void UnpackDiffTestObject(TableSet ts1, TableSet ts2, BitUnpacker p)
+            private void UnpackDiffTransform(TableSet ts1, TableSet ts2, BitUnpacker p)
             {
                 if (p.UnpackByte(1) == 0)
                 {
-                    ts2.CopyTestObject(ts1);
+                    ts2.CopyTransform(ts1);
                     return;
                 }
                 _addIds.Clear();
@@ -1016,10 +1397,10 @@ namespace Common.World
                     addCount = (int)p.UnpackUInt32(_entityBits);
                 }
                 int updCount = (int)p.UnpackUInt32(_entityBits);
-                int table2count = ts1.TestObject.Count + addCount - delCount;
+                int table2count = ts1.Transform.Count + addCount - delCount;
                 if (table2count == 0)
                 {
-                    ts2.TestObject.Clear();
+                    ts2.Transform.Clear();
                     return;
                 }
                 for (int i = 0; i < delCount; i++)
@@ -1037,17 +1418,17 @@ namespace Common.World
                     int idx = (int)p.UnpackUInt32(_entityBits);
                     _updIndices.Add(idx);
                 }
-                ts2.TestObject.DestructiveResize(table2count);
+                ts2.Transform.DestructiveResize(table2count);
                 int iadd = 0, idel = 0, iupd = 0;
                 int idx1 = 0, idx2 = 0;
-                var count1 = ts1.TestObject.Count;
+                var count1 = ts1.Transform.Count;
                 for (var i = 0; i < count1; i++)
                 {
-                    var kv1 = ts1.TestObject.At(i);
+                    var kv1 = ts1.Transform.At(i);
                     while (iadd < addCount && _addIds[iadd] < kv1.Key)
                     {
-                        var c = ts2.TestObject.SetAtIndex(idx2++, _addIds[iadd++]);
-                        UnpackTestObject(ts2, c, p);
+                        var c = ts2.Transform.SetAtIndex(idx2++, _addIds[iadd++]);
+                        UnpackTransform(ts2, c, p);
                     }
                     if (idel < delCount)
                     {
@@ -1062,30 +1443,31 @@ namespace Common.World
                     {
                         if (_updIndices[iupd] == idx1)
                         {
-                            var c = ts2.TestObject.SetAtIndex(idx2++, kv1.Key);
-                            UnpackTestObject(ts2, c, p);
+                            var c = ts2.Transform.SetAtIndex(idx2++, kv1.Key);
+                            UnpackTransform(ts2, c, p);
                             iupd++;
                             idx1++;
                             continue;
                         }
                     }
                     {
-                        var c = ts2.TestObject.SetAtIndex(idx2++, kv1.Key);
-                        ts2.CopyTestObject(c, kv1.Value);
+                        var c = ts2.Transform.SetAtIndex(idx2++, kv1.Key);
+                        ts2.CopyTransform(c, kv1.Value);
                     }
                     idx1++;
                 }
                 while (iadd < addCount)
                 {
-                    var c = ts2.TestObject.SetAtIndex(idx2++, _addIds[iadd++]);
-                    UnpackTestObject(ts2, c, p);
+                    var c = ts2.Transform.SetAtIndex(idx2++, _addIds[iadd++]);
+                    UnpackTransform(ts2, c, p);
                 }
             }
         }
         public uint NextId = 2;
+        public Table<Avatar> Avatar;
         public Table<Player> Player;
-        public Table<TestObject> TestObject;
-        public Table<TestObject> TestObjectPredicted;
+        public Table<Transform> Transform;
+        public Table<Transform> TransformPredicted;
         public int EntityCount
         {
             get { return _entityCount; }
@@ -1093,13 +1475,23 @@ namespace Common.World
         public TableSet(Pools pools)
         {
             _pools = pools;
+            Avatar = new Table<Avatar>(_pools.Avatar);
             Player = new Table<Player>(_pools.Player);
-            TestObject = new Table<TestObject>(_pools.TestObject);
-            TestObjectPredicted = new Table<TestObject>(_pools.TestObject);
+            Transform = new Table<Transform>(_pools.Transform);
+            TransformPredicted = new Table<Transform>(_pools.Transform);
         }
-        public void CopyTestObjectPredicted(TestObject c1, TestObject c2)
+        public void CopyTransformPredicted(Transform c1, Transform c2)
         {
             c1.Position = c2.Position;
+        }
+        public void CopyAvatar(TableSet ts2)
+        {
+            Avatar.CopyIds(ts2.Avatar);
+            var count = Avatar.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyAvatar(Avatar.CmpAt(i), ts2.Avatar.CmpAt(i));
+            }
         }
         public void CopyPlayer(TableSet ts2)
         {
@@ -1110,22 +1502,22 @@ namespace Common.World
                 CopyPlayer(Player.CmpAt(i), ts2.Player.CmpAt(i));
             }
         }
-        public void CopyTestObject(TableSet ts2)
+        public void CopyTransform(TableSet ts2)
         {
-            TestObject.CopyIds(ts2.TestObject);
-            var count = TestObject.Count;
+            Transform.CopyIds(ts2.Transform);
+            var count = Transform.Count;
             for (int i = 0; i < count; ++i)
             {
-                CopyTestObject(TestObject.CmpAt(i), ts2.TestObject.CmpAt(i));
+                CopyTransform(Transform.CmpAt(i), ts2.Transform.CmpAt(i));
             }
         }
-        public void CopyTestObjectPredicted(TableSet ts2)
+        public void CopyTransformPredicted(TableSet ts2)
         {
-            TestObjectPredicted.CopyIds(ts2.TestObjectPredicted);
-            var count = TestObjectPredicted.Count;
+            TransformPredicted.CopyIds(ts2.TransformPredicted);
+            var count = TransformPredicted.Count;
             for (int i = 0; i < count; ++i)
             {
-                CopyTestObjectPredicted(TestObjectPredicted.CmpAt(i), ts2.TestObjectPredicted.CmpAt(i));
+                CopyTransformPredicted(TransformPredicted.CmpAt(i), ts2.TransformPredicted.CmpAt(i));
             }
         }
         public void Copy(TableSet ts2)
@@ -1138,9 +1530,10 @@ namespace Common.World
             DiscardAndResizeEntities(ts2._entityCount);
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
+            CopyAvatar(ts2);
             CopyPlayer(ts2);
-            CopyTestObject(ts2);
-            CopyTestObjectPredicted(ts2);
+            CopyTransform(ts2);
+            CopyTransformPredicted(ts2);
         }
         public void MergeWithPredicted(TableSet ts2)
         {
@@ -1152,15 +1545,23 @@ namespace Common.World
             DiscardAndResizeEntities(ts2._entityCount);
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
+            CopyAvatar(ts2);
             CopyPlayer(ts2);
-            CopyTestObject(ts2);
-            ApplyTestObjectPredicted();
+            CopyTransform(ts2);
+            ApplyTransformPredicted();
         }
         public void DeleteEmptyEntities()
         {
             if (_entityCount > _pools.EntityUseCount.Length) _pools.EntityUseCount = new uint[_entityCount + 64];
             else Array.Clear(_pools.EntityUseCount, 0, _entityCount);
             var count = _pools.EntityUseCount;
+            var avatarCount = Avatar.Count;
+            for (int i = 0; i < avatarCount; i++)
+            {
+                var id = Avatar.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
             var playerCount = Player.Count;
             for (int i = 0; i < playerCount; i++)
             {
@@ -1168,17 +1569,17 @@ namespace Common.World
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
-            var testObjectCount = TestObject.Count;
-            for (int i = 0; i < testObjectCount; i++)
+            var transformCount = Transform.Count;
+            for (int i = 0; i < transformCount; i++)
             {
-                var id = TestObject.IdAt(i);
+                var id = Transform.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
-            var testObjectPredictedCount = TestObjectPredicted.Count;
-            for (int i = 0; i < testObjectPredictedCount; i++)
+            var transformPredictedCount = TransformPredicted.Count;
+            for (int i = 0; i < transformPredictedCount; i++)
             {
-                var id = TestObjectPredicted.IdAt(i);
+                var id = TransformPredicted.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
@@ -1200,9 +1601,10 @@ namespace Common.World
         }
         public void Clear()
         {
+            Avatar.Clear();
             Player.Clear();
-            TestObject.Clear();
-            TestObjectPredicted.Clear();
+            Transform.Clear();
+            TransformPredicted.Clear();
             for (var i = 0; i < _entityCount; i++)
             {
                 _pools.Entity.Release(_entityData[i]);
@@ -1211,6 +1613,15 @@ namespace Common.World
         }
         public void CopyEntity(Entity source, Entity destination)
         {
+            if(source.Avatar != null)
+            {
+                var newComponent = destination.AddAvatar();
+                CopyAvatar(newComponent, source.Avatar);
+            }
+            else
+            {
+                destination.DelAvatar();
+            }
             if(source.Player != null)
             {
                 var newComponent = destination.AddPlayer();
@@ -1220,23 +1631,23 @@ namespace Common.World
             {
                 destination.DelPlayer();
             }
-            if(source.TestObject != null)
+            if(source.Transform != null)
             {
-                var newComponent = destination.AddTestObject();
-                CopyTestObject(newComponent, source.TestObject);
+                var newComponent = destination.AddTransform();
+                CopyTransform(newComponent, source.Transform);
             }
             else
             {
-                destination.DelTestObject();
+                destination.DelTransform();
             }
-            if(source.TestObjectPredicted != null)
+            if(source.TransformPredicted != null)
             {
-                var newComponent = destination.AddTestObjectPredicted();
-                CopyTestObjectPredicted(newComponent, source.TestObjectPredicted);
+                var newComponent = destination.AddTransformPredicted();
+                CopyTransformPredicted(newComponent, source.TransformPredicted);
             }
             else
             {
-                destination.DelTestObjectPredicted();
+                destination.DelTransformPredicted();
             }
         }
         public Entity this[uint id]
@@ -1281,6 +1692,14 @@ namespace Common.World
             _entityCount++;
             return entity;
         }
+        public void RepackAvatar()
+        {
+            var count = Avatar.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                Avatar.CmpAt(i).Repack();
+            }
+        }
         public void RepackPlayer()
         {
             var count = Player.Count;
@@ -1289,32 +1708,41 @@ namespace Common.World
                 Player.CmpAt(i).Repack();
             }
         }
-        public void RepackTestObject()
+        public void RepackTransform()
         {
-            var count = TestObject.Count;
+            var count = Transform.Count;
             for (int i = 0; i < count; ++i)
             {
-                TestObject.CmpAt(i).Repack();
+                Transform.CmpAt(i).Repack();
             }
         }
-        public void RepackTestObjectPredicted()
+        public void RepackTransformPredicted()
         {
-            var count = TestObjectPredicted.Count;
+            var count = TransformPredicted.Count;
             for (int i = 0; i < count; ++i)
             {
-                TestObjectPredicted.CmpAt(i).Repack();
+                TransformPredicted.CmpAt(i).Repack();
             }
         }
         public void Repack()
         {
+            RepackAvatar();
             RepackPlayer();
-            RepackTestObject();
+            RepackTransform();
         }
         public void InterpolateBase1(TableSet ts1, TableSet ts2, float normalizedTime)
         {
             DiscardAndResizeEntities(ts1._entityCount);
             for (var i = 0; i < ts1._entityCount; i++) _entityData[i].Id = ts1._entityIds[i];
             Buffer.BlockCopy(ts1._entityIds, 0, _entityIds, 0, ts1._entityCount * sizeof(uint));
+            Avatar.CopyIds(ts1.Avatar);
+            int avatarCount = Avatar.Count;
+            for (int i = 0; i < avatarCount; ++i)
+            {
+                var c = Avatar.CmpAt(i);
+                var c1 = ts1.Avatar.CmpAt(i);
+                c.OwnerUserId = c1.OwnerUserId;
+            }
             Player.CopyIds(ts1.Player);
             int playerCount = Player.Count;
             for (int i = 0; i < playerCount; ++i)
@@ -1324,25 +1752,25 @@ namespace Common.World
                 c.InputIsAcknowledged = c1.InputIsAcknowledged;
                 c.UserId = c1.UserId;
             }
-            TestObject.CopyIds(ts1.TestObject);
-            int testObjectCount = TestObject.Count;
-            for (int i = 0; i < testObjectCount; ++i)
+            Transform.CopyIds(ts1.Transform);
+            int transformCount = Transform.Count;
+            for (int i = 0; i < transformCount; ++i)
             {
-                var c = TestObject.CmpAt(i);
-                var c1 = ts1.TestObject.CmpAt(i);
-                var cId = TestObject.IdAt(i);
-                var c2 = ts2.TestObject[cId];
+                var c = Transform.CmpAt(i);
+                var c1 = ts1.Transform.CmpAt(i);
+                var cId = Transform.IdAt(i);
+                var c2 = ts2.Transform[cId];
                 if (c2 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c1.Position;
             }
-            TestObjectPredicted.CopyIds(ts1.TestObjectPredicted);
-            int testObjectPredictedCount = TestObjectPredicted.Count;
-            for (int i = 0; i < testObjectPredictedCount; ++i)
+            TransformPredicted.CopyIds(ts1.TransformPredicted);
+            int transformPredictedCount = TransformPredicted.Count;
+            for (int i = 0; i < transformPredictedCount; ++i)
             {
-                var c = TestObjectPredicted.CmpAt(i);
-                var c1 = ts1.TestObjectPredicted.CmpAt(i);
-                var cId = TestObjectPredicted.IdAt(i);
-                var c2 = ts2.TestObjectPredicted[cId];
+                var c = TransformPredicted.CmpAt(i);
+                var c1 = ts1.TransformPredicted.CmpAt(i);
+                var cId = TransformPredicted.IdAt(i);
+                var c2 = ts2.TransformPredicted[cId];
                 if (c2 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c1.Position;
             }
@@ -1352,6 +1780,14 @@ namespace Common.World
             DiscardAndResizeEntities(ts2._entityCount);
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
+            Avatar.CopyIds(ts2.Avatar);
+            int avatarCount = Avatar.Count;
+            for (int i = 0; i < avatarCount; ++i)
+            {
+                var c = Avatar.CmpAt(i);
+                var c2 = ts2.Avatar.CmpAt(i);
+                c.OwnerUserId = c2.OwnerUserId;
+            }
             Player.CopyIds(ts2.Player);
             int playerCount = Player.Count;
             for (int i = 0; i < playerCount; ++i)
@@ -1361,25 +1797,25 @@ namespace Common.World
                 c.InputIsAcknowledged = c2.InputIsAcknowledged;
                 c.UserId = c2.UserId;
             }
-            TestObject.CopyIds(ts2.TestObject);
-            int testObjectCount = TestObject.Count;
-            for (int i = 0; i < testObjectCount; ++i)
+            Transform.CopyIds(ts2.Transform);
+            int transformCount = Transform.Count;
+            for (int i = 0; i < transformCount; ++i)
             {
-                var c = TestObject.CmpAt(i);
-                var c2 = ts2.TestObject.CmpAt(i);
-                var cId = TestObject.IdAt(i);
-                var c1 = ts1.TestObject[cId];
+                var c = Transform.CmpAt(i);
+                var c2 = ts2.Transform.CmpAt(i);
+                var cId = Transform.IdAt(i);
+                var c1 = ts1.Transform[cId];
                 if (c1 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c2.Position;
             }
-            TestObjectPredicted.CopyIds(ts2.TestObjectPredicted);
-            int testObjectPredictedCount = TestObjectPredicted.Count;
-            for (int i = 0; i < testObjectPredictedCount; ++i)
+            TransformPredicted.CopyIds(ts2.TransformPredicted);
+            int transformPredictedCount = TransformPredicted.Count;
+            for (int i = 0; i < transformPredictedCount; ++i)
             {
-                var c = TestObjectPredicted.CmpAt(i);
-                var c2 = ts2.TestObjectPredicted.CmpAt(i);
-                var cId = TestObjectPredicted.IdAt(i);
-                var c1 = ts1.TestObjectPredicted[cId];
+                var c = TransformPredicted.CmpAt(i);
+                var c2 = ts2.TransformPredicted.CmpAt(i);
+                var cId = TransformPredicted.IdAt(i);
+                var c1 = ts1.TransformPredicted[cId];
                 if (c1 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c2.Position;
             }
@@ -1400,25 +1836,29 @@ namespace Common.World
         private Entity[] _entityData = new Entity[2000];
         private readonly Pools _pools;
         private const int EntityCountBits = 16;
+        private void CopyAvatar(Avatar c1, Avatar c2)
+        {
+            c1.OwnerUserId = c2.OwnerUserId;
+        }
         private void CopyPlayer(Player c1, Player c2)
         {
             c1.InputIsAcknowledged = c2.InputIsAcknowledged;
             c1.UserId = c2.UserId;
         }
-        private void CopyTestObject(TestObject c1, TestObject c2)
+        private void CopyTransform(Transform c1, Transform c2)
         {
             c1.Position = c2.Position;
         }
-        private void ApplyTestObjectPredicted()
+        private void ApplyTransformPredicted()
         {
-            var count = TestObjectPredicted.Count;
+            var count = TransformPredicted.Count;
             for (int i = 0; i < count; ++i)
             {
-                var id = TestObjectPredicted.IdAt(i);
-                var dst = TestObject[id];
+                var id = TransformPredicted.IdAt(i);
+                var dst = Transform[id];
                 if (dst == null) continue;
-                var src = TestObjectPredicted.CmpAt(i);
-                CopyTestObject(dst, src);
+                var src = TransformPredicted.CmpAt(i);
+                CopyTransform(dst, src);
             }
         }
         private void DiscardAndResizeEntities(int size)
@@ -1449,17 +1889,29 @@ namespace Common.World
     {
         public uint Id;
         public TableSet TableSet;
+        public Avatar Avatar
+        {
+            get { return TableSet.Avatar[Id]; }
+        }
         public Player Player
         {
             get { return TableSet.Player[Id]; }
         }
-        public TestObject TestObject
+        public Transform Transform
         {
-            get { return TableSet.TestObject[Id]; }
+            get { return TableSet.Transform[Id]; }
         }
-        public TestObject TestObjectPredicted
+        public Transform TransformPredicted
         {
-            get { return TableSet.TestObjectPredicted[Id]; }
+            get { return TableSet.TransformPredicted[Id]; }
+        }
+        public Avatar AddAvatar()
+        {
+            return TableSet.Avatar.Insert(Id);
+        }
+        public void DelAvatar()
+        {
+            TableSet.Avatar.Delete(Id);
         }
         public Player AddPlayer()
         {
@@ -1469,27 +1921,28 @@ namespace Common.World
         {
             TableSet.Player.Delete(Id);
         }
-        public TestObject AddTestObject()
+        public Transform AddTransform()
         {
-            return TableSet.TestObject.Insert(Id);
+            return TableSet.Transform.Insert(Id);
         }
-        public void DelTestObject()
+        public void DelTransform()
         {
-            TableSet.TestObject.Delete(Id);
+            TableSet.Transform.Delete(Id);
         }
-        public TestObject AddTestObjectPredicted()
+        public Transform AddTransformPredicted()
         {
-            return TableSet.TestObjectPredicted.Insert(Id);
+            return TableSet.TransformPredicted.Insert(Id);
         }
-        public void DelTestObjectPredicted()
+        public void DelTransformPredicted()
         {
-            TableSet.TestObjectPredicted.Delete(Id);
+            TableSet.TransformPredicted.Delete(Id);
         }
         public void DeleteAll()
         {
+            DelAvatar();
             DelPlayer();
-            DelTestObject();
-            DelTestObjectPredicted();
+            DelTransform();
+            DelTransformPredicted();
         }
     }
 }

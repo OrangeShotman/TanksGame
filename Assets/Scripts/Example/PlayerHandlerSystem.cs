@@ -1,63 +1,91 @@
 using System.Collections.Generic;
+using Common.World;
 using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
 using UnityEngine;
+using ILogger = Pixockets.DebugTools.ILogger;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
     public class PlayerHandlerSystem : BaseSystem<GameData>, IPlayerHandler
     {
-        private List<int> _toAdd = new List<int>();
-        private List<int> _toRemove = new List<int>();
+        private object _locker = new object();
+        private readonly ILogger _logger;
+        private readonly List<int> _toAdd = new List<int>();
+        private readonly List<int> _toRemove = new List<int>();
+
+        public PlayerHandlerSystem(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         protected override void InternalUpdate(GameData data, TimeData timeData)
         {
-            data.ServerTick = data.Tick+1;
-            // Debug.Log($"server tick: {data.Tick}");
-            foreach (var userId in _toAdd)
+            data.ServerTick = data.Tick + 1;
+            lock (_locker)
             {
-                var entity = data.World.CreateEntity();
-                var player = entity.AddPlayer();
-                player.UserId = userId;
-                var testObject = entity.AddTestObject();
-                testObject.Position = Random.insideUnitSphere * 3;
-                Debug.Log($"add: {userId}");
-            }
-
-            _toAdd.Clear();
-
-            foreach (var userId in _toRemove)
-            {
-                var playerCount = data.World.Player.Count;
-                for (int i = 0; i < playerCount; i++)
+                foreach (var userId in _toAdd)
                 {
-                    var player = data.World.Player.CmpAt(i);
-                    if (player.UserId == userId)
-                    {
-                        var id = data.World.Player.IdAt(i);
-                        var entity = data.World[id];
-                        entity.DeleteAll();
-                        Debug.Log($"remove: {userId}");
-
-                        break;
-                    }
+                    var entity = data.World.CreateEntity();
+                    var player = entity.AddPlayer();
+                    player.UserId = userId;
+                    _logger.Info($"add: {userId}");
+                    AttachAvatar(data, player);
                 }
 
-                data.World.DeleteEmptyEntities();
+                _toAdd.Clear();
+
+                foreach (var userId in _toRemove)
+                {
+                    var playerCount = data.World.Player.Count;
+                    for (int i = 0; i < playerCount; i++)
+                    {
+                        var player = data.World.Player.CmpAt(i);
+                        if (player.UserId == userId)
+                        {
+                            var id = data.World.Player.IdAt(i);
+                            var entity = data.World[id];
+                            entity.DeleteAll();
+                            _logger.Info($"remove: {userId}");
+                            break;
+                        }
+                    }
+
+                    data.World.DeleteEmptyEntities();
+                }
+
+                _toRemove.Clear();
             }
-            
-            _toRemove.Clear();
         }
 
-        public void OnPlayerAdd(int userId)
+        private void AttachAvatar(GameData gameData, Player player)
         {
-            _toAdd.Add(userId);
+            var avatarEntity = gameData.GetAvatarEntity(player);
+            if (avatarEntity != null)
+                return;
+
+            avatarEntity = gameData.World.CreateEntity();
+            var avatarComponent = avatarEntity.AddAvatar();
+            avatarComponent.OwnerUserId = player.UserId;
+            var transform = avatarEntity.AddTransform();
+            transform.Position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
         }
 
-        public void OnPlayerRemove(int userId)
+        void IPlayerHandler.OnPlayerAdd(int userId)
         {
-            _toRemove.Add(userId);
+            lock (_locker)
+            {
+                _toAdd.Add(userId);
+            }
+        }
+
+        void IPlayerHandler.OnPlayerRemove(int userId)
+        {
+            lock (_locker)
+            {
+                _toRemove.Add(userId);
+            }
         }
     }
 }

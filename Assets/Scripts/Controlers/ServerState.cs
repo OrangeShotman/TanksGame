@@ -4,6 +4,7 @@ using OrangeShotStudio.DB.Application;
 using OrangeShotStudio.Multiplayer.Facade;
 using OrangeShotStudio.Provider;
 using OrangeShotStudio.Scripts.Tools;
+using OrangeShotStudio.Structuries;
 using OrangeShotStudio.TanksGame.Multiplayer;
 
 namespace OrangeShotStudio.TanksGame
@@ -15,15 +16,21 @@ namespace OrangeShotStudio.TanksGame
 
         public override void Initialize()
         {
+            var logger = new UnityLogger();
             var inputPool = new Common.Input.TableSet.Pools();
             var worldPool = new Common.World.TableSet.Pools();
             var gameSnapshotFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameSnapshotFactory);
-            var playerHandlerSystem = new PlayerHandlerSystem();
+            var playerHandlerSystem = new PlayerHandlerSystem(logger);
             var settings = new GameServerSettings(3239, 5000, 20, 5, ConnectionType.Pixockets);
             _serverFacade = ServerFacadeFactory.CreateServer(gameSnapshotFactory,
                 new ServerGameLogicFactory(playerHandlerSystem),
-                playerHandlerSystem, new UnityLogger(), settings);
+                playerHandlerSystem, logger, settings);
+        }
+
+        public override void Update(TimeData timeData)
+        {
+            _serverFacade.Update();
         }
 
         public override void OnQuit()

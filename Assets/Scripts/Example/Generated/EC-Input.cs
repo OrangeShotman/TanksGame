@@ -13,15 +13,15 @@ namespace Common.Input
     // DO NOT EDIT - generated from Generator/EC/Input/PlayerInput.cs
     public sealed class PlayerInput : IComponent
     {
-        public Vector3 Movement;
+        public Vector2 Movement;
         public void Reset()
         {
-            Movement = default(Vector3);
+            Movement = default(Vector2);
         }
         public static bool DifferForPack(PlayerInput c1, PlayerInput c2)
         {
             bool null1, null2;
-            if (c1.Movement.x != c2.Movement.x || c1.Movement.y != c2.Movement.y || c1.Movement.z != c2.Movement.z) return true;
+            if (c1.Movement.x != c2.Movement.x || c1.Movement.y != c2.Movement.y) return true;
             return false;
         }
         public void Repack()
@@ -99,7 +99,7 @@ namespace Common.Input
                 return false;
             }
             bool aFieldIsNull, bFieldIsNull;
-            if (Math.Abs(a.Movement.x - b.Movement.x) > 0.01f || Math.Abs(a.Movement.y - b.Movement.y) > 0.01f || Math.Abs(a.Movement.z - b.Movement.z) > 0.01f)
+            if (Math.Abs(a.Movement.x - b.Movement.x) > 0.01f || Math.Abs(a.Movement.y - b.Movement.y) > 0.01f)
             {
                 return false;
             }
@@ -177,7 +177,7 @@ namespace Common.Input
                         var kv = ts.PlayerInput.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
-                        p.PackVector3(c.Movement);
+                        p.PackVector2(c.Movement);
                     }
                 }
                 stats.PlayerInput += p.BitCount;
@@ -221,7 +221,7 @@ namespace Common.Input
                         var kv = ts.PlayerInput.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
-                        p.PackVector3(c.Movement);
+                        p.PackVector2(c.Movement);
                     }
                 }
                 stats.PlayerInput += p.BitCount;
@@ -257,7 +257,7 @@ namespace Common.Input
                         int id2index;
                         bool isDefault;
                         var c = ts.PlayerInput.SetAtIndex(i, id);
-                        c.Movement = p.UnpackVector3();
+                        c.Movement = p.UnpackVector2();
                     }
                 }
             }
@@ -469,7 +469,7 @@ namespace Common.Input
             private List<UpdatedIndex> _updPersonalIndices = new List<UpdatedIndex>(12);
             private void PackPlayerInput(TableSet ts, PlayerInput c, BitPacker p)
             {
-                p.PackVector3(c.Movement);
+                p.PackVector2(c.Movement);
             }
             private void PackDiffPlayerInput(TableSet ts1, TableSet ts2, BitPacker p)
             {
@@ -599,7 +599,7 @@ namespace Common.Input
             {
                 int id2index;
                 bool isDefault;
-                c.Movement = p.UnpackVector3();
+                c.Movement = p.UnpackVector2();
             }
             private void UnpackDiffPlayerInput(TableSet ts1, TableSet ts2, BitUnpacker p)
             {

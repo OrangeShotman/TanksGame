@@ -6,6 +6,6 @@ namespace OrangeShotStudio.Multiplayer.Ecs
     [Component]
     public class PlayerInput
     {
-        public Vector3 Movement;
+        public Vector2 Movement;
     }
 }

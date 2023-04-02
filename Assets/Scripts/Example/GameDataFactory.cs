@@ -4,34 +4,6 @@ using OrangeShotStudio.Network.Messages;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
-    public class InputProvider
-    {
-        private History<GameData> _history;
-
-        public InputProvider(GameDataFactory gameDataFactory, int inputHistorySize)
-        {
-            var array = new GameData[300];
-            for (int i = 0; i < 300; i++)
-            {
-                array[i] = gameDataFactory.CreateMessage();
-            }
-
-            _history = new History<GameData>(array);
-
-        }
-        // public GameData GetInput()
-        // {
-        //     
-        // }
-
-        public void Dispose()
-        {
-            foreach (var gameData in _history)
-            {
-                gameData.Dispose();
-            }
-        }
-    }
     public class GameDataFactory : IMessageDataFactory<GameData>
     {
         private TableSet.Pools _pools;

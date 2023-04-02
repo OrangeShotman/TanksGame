@@ -16,4 +16,7 @@ MonoBehaviour:
   - Id: SimpleMainMenuWindow
     Prefab: {fileID: 3348860030259842693, guid: e0e4d7f65bc2c46439978a1ef9d23b60,
       type: 3}
+  - Id: Tank
+    Prefab: {fileID: 8149625696214092756, guid: 3d80ecbcdc1eb4a6f8b5bd4c3c5d2e67,
+      type: 3}
   Canvas: {fileID: 5252347036567315106, guid: 8ce8c509d27954dec86cbdcb55f879de, type: 3}

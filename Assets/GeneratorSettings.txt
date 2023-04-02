@@ -1,0 +1,1 @@
+/Users/v.makarov/UnityProjects/Tanks/Assets/Scripts/Example/Generated

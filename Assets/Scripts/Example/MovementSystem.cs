@@ -24,17 +24,16 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 
                 if (player.InputIsAcknowledged)
                 {
-                    var id = data.World.Player.IdAt(i);
-                    var testObject = data.World.TestObject[id];
-                    if (testObject == null)
-                        testObject = data.World[id].AddTestObject();
-                    // Debug.Log(
-                    //     $"Movement:{input.Input.PlayerInput.CmpAt(0).Movement * 5 * (float)timeData.DeltaTimeMs * 0.001f} + {testObject.Position}, tick:{data.Tick}");
-
-                    testObject.Position +=
-                        input.Input.PlayerInput.CmpAt(0).Movement * 5 * (float)timeData.DeltaTimeMs * 0.001f;
-                    var testObjectPredicted = data.World[id].AddTestObjectPredicted();
-                    data.World.CopyTestObjectPredicted(testObjectPredicted, testObject);
+                    var avatarEntity = data.GetAvatarEntity(player);
+                    var transform = avatarEntity.Transform;
+                    if (transform == null)
+                        transform = avatarEntity.AddTransform();
+                    if(input.Input.PlayerInput.Count < 1)
+                        continue;
+                    var motion = input.Input.PlayerInput.CmpAt(0).Movement * 5 * (float)timeData.DeltaTimeMs * 0.001f;
+                    transform.Position += new Vector3(motion.x, 0, motion.y);
+                    var testObjectPredicted = avatarEntity.AddTransformPredicted();
+                    data.World.CopyTransformPredicted(testObjectPredicted, transform);
                 }
             }
         }

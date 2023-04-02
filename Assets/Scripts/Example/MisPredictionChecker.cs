@@ -20,12 +20,15 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 var player = predicted.World.Player.CmpAt(i);
                 if (player.UserId == _userId)
                 {
-                    var id = predicted.World.Player.IdAt(i);
-                    var predictedObject = predicted.World.TestObject[id];
-                    var serverObject = serverTick.World.TestObject[id];
+                    var avatar = predicted.GetAvatarEntity(player);
+                    if (avatar == null)
+                        return true;
+                    var id = avatar.Id;
+                    var predictedObject = predicted.World.Transform[id];
+                    var serverObject = serverTick.World.Transform[id];
                     if (serverObject == null)
                     {
-                        Debug.LogError("Misprediction");
+                        Debug.LogError($"Misprediction");
                         return true;
                     }
 
