@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f23c6af78e1e6742878244f5053457f, type: 3}
+  m_Name: PrefabDb
+  m_EditorClassIdentifier: 
+  PrefabData:
+  - Id: SimpleMainMenuWindow
+    Prefab: {fileID: 3348860030259842693, guid: e0e4d7f65bc2c46439978a1ef9d23b60,
+      type: 3}
+  Canvas: {fileID: 5252347036567315106, guid: 8ce8c509d27954dec86cbdcb55f879de, type: 3}
