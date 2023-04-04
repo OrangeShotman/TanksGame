@@ -1,6 +1,7 @@
 using Common;
 using OrangeShotStudio.Provider;
 using OrangeShotStudio.TanksGame.Multiplayer;
+using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.View
 {
@@ -11,6 +12,7 @@ namespace OrangeShotStudio.TanksGame.View
         private CollectionUpdater<TankView> _collectionUpdater = new CollectionUpdater<TankView>();
         private GameData _gameData;
         private IPrefabProvider _prefabProvider;
+        public Vector2 CameraProjection => _cameraView.CameraForwardProjection;
 
         public TankCollectionView(IPrefabProvider prefabProvider, int userId)
         {

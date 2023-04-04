@@ -8,5 +8,7 @@ namespace OrangeShotStudio.Multiplayer.Ecs
     {
         [LinearInterpolation]
         public Vector3 Position;
+        [LinearInterpolation]
+        public Vector2 Forward;
     }
 }

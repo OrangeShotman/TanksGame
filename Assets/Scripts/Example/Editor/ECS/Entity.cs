@@ -16,6 +16,9 @@ namespace OrangeShotStudio.Multiplayer.Ecs.World
     {
         [Predictable(0.1f)]
         public Transform Transform;
+        [DontPack]
+        public MovementComponent Movement;
+        public PhysicsObject PhysicsObject;
         public Player Player;
         public Avatar Avatar;
     }

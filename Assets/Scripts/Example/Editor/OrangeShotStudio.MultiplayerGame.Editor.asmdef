@@ -2,7 +2,8 @@
     "name": "OrangeShotStudio.MultiplayerGame.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:f6637baa7317e40c4b092294eda7f1e9"
+        "GUID:f6637baa7317e40c4b092294eda7f1e9",
+        "GUID:21c67cfd2f980498c81dacf5c4ad1250"
     ],
     "includePlatforms": [
         "Editor"

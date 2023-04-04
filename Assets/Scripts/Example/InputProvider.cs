@@ -10,7 +10,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         {
             _input = gameDataFactory.CreateMessage();
         }
-        public GameData GetInput()
+        public GameData GetInput(Vector2 cameraProjection)
         {
             Vector2 input = Vector2.zero; // new Vector3(Mathf.Sin(Time.time)*0.5f, Mathf.Cos(Time.time)*0.5f);
             if (Input.GetKey(KeyCode.W))
@@ -21,6 +21,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 input += Vector2.left;
             if (Input.GetKey(KeyCode.D))
                 input += Vector2.right;
+            var angle = Vector2.SignedAngle(Vector2.up, cameraProjection);
+            input = Rotate(input, angle);
             if (_input.Input.PlayerInput.Count == 0)
                 _input.Input.CreateEntity().AddPlayerInput();
             var playerInput = _input.Input.PlayerInput.CmpAt(0);
@@ -31,6 +33,17 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         public void Dispose()
         {
             _input.Dispose();
+        }
+        
+        private Vector2 Rotate(Vector2 v, float degrees) {
+            float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+         
+            float tx = v.x;
+            float ty = v.y;
+            v.x = (cos * tx) - (sin * ty);
+            v.y = (sin * tx) + (cos * ty);
+            return v;
         }
     }
 }

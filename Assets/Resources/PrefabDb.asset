@@ -22,4 +22,9 @@ MonoBehaviour:
   - Id: Camera
     Prefab: {fileID: 9008028638378815057, guid: 5a7c8d5507cac4651b81b111f58245d3,
       type: 3}
+  - Id: PlayerBody
+    Prefab: {fileID: 996537712162683278, guid: 2c7bc2b5393c247a18ff31bc568c7ffa, type: 3}
+  - Id: Level
+    Prefab: {fileID: 1666971806128524895, guid: affaa269cf8f048aba3365b1f8163758,
+      type: 3}
   Canvas: {fileID: 5252347036567315106, guid: 8ce8c509d27954dec86cbdcb55f879de, type: 3}

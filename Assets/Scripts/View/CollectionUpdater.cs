@@ -148,7 +148,7 @@ namespace OrangeShotStudio.TanksGame.View
 
         public T GetById(uint entityId)
         {
-            var idx = _entities.BinarySearch(_entities.Length, entityId);
+            var idx = _entities.BinarySearch(_count, entityId);
             if (idx >= 0)
             {
                 return _views[idx];

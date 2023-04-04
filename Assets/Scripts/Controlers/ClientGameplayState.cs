@@ -13,6 +13,7 @@ namespace OrangeShotStudio.TanksGame
 {
     public class ClientGameplayState : BaseGameState
     {
+        private readonly IPrefabProvider _prefabProvider;
         private readonly InterfaceView _interfaceView;
         private readonly ClientTanksGameStateFactory _factory;
         private readonly int _userId;
@@ -26,6 +27,7 @@ namespace OrangeShotStudio.TanksGame
             ClientTanksGameStateFactory factory, int userId)
         {
             _tankCollectionView = new TankCollectionView(prefabProvider, userId);
+            _prefabProvider = prefabProvider;
             _interfaceView = interfaceView;
             _factory = factory;
             _userId = userId;
@@ -38,10 +40,10 @@ namespace OrangeShotStudio.TanksGame
             var gameDataFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var settings = new GameClientSettings(
-                _userId, "127.0.0.1", 3239, 5000, ConnectionType.Pixockets,
-                GameClientSettings.GameClientUpdateType.InThread, 20, 5);
+                _userId, "127.0.0.1", 3239, 5000, ConnectionType.WebSockets,
+                GameClientSettings.GameClientUpdateType.InCoroutine, 10, 3);
             _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
-                new ClientGameLogicFactory(), new MisPredictionChecker(_userId), _inputStorageFactory,
+                new ClientGameLogicFactory(_prefabProvider), new MisPredictionChecker(_userId), _inputStorageFactory,
                 new UnityLogger());
             _inputProvider = new InputProvider(gameDataFactory);
             _clientInterpolator = new ClientInterpolator(gameDataFactory);
@@ -49,8 +51,7 @@ namespace OrangeShotStudio.TanksGame
 
         public override void Update(TimeData timeData)
         {
-            
-            var input = _inputProvider.GetInput();
+            var input = _inputProvider.GetInput(_tankCollectionView.CameraProjection);
             input.Tick = _gameClientFacade.CurrentSnapshot.Tick;
             _gameClientFacade.Update(input);
             var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.CurrentSnapshot);

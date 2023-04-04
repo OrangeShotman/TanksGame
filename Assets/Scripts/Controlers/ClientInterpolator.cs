@@ -5,7 +5,7 @@ namespace OrangeShotStudio.TanksGame
 {
     public class ClientInterpolator
     {
-        private Interpolator _interpolator;
+        private  Interpolator _interpolator;
         private Interpolator _interpolatorOfOtherWorld;
 
         public ClientInterpolator(GameDataFactory gameDataFactory)
@@ -17,10 +17,10 @@ namespace OrangeShotStudio.TanksGame
         public GameData Interpolate(GameData gameData)
         {
             _interpolator.UpdateNextState(gameData, gameData.Tick);
-            // _interpolatorOfOtherWorld.UpdateNextState(gameData, gameData.ServerTick);
+            _interpolatorOfOtherWorld.UpdateNextState(gameData, gameData.ServerTick);
             var interpolatedData = _interpolator.Interpolate();
-            // var otherWorldInterpolation = _interpolatorOfOtherWorld.Interpolate();
-            // otherWorldInterpolation.MergeWithPredicted(interpolatedData);
+            var otherWorldInterpolation = _interpolatorOfOtherWorld.Interpolate();
+            otherWorldInterpolation.MergeWithPredicted(interpolatedData);
             return interpolatedData;
         }
 

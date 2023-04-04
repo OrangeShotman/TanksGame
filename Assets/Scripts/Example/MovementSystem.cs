@@ -1,41 +1,38 @@
-using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
+using OrangeShotStudio.TanksGame.View;
 using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
     public class MovementSystem : BaseSystem<GameData>
     {
-        private readonly IInputStorage<GameData> _inputStorage;
+        private readonly CollectionUpdater<PhysicsObjectWrapper> _collectionUpdater;
 
-        public MovementSystem(IInputStorage<GameData> inputStorage)
+        public MovementSystem(CollectionUpdater<PhysicsObjectWrapper> collectionUpdater)
         {
-            _inputStorage = inputStorage;
+            _collectionUpdater = collectionUpdater;
         }
-
         protected override void InternalUpdate(GameData data, TimeData timeData)
         {
-            var count = data.World.Player.Count;
+            var count = data.World.Movement.Count;
             for (int i = 0; i < count; i++)
             {
-                var player = data.World.Player.CmpAt(i);
-                player.InputIsAcknowledged = _inputStorage.TryGetInput(player.UserId, data.Tick, out var input);
-
-                if (player.InputIsAcknowledged)
-                {
-                    var avatarEntity = data.GetAvatarEntity(player);
-                    var transform = avatarEntity.Transform;
-                    if (transform == null)
-                        transform = avatarEntity.AddTransform();
-                    if (input.Input.PlayerInput.Count < 1)
-                        continue;
-                    var motion = input.Input.PlayerInput.CmpAt(0).Movement.normalized * 5 *
-                                 (float)timeData.DeltaTimeMs * 0.001f;
-                    transform.Position += new Vector3(motion.x, 0, motion.y);
-                    var testObjectPredicted = avatarEntity.AddTransformPredicted();
-                    data.World.CopyTransformPredicted(testObjectPredicted, transform);
-                }
+                var motionComponent = data.World.Movement.CmpAt(i);
+                var id = data.World.Movement.IdAt(i);
+                var avatarEntity = data.World[id];
+                var transform = avatarEntity.Transform;
+                var movement = motionComponent.Movement;
+                if (movement != Vector2.zero)
+                    movement = movement.normalized;
+                var motion = movement.normalized * 5 *
+                             (float)timeData.DeltaTimeMs * 0.001f;
+                if (movement != Vector2.zero)
+                    transform.Forward = movement;
+                var physicsObjectWrapper = _collectionUpdater.GetById(id);
+                transform.Position = physicsObjectWrapper.Move(new Vector3(motion.x, 0, motion.y));
+                var transformPredicted = avatarEntity.AddTransformPredicted();
+                data.World.CopyTransformPredicted(transformPredicted, transform);
             }
         }
     }

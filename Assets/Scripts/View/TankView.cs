@@ -17,11 +17,11 @@ namespace OrangeShotStudio.TanksGame.View
         public void Update(Transform transform)
         {
             var tankTransform = Tank.transform;
-            if(tankTransform.position == transform.Position)
+            if (tankTransform.position == transform.Position)
                 return;
-            var forward = transform.Position - tankTransform.position;
             tankTransform.position = transform.Position;
-            tankTransform.forward = forward;
+            if (transform.Forward != Vector2.zero)
+                tankTransform.forward = new Vector3(transform.Forward.x, 0, transform.Forward.y);
         }
 
         public void Dispose()

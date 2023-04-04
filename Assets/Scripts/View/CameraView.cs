@@ -8,6 +8,14 @@ namespace OrangeShotStudio.TanksGame.View
     {
         private readonly CinemachineVirtualCamera _virtualCamera;
 
+        public Vector2 CameraForwardProjection
+        {
+            get
+            {
+                var projection = Vector3.ProjectOnPlane(_virtualCamera.transform.forward, Vector3.up);
+                return new Vector2(projection.x, projection.z);
+            }
+        }
         public CameraView(IPrefabProvider prefabProvider)
         {
             var cameraPrefab = prefabProvider.GetPrefab("Camera");

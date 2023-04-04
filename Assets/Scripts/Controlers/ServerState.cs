@@ -11,9 +11,14 @@ namespace OrangeShotStudio.TanksGame
 {
     public class ServerState : BaseGameState
     {
+        private readonly IPrefabProvider _prefabProvider;
         private InputStorageFactory _inputStorageFactory;
         private ServerFacade<GameData> _serverFacade;
 
+        public ServerState(IPrefabProvider prefabProvider)
+        {
+            _prefabProvider = prefabProvider;
+        }
         public override void Initialize()
         {
             var logger = new UnityLogger();
@@ -22,9 +27,9 @@ namespace OrangeShotStudio.TanksGame
             var gameSnapshotFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameSnapshotFactory);
             var playerHandlerSystem = new PlayerHandlerSystem(logger);
-            var settings = new GameServerSettings(3239, 5000, 20, 5, ConnectionType.Pixockets);
+            var settings = new GameServerSettings(3239, 5000, 10, 8, ConnectionType.WebSockets);
             _serverFacade = ServerFacadeFactory.CreateServer(gameSnapshotFactory,
-                new ServerGameLogicFactory(playerHandlerSystem),
+                new ServerGameLogicFactory(playerHandlerSystem, _prefabProvider),
                 playerHandlerSystem, logger, settings);
         }
 
@@ -51,7 +56,7 @@ namespace OrangeShotStudio.TanksGame
 
         public IGameState CreateServerState()
         {
-            return new ServerState();
+            return new ServerState(_prefabProvider);
         }
     }
 }

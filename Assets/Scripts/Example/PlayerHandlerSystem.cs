@@ -70,6 +70,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             avatarComponent.OwnerUserId = player.UserId;
             var transform = avatarEntity.AddTransform();
             transform.Position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+            var physicsObject = avatarEntity.AddPhysicsObject();
+            physicsObject.BodyType = PhysicsBodyType.PlayerBody;
         }
 
         void IPlayerHandler.OnPlayerAdd(int userId)

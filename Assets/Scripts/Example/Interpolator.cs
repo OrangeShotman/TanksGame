@@ -18,12 +18,12 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 
         public void UpdateNextState(GameData currentState, int tick)
         {
-            if(currentState == null)
+            if (currentState == null)
                 return;
-            if(_nextSample.Tick >= tick)
+            if (_nextSample.Tick >= tick)
                 return;
             (_baseSample, _nextSample) = (_nextSample, _baseSample);
-            _nextSample.SetSample(currentState, tick);
+            _nextSample.SetSample(currentState, tick, (int)(1000 / 20f));
             _delta = _nextSample.SampleTime - _baseSample.SampleTime;
         }
 
@@ -39,25 +39,6 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         {
             _baseSample.GameData.Dispose();
             _nextSample.GameData.Dispose();
-        }
-
-        private class GameSnapshotSample
-        {
-            public GameData GameData { get; private set; }
-            public int SampleTime { get; private set; }
-            public int Tick { get; private set; }
-
-            public GameSnapshotSample(GameData gameData)
-            {
-                GameData = gameData;
-            }
-
-            public void SetSample(GameData gameData, int tick)
-            {
-                gameData.CopyTo(GameData);
-                SampleTime = Environment.TickCount;
-                Tick = tick;
-            }
         }
     }
 }

@@ -110,6 +110,215 @@ namespace Common.World
             return !(a == b);
         }
     }
+    // DO NOT EDIT - generated from Generator/EC/World/MovementComponent.cs
+    public sealed class MovementComponent : IComponent
+    {
+        public Vector2 Movement;
+        public void Reset()
+        {
+            Movement = default(Vector2);
+        }
+        public static bool DifferForPack(MovementComponent c1, MovementComponent c2)
+        {
+            bool null1, null2;
+            if (c1.Movement.x != c2.Movement.x || c1.Movement.y != c2.Movement.y) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is MovementComponent && (MovementComponent) obj == this;
+        }
+        public static void CopyMovement(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromMovement2 = fromEntity.Movement;
+            if (fromMovement2 == null)
+            {
+                to[id].DelMovement();
+                return;
+            }
+            var toMovement1 = toEntity.Movement;
+            if (toMovement1 == null)
+            {
+                toMovement1 = to[id].AddMovement();
+            }
+            toMovement1.Movement = fromMovement2.Movement;
+        }
+        public static void CopyMovementPassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromMovement2 = fromEntity.Movement;
+            if (fromMovement2 == null)
+            {
+                return;
+            }
+            var toMovement1 = toEntity.Movement;
+            if (toMovement1 == null)
+            {
+                return;
+            }
+            toMovement1.Movement = fromMovement2.Movement;
+        }
+        public static bool operator ==(MovementComponent a, MovementComponent b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (Math.Abs(a.Movement.x - b.Movement.x) > 0.01f || Math.Abs(a.Movement.y - b.Movement.y) > 0.01f)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(MovementComponent a, MovementComponent b)
+        {
+            return !(a == b);
+        }
+    }
+    // DO NOT EDIT - generated from Generator/EC/World/PhysicsObject.cs
+    public sealed class PhysicsObject : IComponent
+    {
+        public PhysicsBodyType BodyType;
+        public Vector3 Size;
+        public void Reset()
+        {
+            BodyType = default(PhysicsBodyType);
+            Size = default(Vector3);
+        }
+        public static bool DifferForPack(PhysicsObject c1, PhysicsObject c2)
+        {
+            bool null1, null2;
+            if (c1.BodyType != c2.BodyType) return true;
+            if (c1.Size.x != c2.Size.x || c1.Size.y != c2.Size.y || c1.Size.z != c2.Size.z) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is PhysicsObject && (PhysicsObject) obj == this;
+        }
+        public static void CopyPhysicsObject(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromPhysicsObject2 = fromEntity.PhysicsObject;
+            if (fromPhysicsObject2 == null)
+            {
+                to[id].DelPhysicsObject();
+                return;
+            }
+            var toPhysicsObject1 = toEntity.PhysicsObject;
+            if (toPhysicsObject1 == null)
+            {
+                toPhysicsObject1 = to[id].AddPhysicsObject();
+            }
+            toPhysicsObject1.BodyType = fromPhysicsObject2.BodyType;
+            toPhysicsObject1.Size = fromPhysicsObject2.Size;
+        }
+        public static void CopyPhysicsObjectPassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromPhysicsObject2 = fromEntity.PhysicsObject;
+            if (fromPhysicsObject2 == null)
+            {
+                return;
+            }
+            var toPhysicsObject1 = toEntity.PhysicsObject;
+            if (toPhysicsObject1 == null)
+            {
+                return;
+            }
+            toPhysicsObject1.BodyType = fromPhysicsObject2.BodyType;
+            toPhysicsObject1.Size = fromPhysicsObject2.Size;
+        }
+        public static bool operator ==(PhysicsObject a, PhysicsObject b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (a.BodyType != b.BodyType)
+            {
+                return false;
+            }
+            if (Math.Abs(a.Size.x - b.Size.x) > 0.01f || Math.Abs(a.Size.y - b.Size.y) > 0.01f || Math.Abs(a.Size.z - b.Size.z) > 0.01f)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(PhysicsObject a, PhysicsObject b)
+        {
+            return !(a == b);
+        }
+    }
     // DO NOT EDIT - generated from Generator/EC/World/Player.cs
     public sealed class Player : IComponent
     {
@@ -222,14 +431,17 @@ namespace Common.World
     // DO NOT EDIT - generated from Generator/EC/World/Transform.cs
     public sealed class Transform : IComponent
     {
+        public Vector2 Forward;
         public Vector3 Position;
         public void Reset()
         {
+            Forward = default(Vector2);
             Position = default(Vector3);
         }
         public static bool DifferForPack(Transform c1, Transform c2)
         {
             bool null1, null2;
+            if (c1.Forward.x != c2.Forward.x || c1.Forward.y != c2.Forward.y) return true;
             if (c1.Position.x != c2.Position.x || c1.Position.y != c2.Position.y || c1.Position.z != c2.Position.z) return true;
             return false;
         }
@@ -267,6 +479,7 @@ namespace Common.World
             {
                 toTransform1 = to[id].AddTransform();
             }
+            toTransform1.Forward = fromTransform2.Forward;
             toTransform1.Position = fromTransform2.Position;
         }
         public static void CopyTransformPassive(TableSet from, TableSet to, uint id)
@@ -291,6 +504,7 @@ namespace Common.World
             {
                 return;
             }
+            toTransform1.Forward = fromTransform2.Forward;
             toTransform1.Position = fromTransform2.Position;
         }
         public static bool operator ==(Transform a, Transform b)
@@ -308,6 +522,10 @@ namespace Common.World
                 return false;
             }
             bool aFieldIsNull, bFieldIsNull;
+            if (Math.Abs(a.Forward.x - b.Forward.x) > 0.01f || Math.Abs(a.Forward.y - b.Forward.y) > 0.01f)
+            {
+                return false;
+            }
             if (Math.Abs(a.Position.x - b.Position.x) > 0.01f || Math.Abs(a.Position.y - b.Position.y) > 0.01f || Math.Abs(a.Position.z - b.Position.z) > 0.01f)
             {
                 return false;
@@ -329,6 +547,8 @@ namespace Common.World
             public Pool<Entity> Entity = new Pool<Entity>();
             public uint[] EntityUseCount = new uint[1024];
             public Pool<Avatar> Avatar = new Pool<Avatar>();
+            public Pool<MovementComponent> MovementComponent = new Pool<MovementComponent>();
+            public Pool<PhysicsObject> PhysicsObject = new Pool<PhysicsObject>();
             public Pool<Player> Player = new Pool<Player>();
             public Pool<Transform> Transform = new Pool<Transform>();
             public Pools()
@@ -344,6 +564,7 @@ namespace Common.World
             {
                 public int Entities;
                 public int Avatar;
+                public int PhysicsObject;
                 public int Player;
                 public int Transform;
             }
@@ -394,6 +615,26 @@ namespace Common.World
                     }
                 }
                 stats.Avatar += p.BitCount;
+                stats.PhysicsObject = -p.BitCount;
+                if (ts.PhysicsObject.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.PhysicsObject.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.PhysicsObject.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackUInt32((uint)c.BodyType, 1);
+                        p.PackVector3(c.Size);
+                    }
+                }
+                stats.PhysicsObject += p.BitCount;
                 stats.Player = -p.BitCount;
                 if (ts.Player.Count == 0)
                 {
@@ -429,6 +670,7 @@ namespace Common.World
                         var kv = ts.Transform.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackVector2(c.Forward);
                         p.PackVector3(c.Position);
                     }
                 }
@@ -477,6 +719,26 @@ namespace Common.World
                     }
                 }
                 stats.Avatar += p.BitCount;
+                stats.PhysicsObject = -p.BitCount;
+                if (ts.PhysicsObject.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.PhysicsObject.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.PhysicsObject.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackUInt32((uint)c.BodyType, 1);
+                        p.PackVector3(c.Size);
+                    }
+                }
+                stats.PhysicsObject += p.BitCount;
                 stats.Player = -p.BitCount;
                 if (ts.Player.Count == 0)
                 {
@@ -512,6 +774,7 @@ namespace Common.World
                         var kv = ts.Transform.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackVector2(c.Forward);
                         p.PackVector3(c.Position);
                     }
                 }
@@ -551,6 +814,25 @@ namespace Common.World
                         c.OwnerUserId = p.UnpackSInt32();
                     }
                 }
+                ts.Movement.Clear();
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts.PhysicsObject.Clear();
+                }
+                else
+                {
+                    count = (int)p.UnpackUInt32(entityIndexBits);
+                    ts.PhysicsObject.DestructiveResize(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
+                        int id2index;
+                        bool isDefault;
+                        var c = ts.PhysicsObject.SetAtIndex(i, id);
+                        c.BodyType = (PhysicsBodyType)p.UnpackUInt32(1);
+                        c.Size = p.UnpackVector3();
+                    }
+                }
                 if (p.UnpackByte(1) == 0)
                 {
                     ts.Player.Clear();
@@ -583,6 +865,7 @@ namespace Common.World
                         int id2index;
                         bool isDefault;
                         var c = ts.Transform.SetAtIndex(i, id);
+                        c.Forward = p.UnpackVector2();
                         c.Position = p.UnpackVector3();
                     }
                 }
@@ -655,6 +938,9 @@ namespace Common.World
                 stats.Avatar = -p.BitCount;
                 PackDiffAvatar(ts1, ts2, p);
                 stats.Avatar += p.BitCount;
+                stats.PhysicsObject = -p.BitCount;
+                PackDiffPhysicsObject(ts1, ts2, p);
+                stats.PhysicsObject += p.BitCount;
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
@@ -725,6 +1011,9 @@ namespace Common.World
                 stats.Avatar = -p.BitCount;
                 PackDiffAvatar(ts1, ts2, p);
                 stats.Avatar += p.BitCount;
+                stats.PhysicsObject = -p.BitCount;
+                PackDiffPhysicsObject(ts1, ts2, p);
+                stats.PhysicsObject += p.BitCount;
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
@@ -781,6 +1070,8 @@ namespace Common.World
                 }
                 for (int i = 0; i < ts2._entityCount; i++) ts2._entityData[i].Id = ts2._entityIds[i];
                 UnpackDiffAvatar(ts1, ts2, p);
+                ts2.Movement.Clear();
+                UnpackDiffPhysicsObject(ts1, ts2, p);
                 UnpackDiffPlayer(ts1, ts2, p);
                 UnpackDiffTransform(ts1, ts2, p);
                 ts2.TransformPredicted.Clear();
@@ -813,6 +1104,11 @@ namespace Common.World
             {
                 p.PackSInt32(c.OwnerUserId);
             }
+            private void PackPhysicsObject(TableSet ts, PhysicsObject c, BitPacker p)
+            {
+                p.PackUInt32((uint)c.BodyType, 1);
+                p.PackVector3(c.Size);
+            }
             private void PackPlayer(TableSet ts, Player c, BitPacker p)
             {
                 p.PackBool(c.InputIsAcknowledged);
@@ -820,6 +1116,7 @@ namespace Common.World
             }
             private void PackTransform(TableSet ts, Transform c, BitPacker p)
             {
+                p.PackVector2(c.Forward);
                 p.PackVector3(c.Position);
             }
             private void PackDiffAvatar(TableSet ts1, TableSet ts2, BitPacker p)
@@ -941,6 +1238,130 @@ namespace Common.World
                     {
                         var cur = ts2.Avatar.CmpAt(idx2);
                         PackAvatar(ts2, cur, p);
+                        idx2++;
+                        iadd++;
+                    }
+                }
+            }
+            private void PackDiffPhysicsObject(TableSet ts1, TableSet ts2, BitPacker p)
+            {
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                var count1 = ts1.PhysicsObject.Count;
+                var count2 = ts2.PhysicsObject.Count;
+                {
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var t1end = count1 == 0;
+                    var t2end = count2 == 0;
+                    while (!t1end && !t2end)
+                    {
+                        var kv1 = ts1.PhysicsObject.At(idx1);
+                        var kv2 = ts2.PhysicsObject.At(idx2);
+                        if (kv1.Key == kv2.Key)
+                        {
+                            if (Common.World.PhysicsObject.DifferForPack(kv1.Value, kv2.Value))
+                            {
+                                _updIndices.Add(idx1);
+                            }
+                            idx1++; t1end = idx1 >= count1;
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else if (kv1.Key > kv2.Key)
+                        {
+                            _addIds.Add(kv2.Key);
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else
+                        {
+                            _delIndices.Add(idx1);
+                            idx1++; t1end = idx1 >= count1;
+                        }
+                    }
+                    while (!t1end)
+                    {
+                        _delIndices.Add(idx1);
+                        idx1++; t1end = idx1 >= count1;
+                    }
+                    while (!t2end)
+                    {
+                        _addIds.Add(ts2.PhysicsObject.IdAt(idx2));
+                        idx2++; t2end = idx2 >= count2;
+                    }
+                }
+                if (_delIndices.Count + _addIds.Count + _updIndices.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                    return;
+                }
+                p.PackByte(1, 1);
+                if (_delIndices.Count + _addIds.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    p.PackUInt32((uint)_delIndices.Count, _entityBits);
+                    p.PackUInt32((uint)_addIds.Count, _entityBits);
+                }
+                p.PackUInt32((uint)_updIndices.Count, _entityBits);
+                var ts2Count = ts2.PhysicsObject.Count;
+                if (ts2Count == 0) return;
+                for (int i = 0; i < _delIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_delIndices[i], _entityBits);
+                }
+                for (int i = 0; i < _addIds.Count; i++)
+                {
+                    p.PackUInt32((uint)ts2._entityIds.BinarySearch(ts2._entityCount, _addIds[i]), _entityBits);
+                }
+                for (int i = 0; i < _updIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_updIndices[i], _entityBits);
+                }
+                {
+                    int iadd = 0, iupd = 0, idel = 0;
+                    int idx1 = 0, idx2 = 0;
+                    for (int i = 0; i < count1; i++)
+                    {
+                        var kv1 = ts1.PhysicsObject.At(i);
+                        while (iadd < _addIds.Count && _addIds[iadd] < kv1.Key)
+                        {
+                            var cur = ts2.PhysicsObject.CmpAt(idx2);
+                            PackPhysicsObject(ts2, cur, p);
+                            idx2++;
+                            iadd++;
+                        }
+                        if (idel < _delIndices.Count)
+                        {
+                            if (_delIndices[idel] == idx1)
+                            {
+                                idel++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        if (iupd < _updIndices.Count)
+                        {
+                            if (_updIndices[iupd] == idx1)
+                            {
+                                var cur = ts2.PhysicsObject.CmpAt(idx2);
+                                PackPhysicsObject(ts2, cur, p);
+                                idx2++;
+                                iupd++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        idx2++;
+                        idx1++;
+                    }
+                    while (iadd < _addIds.Count)
+                    {
+                        var cur = ts2.PhysicsObject.CmpAt(idx2);
+                        PackPhysicsObject(ts2, cur, p);
                         idx2++;
                         iadd++;
                     }
@@ -1200,6 +1621,13 @@ namespace Common.World
                 bool isDefault;
                 c.OwnerUserId = p.UnpackSInt32();
             }
+            private void UnpackPhysicsObject(TableSet ts, PhysicsObject c, BitUnpacker p)
+            {
+                int id2index;
+                bool isDefault;
+                c.BodyType = (PhysicsBodyType)p.UnpackUInt32(1);
+                c.Size = p.UnpackVector3();
+            }
             private void UnpackPlayer(TableSet ts, Player c, BitUnpacker p)
             {
                 int id2index;
@@ -1211,6 +1639,7 @@ namespace Common.World
             {
                 int id2index;
                 bool isDefault;
+                c.Forward = p.UnpackVector2();
                 c.Position = p.UnpackVector3();
             }
             private void UnpackDiffAvatar(TableSet ts1, TableSet ts2, BitUnpacker p)
@@ -1294,6 +1723,89 @@ namespace Common.World
                 {
                     var c = ts2.Avatar.SetAtIndex(idx2++, _addIds[iadd++]);
                     UnpackAvatar(ts2, c, p);
+                }
+            }
+            private void UnpackDiffPhysicsObject(TableSet ts1, TableSet ts2, BitUnpacker p)
+            {
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts2.CopyPhysicsObject(ts1);
+                    return;
+                }
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                int delCount = 0;
+                int addCount = 0;
+                if (p.UnpackByte(1) != 0)
+                {
+                    delCount = (int)p.UnpackUInt32(_entityBits);
+                    addCount = (int)p.UnpackUInt32(_entityBits);
+                }
+                int updCount = (int)p.UnpackUInt32(_entityBits);
+                int table2count = ts1.PhysicsObject.Count + addCount - delCount;
+                if (table2count == 0)
+                {
+                    ts2.PhysicsObject.Clear();
+                    return;
+                }
+                for (int i = 0; i < delCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _delIndices.Add(idx);
+                }
+                for (int i = 0; i < addCount; i++)
+                {
+                    uint id = ts2._entityIds[p.UnpackUInt32(_entityBits)];
+                    _addIds.Add(id);
+                }
+                for (int i = 0; i < updCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _updIndices.Add(idx);
+                }
+                ts2.PhysicsObject.DestructiveResize(table2count);
+                int iadd = 0, idel = 0, iupd = 0;
+                int idx1 = 0, idx2 = 0;
+                var count1 = ts1.PhysicsObject.Count;
+                for (var i = 0; i < count1; i++)
+                {
+                    var kv1 = ts1.PhysicsObject.At(i);
+                    while (iadd < addCount && _addIds[iadd] < kv1.Key)
+                    {
+                        var c = ts2.PhysicsObject.SetAtIndex(idx2++, _addIds[iadd++]);
+                        UnpackPhysicsObject(ts2, c, p);
+                    }
+                    if (idel < delCount)
+                    {
+                        if (_delIndices[idel] == idx1)
+                        {
+                            idel++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    if (iupd < updCount)
+                    {
+                        if (_updIndices[iupd] == idx1)
+                        {
+                            var c = ts2.PhysicsObject.SetAtIndex(idx2++, kv1.Key);
+                            UnpackPhysicsObject(ts2, c, p);
+                            iupd++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    {
+                        var c = ts2.PhysicsObject.SetAtIndex(idx2++, kv1.Key);
+                        ts2.CopyPhysicsObject(c, kv1.Value);
+                    }
+                    idx1++;
+                }
+                while (iadd < addCount)
+                {
+                    var c = ts2.PhysicsObject.SetAtIndex(idx2++, _addIds[iadd++]);
+                    UnpackPhysicsObject(ts2, c, p);
                 }
             }
             private void UnpackDiffPlayer(TableSet ts1, TableSet ts2, BitUnpacker p)
@@ -1465,6 +1977,8 @@ namespace Common.World
         }
         public uint NextId = 2;
         public Table<Avatar> Avatar;
+        public Table<MovementComponent> Movement;
+        public Table<PhysicsObject> PhysicsObject;
         public Table<Player> Player;
         public Table<Transform> Transform;
         public Table<Transform> TransformPredicted;
@@ -1476,12 +1990,15 @@ namespace Common.World
         {
             _pools = pools;
             Avatar = new Table<Avatar>(_pools.Avatar);
+            Movement = new Table<MovementComponent>(_pools.MovementComponent);
+            PhysicsObject = new Table<PhysicsObject>(_pools.PhysicsObject);
             Player = new Table<Player>(_pools.Player);
             Transform = new Table<Transform>(_pools.Transform);
             TransformPredicted = new Table<Transform>(_pools.Transform);
         }
         public void CopyTransformPredicted(Transform c1, Transform c2)
         {
+            c1.Forward = c2.Forward;
             c1.Position = c2.Position;
         }
         public void CopyAvatar(TableSet ts2)
@@ -1491,6 +2008,24 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 CopyAvatar(Avatar.CmpAt(i), ts2.Avatar.CmpAt(i));
+            }
+        }
+        public void CopyMovement(TableSet ts2)
+        {
+            Movement.CopyIds(ts2.Movement);
+            var count = Movement.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyMovement(Movement.CmpAt(i), ts2.Movement.CmpAt(i));
+            }
+        }
+        public void CopyPhysicsObject(TableSet ts2)
+        {
+            PhysicsObject.CopyIds(ts2.PhysicsObject);
+            var count = PhysicsObject.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyPhysicsObject(PhysicsObject.CmpAt(i), ts2.PhysicsObject.CmpAt(i));
             }
         }
         public void CopyPlayer(TableSet ts2)
@@ -1531,6 +2066,8 @@ namespace Common.World
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
+            CopyMovement(ts2);
+            CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
             CopyTransform(ts2);
             CopyTransformPredicted(ts2);
@@ -1546,6 +2083,8 @@ namespace Common.World
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
+            CopyMovement(ts2);
+            CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
             CopyTransform(ts2);
             ApplyTransformPredicted();
@@ -1559,6 +2098,20 @@ namespace Common.World
             for (int i = 0; i < avatarCount; i++)
             {
                 var id = Avatar.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
+            var movementCount = Movement.Count;
+            for (int i = 0; i < movementCount; i++)
+            {
+                var id = Movement.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
+            var physicsObjectCount = PhysicsObject.Count;
+            for (int i = 0; i < physicsObjectCount; i++)
+            {
+                var id = PhysicsObject.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
@@ -1602,6 +2155,8 @@ namespace Common.World
         public void Clear()
         {
             Avatar.Clear();
+            Movement.Clear();
+            PhysicsObject.Clear();
             Player.Clear();
             Transform.Clear();
             TransformPredicted.Clear();
@@ -1621,6 +2176,24 @@ namespace Common.World
             else
             {
                 destination.DelAvatar();
+            }
+            if(source.Movement != null)
+            {
+                var newComponent = destination.AddMovement();
+                CopyMovement(newComponent, source.Movement);
+            }
+            else
+            {
+                destination.DelMovement();
+            }
+            if(source.PhysicsObject != null)
+            {
+                var newComponent = destination.AddPhysicsObject();
+                CopyPhysicsObject(newComponent, source.PhysicsObject);
+            }
+            else
+            {
+                destination.DelPhysicsObject();
             }
             if(source.Player != null)
             {
@@ -1700,6 +2273,22 @@ namespace Common.World
                 Avatar.CmpAt(i).Repack();
             }
         }
+        public void RepackMovement()
+        {
+            var count = Movement.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                Movement.CmpAt(i).Repack();
+            }
+        }
+        public void RepackPhysicsObject()
+        {
+            var count = PhysicsObject.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                PhysicsObject.CmpAt(i).Repack();
+            }
+        }
         public void RepackPlayer()
         {
             var count = Player.Count;
@@ -1727,6 +2316,7 @@ namespace Common.World
         public void Repack()
         {
             RepackAvatar();
+            RepackPhysicsObject();
             RepackPlayer();
             RepackTransform();
         }
@@ -1742,6 +2332,23 @@ namespace Common.World
                 var c = Avatar.CmpAt(i);
                 var c1 = ts1.Avatar.CmpAt(i);
                 c.OwnerUserId = c1.OwnerUserId;
+            }
+            Movement.CopyIds(ts1.Movement);
+            int movementCount = Movement.Count;
+            for (int i = 0; i < movementCount; ++i)
+            {
+                var c = Movement.CmpAt(i);
+                var c1 = ts1.Movement.CmpAt(i);
+                c.Movement = c1.Movement;
+            }
+            PhysicsObject.CopyIds(ts1.PhysicsObject);
+            int physicsObjectCount = PhysicsObject.Count;
+            for (int i = 0; i < physicsObjectCount; ++i)
+            {
+                var c = PhysicsObject.CmpAt(i);
+                var c1 = ts1.PhysicsObject.CmpAt(i);
+                c.BodyType = c1.BodyType;
+                c.Size = c1.Size;
             }
             Player.CopyIds(ts1.Player);
             int playerCount = Player.Count;
@@ -1760,6 +2367,8 @@ namespace Common.World
                 var c1 = ts1.Transform.CmpAt(i);
                 var cId = Transform.IdAt(i);
                 var c2 = ts2.Transform[cId];
+                if (c2 != null) c.Forward = Vector2.LerpUnclamped(c1.Forward, c2.Forward, normalizedTime);
+                else c.Forward = c1.Forward;
                 if (c2 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c1.Position;
             }
@@ -1771,6 +2380,8 @@ namespace Common.World
                 var c1 = ts1.TransformPredicted.CmpAt(i);
                 var cId = TransformPredicted.IdAt(i);
                 var c2 = ts2.TransformPredicted[cId];
+                if (c2 != null) c.Forward = Vector2.LerpUnclamped(c1.Forward, c2.Forward, normalizedTime);
+                else c.Forward = c1.Forward;
                 if (c2 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c1.Position;
             }
@@ -1787,6 +2398,23 @@ namespace Common.World
                 var c = Avatar.CmpAt(i);
                 var c2 = ts2.Avatar.CmpAt(i);
                 c.OwnerUserId = c2.OwnerUserId;
+            }
+            Movement.CopyIds(ts2.Movement);
+            int movementCount = Movement.Count;
+            for (int i = 0; i < movementCount; ++i)
+            {
+                var c = Movement.CmpAt(i);
+                var c2 = ts2.Movement.CmpAt(i);
+                c.Movement = c2.Movement;
+            }
+            PhysicsObject.CopyIds(ts2.PhysicsObject);
+            int physicsObjectCount = PhysicsObject.Count;
+            for (int i = 0; i < physicsObjectCount; ++i)
+            {
+                var c = PhysicsObject.CmpAt(i);
+                var c2 = ts2.PhysicsObject.CmpAt(i);
+                c.BodyType = c2.BodyType;
+                c.Size = c2.Size;
             }
             Player.CopyIds(ts2.Player);
             int playerCount = Player.Count;
@@ -1805,6 +2433,8 @@ namespace Common.World
                 var c2 = ts2.Transform.CmpAt(i);
                 var cId = Transform.IdAt(i);
                 var c1 = ts1.Transform[cId];
+                if (c1 != null) c.Forward = Vector2.LerpUnclamped(c1.Forward, c2.Forward, normalizedTime);
+                else c.Forward = c2.Forward;
                 if (c1 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c2.Position;
             }
@@ -1816,6 +2446,8 @@ namespace Common.World
                 var c2 = ts2.TransformPredicted.CmpAt(i);
                 var cId = TransformPredicted.IdAt(i);
                 var c1 = ts1.TransformPredicted[cId];
+                if (c1 != null) c.Forward = Vector2.LerpUnclamped(c1.Forward, c2.Forward, normalizedTime);
+                else c.Forward = c2.Forward;
                 if (c1 != null) c.Position = Vector3.LerpUnclamped(c1.Position, c2.Position, normalizedTime);
                 else c.Position = c2.Position;
             }
@@ -1840,6 +2472,15 @@ namespace Common.World
         {
             c1.OwnerUserId = c2.OwnerUserId;
         }
+        private void CopyMovement(MovementComponent c1, MovementComponent c2)
+        {
+            c1.Movement = c2.Movement;
+        }
+        private void CopyPhysicsObject(PhysicsObject c1, PhysicsObject c2)
+        {
+            c1.BodyType = c2.BodyType;
+            c1.Size = c2.Size;
+        }
         private void CopyPlayer(Player c1, Player c2)
         {
             c1.InputIsAcknowledged = c2.InputIsAcknowledged;
@@ -1847,6 +2488,7 @@ namespace Common.World
         }
         private void CopyTransform(Transform c1, Transform c2)
         {
+            c1.Forward = c2.Forward;
             c1.Position = c2.Position;
         }
         private void ApplyTransformPredicted()
@@ -1893,6 +2535,14 @@ namespace Common.World
         {
             get { return TableSet.Avatar[Id]; }
         }
+        public MovementComponent Movement
+        {
+            get { return TableSet.Movement[Id]; }
+        }
+        public PhysicsObject PhysicsObject
+        {
+            get { return TableSet.PhysicsObject[Id]; }
+        }
         public Player Player
         {
             get { return TableSet.Player[Id]; }
@@ -1912,6 +2562,22 @@ namespace Common.World
         public void DelAvatar()
         {
             TableSet.Avatar.Delete(Id);
+        }
+        public MovementComponent AddMovement()
+        {
+            return TableSet.Movement.Insert(Id);
+        }
+        public void DelMovement()
+        {
+            TableSet.Movement.Delete(Id);
+        }
+        public PhysicsObject AddPhysicsObject()
+        {
+            return TableSet.PhysicsObject.Insert(Id);
+        }
+        public void DelPhysicsObject()
+        {
+            TableSet.PhysicsObject.Delete(Id);
         }
         public Player AddPlayer()
         {
@@ -1940,6 +2606,8 @@ namespace Common.World
         public void DeleteAll()
         {
             DelAvatar();
+            DelMovement();
+            DelPhysicsObject();
             DelPlayer();
             DelTransform();
             DelTransformPredicted();
