@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
@@ -10,11 +9,11 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         private GameData _interpolatedSample;
         private int _delta;
 
-        public Interpolator(GameData baseSample, GameData nextSample, GameData interpolatedSample)
+        public Interpolator(GameDataFactory gameDataFactory)
         {
-            _interpolatedSample = interpolatedSample;
-            _baseSample = new GameSnapshotSample(baseSample);
-            _nextSample = new GameSnapshotSample(nextSample);
+            _interpolatedSample = gameDataFactory.CreateMessage();
+            _baseSample = new GameSnapshotSample(gameDataFactory.CreateMessage());
+            _nextSample = new GameSnapshotSample(gameDataFactory.CreateMessage());
         }
 
         public void UpdateNextState(GameData currentState, int tick)
@@ -30,10 +29,16 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 
         public GameData Interpolate()
         {
-            var normalizedValue = Mathf.Clamp01((Environment.TickCount - _nextSample.SampleTime) / (float)_delta);
+            var normalizedValue = (Environment.TickCount - _nextSample.SampleTime) / (float)_delta;
             _interpolatedSample.World.Interpolate(_baseSample.GameData.World, _nextSample.GameData.World,
                 normalizedValue);
             return _interpolatedSample;
+        }
+
+        public void Dispose()
+        {
+            _baseSample.GameData.Dispose();
+            _nextSample.GameData.Dispose();
         }
 
         private class GameSnapshotSample

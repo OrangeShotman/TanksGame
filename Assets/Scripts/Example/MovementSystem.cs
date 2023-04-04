@@ -28,9 +28,10 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     var transform = avatarEntity.Transform;
                     if (transform == null)
                         transform = avatarEntity.AddTransform();
-                    if(input.Input.PlayerInput.Count < 1)
+                    if (input.Input.PlayerInput.Count < 1)
                         continue;
-                    var motion = input.Input.PlayerInput.CmpAt(0).Movement * 5 * (float)timeData.DeltaTimeMs * 0.001f;
+                    var motion = input.Input.PlayerInput.CmpAt(0).Movement.normalized * 5 *
+                                 (float)timeData.DeltaTimeMs * 0.001f;
                     transform.Position += new Vector3(motion.x, 0, motion.y);
                     var testObjectPredicted = avatarEntity.AddTransformPredicted();
                     data.World.CopyTransformPredicted(testObjectPredicted, transform);

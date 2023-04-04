@@ -6,17 +6,17 @@ namespace OrangeShotStudio.TanksGame.View
 {
     public class TankView
     {
-        private TankBehaviour _tank;
+        public readonly TankBehaviour Tank;
 
         public TankView(IPrefabProvider prefabProvider)
         {
             var tankPrefab = prefabProvider.GetPrefab("Tank");
-            _tank = Object.Instantiate(tankPrefab).GetComponent<TankBehaviour>();
+            Tank = Object.Instantiate(tankPrefab).GetComponent<TankBehaviour>();
         }
 
         public void Update(Transform transform)
         {
-            var tankTransform = _tank.transform;
+            var tankTransform = Tank.transform;
             if(tankTransform.position == transform.Position)
                 return;
             var forward = transform.Position - tankTransform.position;
@@ -26,7 +26,7 @@ namespace OrangeShotStudio.TanksGame.View
 
         public void Dispose()
         {
-            Object.Destroy(_tank.gameObject);
+            Object.Destroy(Tank.gameObject);
         }
     }
 }

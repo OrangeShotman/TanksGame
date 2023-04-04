@@ -20,11 +20,12 @@ namespace OrangeShotStudio.TanksGame
         private ClientGameFacade<GameData> _gameClientFacade;
         private InputStorageFactory _inputStorageFactory;
         private InputProvider _inputProvider;
+        private ClientInterpolator _clientInterpolator;
 
         public ClientGameplayState(IPrefabProvider prefabProvider, InterfaceView interfaceView,
             ClientTanksGameStateFactory factory, int userId)
         {
-            _tankCollectionView = new TankCollectionView(prefabProvider);
+            _tankCollectionView = new TankCollectionView(prefabProvider, userId);
             _interfaceView = interfaceView;
             _factory = factory;
             _userId = userId;
@@ -43,14 +44,17 @@ namespace OrangeShotStudio.TanksGame
                 new ClientGameLogicFactory(), new MisPredictionChecker(_userId), _inputStorageFactory,
                 new UnityLogger());
             _inputProvider = new InputProvider(gameDataFactory);
+            _clientInterpolator = new ClientInterpolator(gameDataFactory);
         }
 
         public override void Update(TimeData timeData)
         {
+            
             var input = _inputProvider.GetInput();
             input.Tick = _gameClientFacade.CurrentSnapshot.Tick;
             _gameClientFacade.Update(input);
-            _tankCollectionView.Update(_gameClientFacade.CurrentSnapshot);
+            var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.CurrentSnapshot);
+            _tankCollectionView.Update(interpolated);
         }
 
         public override void OnQuit()
@@ -59,6 +63,7 @@ namespace OrangeShotStudio.TanksGame
             _inputStorageFactory.Dispose();
             _inputProvider.Dispose();
             _tankCollectionView.Dispose();
+            _clientInterpolator.Dispose();
         }
     }
 

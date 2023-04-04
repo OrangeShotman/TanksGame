@@ -19,4 +19,7 @@ MonoBehaviour:
   - Id: Tank
     Prefab: {fileID: 8149625696214092756, guid: 3d80ecbcdc1eb4a6f8b5bd4c3c5d2e67,
       type: 3}
+  - Id: Camera
+    Prefab: {fileID: 9008028638378815057, guid: 5a7c8d5507cac4651b81b111f58245d3,
+      type: 3}
   Canvas: {fileID: 5252347036567315106, guid: 8ce8c509d27954dec86cbdcb55f879de, type: 3}

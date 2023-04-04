@@ -6,13 +6,17 @@ namespace OrangeShotStudio.TanksGame.View
 {
     public class TankCollectionView : IUpdateImplementer<TankView>
     {
+        private readonly int _userId;
+        private readonly CameraView _cameraView;
         private CollectionUpdater<TankView> _collectionUpdater = new CollectionUpdater<TankView>();
         private GameData _gameData;
         private IPrefabProvider _prefabProvider;
 
-        public TankCollectionView(IPrefabProvider prefabProvider)
+        public TankCollectionView(IPrefabProvider prefabProvider, int userId)
         {
             _prefabProvider = prefabProvider;
+            _userId = userId;
+            _cameraView = new CameraView(prefabProvider);
         }
 
         public void Update(GameData gameData)
@@ -23,6 +27,7 @@ namespace OrangeShotStudio.TanksGame.View
 
         public void Dispose()
         {
+            _cameraView.Dispose();
             _collectionUpdater.Dispose(this);
         }
 
@@ -33,10 +38,14 @@ namespace OrangeShotStudio.TanksGame.View
 
         CreationResult<TankView> IUpdateImplementer<TankView>.Factory(uint entityId, int entityIndex)
         {
+            var tank = new TankView(_prefabProvider);
+            var avatar = _gameData.World.Avatar[entityId];
+            if (avatar.OwnerUserId == _userId)
+                _cameraView.SetTarget(tank.Tank.transform);
             return new CreationResult<TankView>()
             {
                 IsCreated = true,
-                Result = new TankView(_prefabProvider)
+                Result = tank
             };
         }
 
