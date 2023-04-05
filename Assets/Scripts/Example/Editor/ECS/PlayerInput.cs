@@ -7,5 +7,6 @@ namespace OrangeShotStudio.Multiplayer.Ecs
     public class PlayerInput
     {
         public Vector2 Movement;
+        public bool Shot;
     }
 }

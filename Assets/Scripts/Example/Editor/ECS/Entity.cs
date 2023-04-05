@@ -21,5 +21,7 @@ namespace OrangeShotStudio.Multiplayer.Ecs.World
         public PhysicsObject PhysicsObject;
         public Player Player;
         public Avatar Avatar;
+        public Projectile Projectile;
+        public Gun Gun;
     }
 }

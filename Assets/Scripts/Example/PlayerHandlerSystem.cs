@@ -72,6 +72,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             transform.Position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
             var physicsObject = avatarEntity.AddPhysicsObject();
             physicsObject.BodyType = PhysicsBodyType.PlayerBody;
+            var gun = avatarEntity.AddGun();
+            gun.CooldownDuration = 10;
         }
 
         void IPlayerHandler.OnPlayerAdd(int userId)

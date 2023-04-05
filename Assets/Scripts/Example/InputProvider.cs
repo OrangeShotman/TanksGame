@@ -27,6 +27,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 _input.Input.CreateEntity().AddPlayerInput();
             var playerInput = _input.Input.PlayerInput.CmpAt(0);
             playerInput.Movement = input;
+            playerInput.Shot = Input.GetKey(KeyCode.Space);
             return _input;
         }
 

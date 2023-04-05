@@ -7,32 +7,30 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 {
     public class MovementSystem : BaseSystem<GameData>
     {
-        private readonly CollectionUpdater<PhysicsObjectWrapper> _collectionUpdater;
+        private readonly CollectionUpdater<PhysicsObjectWrapper> _physicsObjects;
 
-        public MovementSystem(CollectionUpdater<PhysicsObjectWrapper> collectionUpdater)
+        public MovementSystem(CollectionUpdater<PhysicsObjectWrapper> physicsObjects)
         {
-            _collectionUpdater = collectionUpdater;
+            _physicsObjects = physicsObjects;
         }
+
         protected override void InternalUpdate(GameData data, TimeData timeData)
         {
             var count = data.World.Movement.Count;
             for (int i = 0; i < count; i++)
             {
-                var motionComponent = data.World.Movement.CmpAt(i);
+                var movementComponent = data.World.Movement.CmpAt(i);
                 var id = data.World.Movement.IdAt(i);
-                var avatarEntity = data.World[id];
-                var transform = avatarEntity.Transform;
-                var movement = motionComponent.Movement;
+                var entity = data.World[id];
+                var transform = entity.Transform;
+                var movement = movementComponent.Movement;
                 if (movement != Vector2.zero)
-                    movement = movement.normalized;
-                var motion = movement.normalized * 5 *
-                             (float)timeData.DeltaTimeMs * 0.001f;
-                if (movement != Vector2.zero)
-                    transform.Forward = movement;
-                var physicsObjectWrapper = _collectionUpdater.GetById(id);
-                transform.Position = physicsObjectWrapper.Move(new Vector3(motion.x, 0, motion.y));
-                var transformPredicted = avatarEntity.AddTransformPredicted();
-                data.World.CopyTransformPredicted(transformPredicted, transform);
+                    transform.Forward = movement.normalized;
+                var physicsObjectWrapper = _physicsObjects.GetById(id);
+                if (physicsObjectWrapper != null)
+                    transform.Position = physicsObjectWrapper.Move(new Vector3(movement.x, 0, movement.y));
+                else
+                    transform.Position += new Vector3(movement.x, 0, movement.y);
             }
         }
     }

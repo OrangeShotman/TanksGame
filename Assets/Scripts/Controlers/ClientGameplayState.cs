@@ -1,4 +1,3 @@
-using Game.Tests;
 using OrangeShotStudio.TanksGame.Multiplayer;
 using OrangeShotStudio.Application;
 using OrangeShotStudio.DB.Application;
@@ -22,11 +21,13 @@ namespace OrangeShotStudio.TanksGame
         private InputStorageFactory _inputStorageFactory;
         private InputProvider _inputProvider;
         private ClientInterpolator _clientInterpolator;
+        private ProjectileCollectionView _projectileCollectionView;
 
         public ClientGameplayState(IPrefabProvider prefabProvider, InterfaceView interfaceView,
             ClientTanksGameStateFactory factory, int userId)
         {
             _tankCollectionView = new TankCollectionView(prefabProvider, userId);
+            _projectileCollectionView = new ProjectileCollectionView(prefabProvider);
             _prefabProvider = prefabProvider;
             _interfaceView = interfaceView;
             _factory = factory;
@@ -40,11 +41,11 @@ namespace OrangeShotStudio.TanksGame
             var gameDataFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var settings = new GameClientSettings(
-                _userId, "127.0.0.1", 3239, 5000, ConnectionType.WebSockets,
-                GameClientSettings.GameClientUpdateType.InCoroutine, 10, 3);
+                _userId, "127.0.0.1", 3239, 5000, ConnectionType.FakeLocalConnection,
+                GameClientSettings.GameClientUpdateType.InThread, 10, 3);
             _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
-                new ClientGameLogicFactory(_prefabProvider), new MisPredictionChecker(_userId), _inputStorageFactory,
-                new UnityLogger());
+                new ClientGameLogicFactory(_prefabProvider, _userId), new MisPredictionChecker(_userId),
+                _inputStorageFactory, new UnityLogger());
             _inputProvider = new InputProvider(gameDataFactory);
             _clientInterpolator = new ClientInterpolator(gameDataFactory);
         }
@@ -56,6 +57,7 @@ namespace OrangeShotStudio.TanksGame
             _gameClientFacade.Update(input);
             var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.CurrentSnapshot);
             _tankCollectionView.Update(interpolated);
+            _projectileCollectionView.Update(interpolated);
         }
 
         public override void OnQuit()
@@ -65,6 +67,7 @@ namespace OrangeShotStudio.TanksGame
             _inputProvider.Dispose();
             _tankCollectionView.Dispose();
             _clientInterpolator.Dispose();
+            _projectileCollectionView.Dispose();
         }
     }
 
