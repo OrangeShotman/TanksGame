@@ -555,115 +555,6 @@ namespace Common.World
             return !(a == b);
         }
     }
-    // DO NOT EDIT - generated from Generator/EC/World/Projectile.cs
-    public sealed class Projectile : IComponent
-    {
-        public int DestroyTick;
-        public float Speed;
-        public void Reset()
-        {
-            DestroyTick = default(int);
-            Speed = default(float);
-        }
-        public static bool DifferForPack(Projectile c1, Projectile c2)
-        {
-            bool null1, null2;
-            if (c1.DestroyTick != c2.DestroyTick) return true;
-            if (c1.Speed != c2.Speed) return true;
-            return false;
-        }
-        public void Repack()
-        {
-        }
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        public override bool Equals(object obj)
-        {
-            return obj is Projectile && (Projectile) obj == this;
-        }
-        public static void CopyProjectile(TableSet from, TableSet to, uint id)
-        {
-            var fromEntity = from[id];
-            if (fromEntity == null)
-            {
-                return;
-            }
-            var toEntity = to[id];
-            if (toEntity == null)
-            {
-                return;
-            }
-            var fromProjectile2 = fromEntity.Projectile;
-            if (fromProjectile2 == null)
-            {
-                to[id].DelProjectile();
-                return;
-            }
-            var toProjectile1 = toEntity.Projectile;
-            if (toProjectile1 == null)
-            {
-                toProjectile1 = to[id].AddProjectile();
-            }
-            toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
-            toProjectile1.Speed = fromProjectile2.Speed;
-        }
-        public static void CopyProjectilePassive(TableSet from, TableSet to, uint id)
-        {
-            var fromEntity = from[id];
-            if (fromEntity == null)
-            {
-                return;
-            }
-            var toEntity = to[id];
-            if (toEntity == null)
-            {
-                return;
-            }
-            var fromProjectile2 = fromEntity.Projectile;
-            if (fromProjectile2 == null)
-            {
-                return;
-            }
-            var toProjectile1 = toEntity.Projectile;
-            if (toProjectile1 == null)
-            {
-                return;
-            }
-            toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
-            toProjectile1.Speed = fromProjectile2.Speed;
-        }
-        public static bool operator ==(Projectile a, Projectile b)
-        {
-            if ((object)a == null && (object)b == null)
-            {
-                return true;
-            }
-            if ((object)a == null && (object)b != null)
-            {
-                return false;
-            }
-            if ((object)a != null && (object)b == null)
-            {
-                return false;
-            }
-            bool aFieldIsNull, bFieldIsNull;
-            if (a.DestroyTick != b.DestroyTick)
-            {
-                return false;
-            }
-            if (Math.Abs(a.Speed - b.Speed) > 0.01f)
-            {
-                return false;
-            }
-            return true;
-        }
-        public static bool operator !=(Projectile a, Projectile b)
-        {
-            return !(a == b);
-        }
-    }
     // DO NOT EDIT - generated from Generator/EC/World/Transform.cs
     public sealed class Transform : IComponent
     {
@@ -787,7 +678,6 @@ namespace Common.World
             public Pool<MovementComponent> MovementComponent = new Pool<MovementComponent>();
             public Pool<PhysicsObject> PhysicsObject = new Pool<PhysicsObject>();
             public Pool<Player> Player = new Pool<Player>();
-            public Pool<Projectile> Projectile = new Pool<Projectile>();
             public Pool<Transform> Transform = new Pool<Transform>();
             public Pools()
             {
@@ -805,7 +695,6 @@ namespace Common.World
                 public int Gun;
                 public int PhysicsObject;
                 public int Player;
-                public int Projectile;
                 public int Transform;
             }
             public void Pack(TableSet ts, BitPacker p)
@@ -917,26 +806,6 @@ namespace Common.World
                     }
                 }
                 stats.Player += p.BitCount;
-                stats.Projectile = -p.BitCount;
-                if (ts.Projectile.Count == 0)
-                {
-                    p.PackByte(0, 1);
-                }
-                else
-                {
-                    p.PackByte(1, 1);
-                    var tableCount = ts.Projectile.Count;
-                    p.PackUInt32((uint)tableCount, entityIndexBits);
-                    for (var i = 0; i < tableCount; i++)
-                    {
-                        var kv = ts.Projectile.At(i);
-                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
-                        var c = kv.Value;
-                        p.PackSInt32(c.DestroyTick);
-                        p.PackFloat(c.Speed);
-                    }
-                }
-                stats.Projectile += p.BitCount;
                 stats.Transform = -p.BitCount;
                 if (ts.Transform.Count == 0)
                 {
@@ -1063,26 +932,6 @@ namespace Common.World
                     }
                 }
                 stats.Player += p.BitCount;
-                stats.Projectile = -p.BitCount;
-                if (ts.Projectile.Count == 0)
-                {
-                    p.PackByte(0, 1);
-                }
-                else
-                {
-                    p.PackByte(1, 1);
-                    var tableCount = ts.Projectile.Count;
-                    p.PackUInt32((uint)tableCount, entityIndexBits);
-                    for (var i = 0; i < tableCount; i++)
-                    {
-                        var kv = ts.Projectile.At(i);
-                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
-                        var c = kv.Value;
-                        p.PackSInt32(c.DestroyTick);
-                        p.PackFloat(c.Speed);
-                    }
-                }
-                stats.Projectile += p.BitCount;
                 stats.Transform = -p.BitCount;
                 if (ts.Transform.Count == 0)
                 {
@@ -1158,6 +1007,7 @@ namespace Common.World
                         c.Use = p.UnpackBool();
                     }
                 }
+                ts.GunPredicted.Clear();
                 ts.Movement.Clear();
                 if (p.UnpackByte(1) == 0)
                 {
@@ -1193,24 +1043,6 @@ namespace Common.World
                         var c = ts.Player.SetAtIndex(i, id);
                         c.InputIsAcknowledged = p.UnpackBool();
                         c.UserId = p.UnpackSInt32();
-                    }
-                }
-                if (p.UnpackByte(1) == 0)
-                {
-                    ts.Projectile.Clear();
-                }
-                else
-                {
-                    count = (int)p.UnpackUInt32(entityIndexBits);
-                    ts.Projectile.DestructiveResize(count);
-                    for (int i = 0; i < count; i++)
-                    {
-                        uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
-                        int id2index;
-                        bool isDefault;
-                        var c = ts.Projectile.SetAtIndex(i, id);
-                        c.DestroyTick = p.UnpackSInt32();
-                        c.Speed = p.UnpackFloat();
                     }
                 }
                 if (p.UnpackByte(1) == 0)
@@ -1309,9 +1141,6 @@ namespace Common.World
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
-                stats.Projectile = -p.BitCount;
-                PackDiffProjectile(ts1, ts2, p);
-                stats.Projectile += p.BitCount;
                 stats.Transform = -p.BitCount;
                 PackDiffTransform(ts1, ts2, p);
                 stats.Transform += p.BitCount;
@@ -1388,9 +1217,6 @@ namespace Common.World
                 stats.Player = -p.BitCount;
                 PackDiffPlayer(ts1, ts2, p);
                 stats.Player += p.BitCount;
-                stats.Projectile = -p.BitCount;
-                PackDiffProjectile(ts1, ts2, p);
-                stats.Projectile += p.BitCount;
                 stats.Transform = -p.BitCount;
                 PackDiffTransform(ts1, ts2, p);
                 stats.Transform += p.BitCount;
@@ -1445,10 +1271,10 @@ namespace Common.World
                 for (int i = 0; i < ts2._entityCount; i++) ts2._entityData[i].Id = ts2._entityIds[i];
                 UnpackDiffAvatar(ts1, ts2, p);
                 UnpackDiffGun(ts1, ts2, p);
+                ts2.GunPredicted.Clear();
                 ts2.Movement.Clear();
                 UnpackDiffPhysicsObject(ts1, ts2, p);
                 UnpackDiffPlayer(ts1, ts2, p);
-                UnpackDiffProjectile(ts1, ts2, p);
                 UnpackDiffTransform(ts1, ts2, p);
                 ts2.TransformPredicted.Clear();
             }
@@ -1496,11 +1322,6 @@ namespace Common.World
             {
                 p.PackBool(c.InputIsAcknowledged);
                 p.PackSInt32(c.UserId);
-            }
-            private void PackProjectile(TableSet ts, Projectile c, BitPacker p)
-            {
-                p.PackSInt32(c.DestroyTick);
-                p.PackFloat(c.Speed);
             }
             private void PackTransform(TableSet ts, Transform c, BitPacker p)
             {
@@ -2003,130 +1824,6 @@ namespace Common.World
                     }
                 }
             }
-            private void PackDiffProjectile(TableSet ts1, TableSet ts2, BitPacker p)
-            {
-                _addIds.Clear();
-                _delIndices.Clear();
-                _updIndices.Clear();
-                var count1 = ts1.Projectile.Count;
-                var count2 = ts2.Projectile.Count;
-                {
-                    var idx1 = 0;
-                    var idx2 = 0;
-                    var t1end = count1 == 0;
-                    var t2end = count2 == 0;
-                    while (!t1end && !t2end)
-                    {
-                        var kv1 = ts1.Projectile.At(idx1);
-                        var kv2 = ts2.Projectile.At(idx2);
-                        if (kv1.Key == kv2.Key)
-                        {
-                            if (Common.World.Projectile.DifferForPack(kv1.Value, kv2.Value))
-                            {
-                                _updIndices.Add(idx1);
-                            }
-                            idx1++; t1end = idx1 >= count1;
-                            idx2++; t2end = idx2 >= count2;
-                        }
-                        else if (kv1.Key > kv2.Key)
-                        {
-                            _addIds.Add(kv2.Key);
-                            idx2++; t2end = idx2 >= count2;
-                        }
-                        else
-                        {
-                            _delIndices.Add(idx1);
-                            idx1++; t1end = idx1 >= count1;
-                        }
-                    }
-                    while (!t1end)
-                    {
-                        _delIndices.Add(idx1);
-                        idx1++; t1end = idx1 >= count1;
-                    }
-                    while (!t2end)
-                    {
-                        _addIds.Add(ts2.Projectile.IdAt(idx2));
-                        idx2++; t2end = idx2 >= count2;
-                    }
-                }
-                if (_delIndices.Count + _addIds.Count + _updIndices.Count == 0)
-                {
-                    p.PackByte(0, 1);
-                    return;
-                }
-                p.PackByte(1, 1);
-                if (_delIndices.Count + _addIds.Count == 0)
-                {
-                    p.PackByte(0, 1);
-                }
-                else
-                {
-                    p.PackByte(1, 1);
-                    p.PackUInt32((uint)_delIndices.Count, _entityBits);
-                    p.PackUInt32((uint)_addIds.Count, _entityBits);
-                }
-                p.PackUInt32((uint)_updIndices.Count, _entityBits);
-                var ts2Count = ts2.Projectile.Count;
-                if (ts2Count == 0) return;
-                for (int i = 0; i < _delIndices.Count; i++)
-                {
-                    p.PackUInt32((uint)_delIndices[i], _entityBits);
-                }
-                for (int i = 0; i < _addIds.Count; i++)
-                {
-                    p.PackUInt32((uint)ts2._entityIds.BinarySearch(ts2._entityCount, _addIds[i]), _entityBits);
-                }
-                for (int i = 0; i < _updIndices.Count; i++)
-                {
-                    p.PackUInt32((uint)_updIndices[i], _entityBits);
-                }
-                {
-                    int iadd = 0, iupd = 0, idel = 0;
-                    int idx1 = 0, idx2 = 0;
-                    for (int i = 0; i < count1; i++)
-                    {
-                        var kv1 = ts1.Projectile.At(i);
-                        while (iadd < _addIds.Count && _addIds[iadd] < kv1.Key)
-                        {
-                            var cur = ts2.Projectile.CmpAt(idx2);
-                            PackProjectile(ts2, cur, p);
-                            idx2++;
-                            iadd++;
-                        }
-                        if (idel < _delIndices.Count)
-                        {
-                            if (_delIndices[idel] == idx1)
-                            {
-                                idel++;
-                                idx1++;
-                                continue;
-                            }
-                        }
-                        if (iupd < _updIndices.Count)
-                        {
-                            if (_updIndices[iupd] == idx1)
-                            {
-                                var cur = ts2.Projectile.CmpAt(idx2);
-                                PackProjectile(ts2, cur, p);
-                                idx2++;
-                                iupd++;
-                                idx1++;
-                                continue;
-                            }
-                        }
-                        idx2++;
-                        idx1++;
-                    }
-                    while (iadd < _addIds.Count)
-                    {
-                        var cur = ts2.Projectile.CmpAt(idx2);
-                        PackProjectile(ts2, cur, p);
-                        idx2++;
-                        iadd++;
-                    }
-                }
-            }
             private void PackDiffTransform(TableSet ts1, TableSet ts2, BitPacker p)
             {
                 _addIds.Clear();
@@ -2279,13 +1976,6 @@ namespace Common.World
                 bool isDefault;
                 c.InputIsAcknowledged = p.UnpackBool();
                 c.UserId = p.UnpackSInt32();
-            }
-            private void UnpackProjectile(TableSet ts, Projectile c, BitUnpacker p)
-            {
-                int id2index;
-                bool isDefault;
-                c.DestroyTick = p.UnpackSInt32();
-                c.Speed = p.UnpackFloat();
             }
             private void UnpackTransform(TableSet ts, Transform c, BitUnpacker p)
             {
@@ -2626,89 +2316,6 @@ namespace Common.World
                     UnpackPlayer(ts2, c, p);
                 }
             }
-            private void UnpackDiffProjectile(TableSet ts1, TableSet ts2, BitUnpacker p)
-            {
-                if (p.UnpackByte(1) == 0)
-                {
-                    ts2.CopyProjectile(ts1);
-                    return;
-                }
-                _addIds.Clear();
-                _delIndices.Clear();
-                _updIndices.Clear();
-                int delCount = 0;
-                int addCount = 0;
-                if (p.UnpackByte(1) != 0)
-                {
-                    delCount = (int)p.UnpackUInt32(_entityBits);
-                    addCount = (int)p.UnpackUInt32(_entityBits);
-                }
-                int updCount = (int)p.UnpackUInt32(_entityBits);
-                int table2count = ts1.Projectile.Count + addCount - delCount;
-                if (table2count == 0)
-                {
-                    ts2.Projectile.Clear();
-                    return;
-                }
-                for (int i = 0; i < delCount; i++)
-                {
-                    int idx = (int)p.UnpackUInt32(_entityBits);
-                    _delIndices.Add(idx);
-                }
-                for (int i = 0; i < addCount; i++)
-                {
-                    uint id = ts2._entityIds[p.UnpackUInt32(_entityBits)];
-                    _addIds.Add(id);
-                }
-                for (int i = 0; i < updCount; i++)
-                {
-                    int idx = (int)p.UnpackUInt32(_entityBits);
-                    _updIndices.Add(idx);
-                }
-                ts2.Projectile.DestructiveResize(table2count);
-                int iadd = 0, idel = 0, iupd = 0;
-                int idx1 = 0, idx2 = 0;
-                var count1 = ts1.Projectile.Count;
-                for (var i = 0; i < count1; i++)
-                {
-                    var kv1 = ts1.Projectile.At(i);
-                    while (iadd < addCount && _addIds[iadd] < kv1.Key)
-                    {
-                        var c = ts2.Projectile.SetAtIndex(idx2++, _addIds[iadd++]);
-                        UnpackProjectile(ts2, c, p);
-                    }
-                    if (idel < delCount)
-                    {
-                        if (_delIndices[idel] == idx1)
-                        {
-                            idel++;
-                            idx1++;
-                            continue;
-                        }
-                    }
-                    if (iupd < updCount)
-                    {
-                        if (_updIndices[iupd] == idx1)
-                        {
-                            var c = ts2.Projectile.SetAtIndex(idx2++, kv1.Key);
-                            UnpackProjectile(ts2, c, p);
-                            iupd++;
-                            idx1++;
-                            continue;
-                        }
-                    }
-                    {
-                        var c = ts2.Projectile.SetAtIndex(idx2++, kv1.Key);
-                        ts2.CopyProjectile(c, kv1.Value);
-                    }
-                    idx1++;
-                }
-                while (iadd < addCount)
-                {
-                    var c = ts2.Projectile.SetAtIndex(idx2++, _addIds[iadd++]);
-                    UnpackProjectile(ts2, c, p);
-                }
-            }
             private void UnpackDiffTransform(TableSet ts1, TableSet ts2, BitUnpacker p)
             {
                 if (p.UnpackByte(1) == 0)
@@ -2796,10 +2403,10 @@ namespace Common.World
         public uint NextId = 2;
         public Table<Avatar> Avatar;
         public Table<Gun> Gun;
+        public Table<Gun> GunPredicted;
         public Table<MovementComponent> Movement;
         public Table<PhysicsObject> PhysicsObject;
         public Table<Player> Player;
-        public Table<Projectile> Projectile;
         public Table<Transform> Transform;
         public Table<Transform> TransformPredicted;
         public int EntityCount
@@ -2811,12 +2418,19 @@ namespace Common.World
             _pools = pools;
             Avatar = new Table<Avatar>(_pools.Avatar);
             Gun = new Table<Gun>(_pools.Gun);
+            GunPredicted = new Table<Gun>(_pools.Gun);
             Movement = new Table<MovementComponent>(_pools.MovementComponent);
             PhysicsObject = new Table<PhysicsObject>(_pools.PhysicsObject);
             Player = new Table<Player>(_pools.Player);
-            Projectile = new Table<Projectile>(_pools.Projectile);
             Transform = new Table<Transform>(_pools.Transform);
             TransformPredicted = new Table<Transform>(_pools.Transform);
+        }
+        public void CopyGunPredicted(Gun c1, Gun c2)
+        {
+            c1.CooldownDuration = c2.CooldownDuration;
+            c1.NextShotTick = c2.NextShotTick;
+            c1.ShotCount = c2.ShotCount;
+            c1.Use = c2.Use;
         }
         public void CopyTransformPredicted(Transform c1, Transform c2)
         {
@@ -2839,6 +2453,15 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 CopyGun(Gun.CmpAt(i), ts2.Gun.CmpAt(i));
+            }
+        }
+        public void CopyGunPredicted(TableSet ts2)
+        {
+            GunPredicted.CopyIds(ts2.GunPredicted);
+            var count = GunPredicted.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyGunPredicted(GunPredicted.CmpAt(i), ts2.GunPredicted.CmpAt(i));
             }
         }
         public void CopyMovement(TableSet ts2)
@@ -2866,15 +2489,6 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 CopyPlayer(Player.CmpAt(i), ts2.Player.CmpAt(i));
-            }
-        }
-        public void CopyProjectile(TableSet ts2)
-        {
-            Projectile.CopyIds(ts2.Projectile);
-            var count = Projectile.Count;
-            for (int i = 0; i < count; ++i)
-            {
-                CopyProjectile(Projectile.CmpAt(i), ts2.Projectile.CmpAt(i));
             }
         }
         public void CopyTransform(TableSet ts2)
@@ -2907,10 +2521,10 @@ namespace Common.World
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
             CopyGun(ts2);
+            CopyGunPredicted(ts2);
             CopyMovement(ts2);
             CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
-            CopyProjectile(ts2);
             CopyTransform(ts2);
             CopyTransformPredicted(ts2);
         }
@@ -2926,10 +2540,10 @@ namespace Common.World
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
             CopyGun(ts2);
+            ApplyGunPredicted();
             CopyMovement(ts2);
             CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
-            CopyProjectile(ts2);
             CopyTransform(ts2);
             ApplyTransformPredicted();
         }
@@ -2952,6 +2566,13 @@ namespace Common.World
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
+            var gunPredictedCount = GunPredicted.Count;
+            for (int i = 0; i < gunPredictedCount; i++)
+            {
+                var id = GunPredicted.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
             var movementCount = Movement.Count;
             for (int i = 0; i < movementCount; i++)
             {
@@ -2970,13 +2591,6 @@ namespace Common.World
             for (int i = 0; i < playerCount; i++)
             {
                 var id = Player.IdAt(i);
-                var idx = _entityIds.BinarySearch(_entityCount, id);
-                count[idx]++;
-            }
-            var projectileCount = Projectile.Count;
-            for (int i = 0; i < projectileCount; i++)
-            {
-                var id = Projectile.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
@@ -3014,10 +2628,10 @@ namespace Common.World
         {
             Avatar.Clear();
             Gun.Clear();
+            GunPredicted.Clear();
             Movement.Clear();
             PhysicsObject.Clear();
             Player.Clear();
-            Projectile.Clear();
             Transform.Clear();
             TransformPredicted.Clear();
             for (var i = 0; i < _entityCount; i++)
@@ -3046,6 +2660,15 @@ namespace Common.World
             {
                 destination.DelGun();
             }
+            if(source.GunPredicted != null)
+            {
+                var newComponent = destination.AddGunPredicted();
+                CopyGunPredicted(newComponent, source.GunPredicted);
+            }
+            else
+            {
+                destination.DelGunPredicted();
+            }
             if(source.Movement != null)
             {
                 var newComponent = destination.AddMovement();
@@ -3072,15 +2695,6 @@ namespace Common.World
             else
             {
                 destination.DelPlayer();
-            }
-            if(source.Projectile != null)
-            {
-                var newComponent = destination.AddProjectile();
-                CopyProjectile(newComponent, source.Projectile);
-            }
-            else
-            {
-                destination.DelProjectile();
             }
             if(source.Transform != null)
             {
@@ -3159,6 +2773,14 @@ namespace Common.World
                 Gun.CmpAt(i).Repack();
             }
         }
+        public void RepackGunPredicted()
+        {
+            var count = GunPredicted.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                GunPredicted.CmpAt(i).Repack();
+            }
+        }
         public void RepackMovement()
         {
             var count = Movement.Count;
@@ -3183,14 +2805,6 @@ namespace Common.World
                 Player.CmpAt(i).Repack();
             }
         }
-        public void RepackProjectile()
-        {
-            var count = Projectile.Count;
-            for (int i = 0; i < count; ++i)
-            {
-                Projectile.CmpAt(i).Repack();
-            }
-        }
         public void RepackTransform()
         {
             var count = Transform.Count;
@@ -3213,7 +2827,6 @@ namespace Common.World
             RepackGun();
             RepackPhysicsObject();
             RepackPlayer();
-            RepackProjectile();
             RepackTransform();
         }
         public void InterpolateBase1(TableSet ts1, TableSet ts2, float normalizedTime)
@@ -3235,6 +2848,17 @@ namespace Common.World
             {
                 var c = Gun.CmpAt(i);
                 var c1 = ts1.Gun.CmpAt(i);
+                c.CooldownDuration = c1.CooldownDuration;
+                c.NextShotTick = c1.NextShotTick;
+                c.ShotCount = c1.ShotCount;
+                c.Use = c1.Use;
+            }
+            GunPredicted.CopyIds(ts1.GunPredicted);
+            int gunPredictedCount = GunPredicted.Count;
+            for (int i = 0; i < gunPredictedCount; ++i)
+            {
+                var c = GunPredicted.CmpAt(i);
+                var c1 = ts1.GunPredicted.CmpAt(i);
                 c.CooldownDuration = c1.CooldownDuration;
                 c.NextShotTick = c1.NextShotTick;
                 c.ShotCount = c1.ShotCount;
@@ -3265,15 +2889,6 @@ namespace Common.World
                 var c1 = ts1.Player.CmpAt(i);
                 c.InputIsAcknowledged = c1.InputIsAcknowledged;
                 c.UserId = c1.UserId;
-            }
-            Projectile.CopyIds(ts1.Projectile);
-            int projectileCount = Projectile.Count;
-            for (int i = 0; i < projectileCount; ++i)
-            {
-                var c = Projectile.CmpAt(i);
-                var c1 = ts1.Projectile.CmpAt(i);
-                c.DestroyTick = c1.DestroyTick;
-                c.Speed = c1.Speed;
             }
             Transform.CopyIds(ts1.Transform);
             int transformCount = Transform.Count;
@@ -3326,6 +2941,17 @@ namespace Common.World
                 c.ShotCount = c2.ShotCount;
                 c.Use = c2.Use;
             }
+            GunPredicted.CopyIds(ts2.GunPredicted);
+            int gunPredictedCount = GunPredicted.Count;
+            for (int i = 0; i < gunPredictedCount; ++i)
+            {
+                var c = GunPredicted.CmpAt(i);
+                var c2 = ts2.GunPredicted.CmpAt(i);
+                c.CooldownDuration = c2.CooldownDuration;
+                c.NextShotTick = c2.NextShotTick;
+                c.ShotCount = c2.ShotCount;
+                c.Use = c2.Use;
+            }
             Movement.CopyIds(ts2.Movement);
             int movementCount = Movement.Count;
             for (int i = 0; i < movementCount; ++i)
@@ -3351,15 +2977,6 @@ namespace Common.World
                 var c2 = ts2.Player.CmpAt(i);
                 c.InputIsAcknowledged = c2.InputIsAcknowledged;
                 c.UserId = c2.UserId;
-            }
-            Projectile.CopyIds(ts2.Projectile);
-            int projectileCount = Projectile.Count;
-            for (int i = 0; i < projectileCount; ++i)
-            {
-                var c = Projectile.CmpAt(i);
-                var c2 = ts2.Projectile.CmpAt(i);
-                c.DestroyTick = c2.DestroyTick;
-                c.Speed = c2.Speed;
             }
             Transform.CopyIds(ts2.Transform);
             int transformCount = Transform.Count;
@@ -3429,15 +3046,22 @@ namespace Common.World
             c1.InputIsAcknowledged = c2.InputIsAcknowledged;
             c1.UserId = c2.UserId;
         }
-        private void CopyProjectile(Projectile c1, Projectile c2)
-        {
-            c1.DestroyTick = c2.DestroyTick;
-            c1.Speed = c2.Speed;
-        }
         private void CopyTransform(Transform c1, Transform c2)
         {
             c1.Forward = c2.Forward;
             c1.Position = c2.Position;
+        }
+        private void ApplyGunPredicted()
+        {
+            var count = GunPredicted.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                var id = GunPredicted.IdAt(i);
+                var dst = Gun[id];
+                if (dst == null) continue;
+                var src = GunPredicted.CmpAt(i);
+                CopyGun(dst, src);
+            }
         }
         private void ApplyTransformPredicted()
         {
@@ -3487,6 +3111,10 @@ namespace Common.World
         {
             get { return TableSet.Gun[Id]; }
         }
+        public Gun GunPredicted
+        {
+            get { return TableSet.GunPredicted[Id]; }
+        }
         public MovementComponent Movement
         {
             get { return TableSet.Movement[Id]; }
@@ -3498,10 +3126,6 @@ namespace Common.World
         public Player Player
         {
             get { return TableSet.Player[Id]; }
-        }
-        public Projectile Projectile
-        {
-            get { return TableSet.Projectile[Id]; }
         }
         public Transform Transform
         {
@@ -3527,6 +3151,14 @@ namespace Common.World
         {
             TableSet.Gun.Delete(Id);
         }
+        public Gun AddGunPredicted()
+        {
+            return TableSet.GunPredicted.Insert(Id);
+        }
+        public void DelGunPredicted()
+        {
+            TableSet.GunPredicted.Delete(Id);
+        }
         public MovementComponent AddMovement()
         {
             return TableSet.Movement.Insert(Id);
@@ -3551,14 +3183,6 @@ namespace Common.World
         {
             TableSet.Player.Delete(Id);
         }
-        public Projectile AddProjectile()
-        {
-            return TableSet.Projectile.Insert(Id);
-        }
-        public void DelProjectile()
-        {
-            TableSet.Projectile.Delete(Id);
-        }
         public Transform AddTransform()
         {
             return TableSet.Transform.Insert(Id);
@@ -3579,10 +3203,10 @@ namespace Common.World
         {
             DelAvatar();
             DelGun();
+            DelGunPredicted();
             DelMovement();
             DelPhysicsObject();
             DelPlayer();
-            DelProjectile();
             DelTransform();
             DelTransformPredicted();
         }

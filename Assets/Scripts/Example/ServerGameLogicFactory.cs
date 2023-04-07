@@ -12,7 +12,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 
         public ServerGameLogicFactory(BaseSystem<GameData> playerHandlerSystem, IPrefabProvider prefabProvider)
         {
-            _systemsFactory = new SystemsFactory(prefabProvider, playerHandlerSystem, 0);
+            var simulationFactory = new SimulationFactory();
+            _systemsFactory = new SystemsFactory(simulationFactory, prefabProvider, playerHandlerSystem, 0);
         }
 
         public List<BaseSystem<GameData>> CreateLogic(IInputStorage<GameData> inputStorage)

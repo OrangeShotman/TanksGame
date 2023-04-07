@@ -1,26 +1,43 @@
+using Common.Simulation;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
-using Unity.VisualScripting.Antlr3.Runtime;
+using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
     public class ProjectilesSystem : BaseSystem<GameData>
     {
+        private readonly TableSet _simulation;
+        private int _lastTickUpdate;
+
+        public ProjectilesSystem(TableSet simulation)
+        {
+            _simulation = simulation;
+        }
         protected override void InternalUpdate(GameData data, TimeData timeData)
         {
+            if(_lastTickUpdate>=data.Tick)
+                return;
+            _lastTickUpdate = data.Tick;
             var clearEmptyEntities = false;
-            var count = data.World.Projectile.Count;
+            var count = _simulation.Projectile.Count;
             for (int i = count - 1; i >= 0; i--)
             {
-                var projectile = data.World.Projectile.CmpAt(i);
-                if (projectile.DestroyTick > data.Tick)
+                var projectile = _simulation.Projectile.CmpAt(i);
+                var id = _simulation.Projectile.IdAt(i);
+                var entity = _simulation[id];
+                if (projectile.DestroyTick > _lastTickUpdate)
+                {
+                    var transform = entity.Transform;
+                    var movement = entity.Movement;
+                    transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
                     continue;
-                var id = data.World.Projectile.IdAt(i);
-                data.World[id].DeleteAll();
+                }
+                entity.DeleteAll();
                 clearEmptyEntities = true;
             }
             if(clearEmptyEntities)
-                data.World.DeleteEmptyEntities();
+                _simulation.DeleteEmptyEntities();
         }
     }
 }

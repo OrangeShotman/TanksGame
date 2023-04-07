@@ -51,10 +51,10 @@ namespace OrangeShotStudio.TanksGame.View
             };
         }
 
-        void IUpdateImplementer<TankView>.Update(uint entityId, int entityIndex, TankView viewElement)
+        void IUpdateImplementer<TankView>.Update(uint entityId, int entityIndex, TankView shotCounter)
         {
             var transform = _gameData.World.Transform[entityId];
-            viewElement.Update(transform);
+            shotCounter.Update(transform);
         }
 
         void IUpdateImplementer<TankView>.Dispose(uint entityId, TankView viewElement)

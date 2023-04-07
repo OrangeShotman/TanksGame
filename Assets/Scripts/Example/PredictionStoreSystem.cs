@@ -26,16 +26,9 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 var transform = entity.Transform;
                 var transformPredicted = entity.AddTransformPredicted();
                 data.World.CopyTransformPredicted(transformPredicted, transform);
+                var gunPredicted = entity.AddGunPredicted();
+                data.World.CopyGunPredicted(gunPredicted, entity.Gun);
             }
-
-            // count = data.World.Projectile.Count;
-            // for (int i = 0; i < count; i++)
-            // {
-            //     var id = data.World.Projectile.IdAt(i);
-            //     var entity = data.World[id];
-            //     var transformPredicted = entity.AddTransformPredicted();
-            //     data.World.CopyTransformPredicted(transformPredicted, entity.Transform);
-            // }
         }
     }
 }

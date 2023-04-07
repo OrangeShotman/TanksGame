@@ -88,7 +88,7 @@ namespace OrangeShotStudio.TanksGame
             };
         }
 
-        public void Update(uint entityId, int entityIndex, PhysicsObjectWrapper viewElement)
+        public void Update(uint entityId, int entityIndex, PhysicsObjectWrapper shotCounter)
         {
         }
 

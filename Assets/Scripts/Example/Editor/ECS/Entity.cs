@@ -1,5 +1,16 @@
 using CodeGen.Attributes;
 
+namespace OrangeShotStudio.Multiplayer.Ecs.Simulation
+{
+    [EntityDeclaration("Simulation")]
+    public class Entity
+    {
+        public Transform Transform;
+        public MovementComponent Movement;
+        public Projectile Projectile;
+    }
+}
+
 namespace OrangeShotStudio.Multiplayer.Ecs.Input
 {
     [EntityDeclaration("Input")]
@@ -21,7 +32,7 @@ namespace OrangeShotStudio.Multiplayer.Ecs.World
         public PhysicsObject PhysicsObject;
         public Player Player;
         public Avatar Avatar;
-        public Projectile Projectile;
+        [Predictable(0.1f)]
         public Gun Gun;
     }
 }

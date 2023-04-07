@@ -11,7 +11,7 @@ namespace OrangeShotStudio.TanksGame.View
             _projectile = projectile;
         }
 
-        public void Update(Common.World.Transform transform)
+        public void Update(Common.Simulation.Transform transform)
         {
             var projectileTransform = _projectile.transform;
             if (projectileTransform.position == transform.Position)

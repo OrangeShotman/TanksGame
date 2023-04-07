@@ -7,7 +7,7 @@ namespace OrangeShotStudio.TanksGame.View
     {
         ITable GetTable();
         CreationResult<T> Factory(uint entityId, int entityIndex);
-        void Update(uint entityId, int entityIndex, T viewElement);
+        void Update(uint entityId, int entityIndex, T shotCounter);
         void Dispose(uint entityId, T viewElement);
         bool HasEntityWithId(uint entityId, int entityIndex);
     }

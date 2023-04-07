@@ -26,7 +26,7 @@ namespace OrangeShotStudio.TanksGame
             var gameSnapshotFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameSnapshotFactory);
             var playerHandlerSystem = new PlayerHandlerSystem(logger);
-            var settings = new GameServerSettings(3239, 5000, 10, 8, ConnectionType.FakeLocalConnection);
+            var settings = new GameServerSettings(3239, 5000, 10, 8, ConnectionType.WebSockets);
             _serverFacade = ServerFacadeFactory.CreateServer(gameSnapshotFactory,
                 new ServerGameLogicFactory(playerHandlerSystem, _prefabProvider),
                 playerHandlerSystem, logger, settings);
