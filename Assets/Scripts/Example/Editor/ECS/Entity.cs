@@ -8,6 +8,7 @@ namespace OrangeShotStudio.Multiplayer.Ecs.Simulation
         public Transform Transform;
         public MovementComponent Movement;
         public Projectile Projectile;
+        public RemoveEntityComponent RemoveEntityComponent;
     }
 }
 
@@ -34,5 +35,10 @@ namespace OrangeShotStudio.Multiplayer.Ecs.World
         public Avatar Avatar;
         [Predictable(0.1f)]
         public Gun Gun;
+        public Health Health;
+        [DontPack]
+        public Damage Damage;
+        [DontPack]
+        public AvatarRespawn AvatarRespawn;
     }
 }

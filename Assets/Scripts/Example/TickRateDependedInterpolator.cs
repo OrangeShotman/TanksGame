@@ -34,7 +34,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 return;
 
             var sample = _snapshotSamples.Get(tick);
-            sample.SetSample(currentState, tick, tickDuration);
+            sample.SetSample(currentState, tick);
             _snapshotSamples.Put(sample, tick);
         }
 

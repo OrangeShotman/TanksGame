@@ -11,31 +11,6 @@ using UnityEngine.SceneManagement;
 
 namespace OrangeShotStudio.TanksGame
 {
-    public class LevelInitializeSystem : BaseSystem<GameData>
-    {
-        private readonly IPrefabProvider _prefabProvider;
-        private readonly Scene _scene;
-        private GameObject _levelInstance;
-
-        public LevelInitializeSystem(Scene scene, IPrefabProvider prefabProvider)
-        {
-            _scene = scene;
-            _prefabProvider = prefabProvider;
-        }
-
-        public override void Initialize(GameData data, TimeData timeData)
-        {
-            var level = _prefabProvider.GetPrefab("Level");
-            _levelInstance = Object.Instantiate(level);
-            SceneManager.MoveGameObjectToScene(_levelInstance, _scene);
-        }
-
-        public override void Dispose()
-        {
-            Object.Destroy(_levelInstance);
-            SceneManager.UnloadSceneAsync(_scene);
-        }
-    }
     public class PhysicsBodyCreationSystem : BaseSystem<GameData>, IUpdateImplementer<PhysicsObjectWrapper>
     {
         private readonly PhysicsScene _physicsScene;
@@ -79,12 +54,10 @@ namespace OrangeShotStudio.TanksGame
             var instance = Object.Instantiate(prefab);
             SceneManager.MoveGameObjectToScene(instance, _scene);
             instance.transform.position = transform.Position;
-            if (transform.Forward != Vector2.zero)
-                instance.transform.forward = transform.Forward;
             return new CreationResult<PhysicsObjectWrapper>()
             {
                 IsCreated = true,
-                Result = new PhysicsObjectWrapper(instance)
+                Result = new PhysicsObjectWrapper(instance, entityId)
             };
         }
 

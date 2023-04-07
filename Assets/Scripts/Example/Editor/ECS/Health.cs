@@ -3,9 +3,9 @@ using CodeGen.Attributes;
 namespace OrangeShotStudio.Multiplayer.Ecs
 {
     [Component]
-    public class Avatar
+    public class Health
     {
-        public int OwnerUserId;
-        public bool Destroyed;
+        public float CurrentHealth;
+        public float MaxHealth;
     }
 }

@@ -3,9 +3,8 @@ using CodeGen.Attributes;
 namespace OrangeShotStudio.Multiplayer.Ecs
 {
     [Component]
-    public class Avatar
+    public class AvatarRespawn
     {
-        public int OwnerUserId;
-        public bool Destroyed;
+        public int RespawnTick;
     }
 }

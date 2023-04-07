@@ -23,7 +23,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             if (_nextSample.Tick >= tick)
                 return;
             (_baseSample, _nextSample) = (_nextSample, _baseSample);
-            _nextSample.SetSample(currentState, tick, (int)(1000 / 20f));
+            _nextSample.SetSample(currentState, tick);
             _delta = _nextSample.SampleTime - _baseSample.SampleTime;
         }
 

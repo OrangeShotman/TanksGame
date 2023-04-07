@@ -719,6 +719,7 @@ namespace Common.Input
                 CopyPlayerInput(PlayerInput.CmpAt(i), ts2.PlayerInput.CmpAt(i));
             }
         }
+        
         public void Copy(TableSet ts2)
         {
             if( this == ts2 )

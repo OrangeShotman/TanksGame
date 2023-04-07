@@ -113,17 +113,23 @@ namespace Common.Simulation
     // DO NOT EDIT - generated from Generator/EC/Simulation/Projectile.cs
     public sealed class Projectile : IComponent
     {
+        public float Damage;
         public int DestroyTick;
+        public uint Source;
         public float Speed;
         public void Reset()
         {
+            Damage = default(float);
             DestroyTick = default(int);
+            Source = default(uint);
             Speed = default(float);
         }
         public static bool DifferForPack(Projectile c1, Projectile c2)
         {
             bool null1, null2;
+            if (c1.Damage != c2.Damage) return true;
             if (c1.DestroyTick != c2.DestroyTick) return true;
+            if (c1.Source != c2.Source) return true;
             if (c1.Speed != c2.Speed) return true;
             return false;
         }
@@ -161,7 +167,9 @@ namespace Common.Simulation
             {
                 toProjectile1 = to[id].AddProjectile();
             }
+            toProjectile1.Damage = fromProjectile2.Damage;
             toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
+            toProjectile1.Source = fromProjectile2.Source;
             toProjectile1.Speed = fromProjectile2.Speed;
         }
         public static void CopyProjectilePassive(TableSet from, TableSet to, uint id)
@@ -186,7 +194,9 @@ namespace Common.Simulation
             {
                 return;
             }
+            toProjectile1.Damage = fromProjectile2.Damage;
             toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
+            toProjectile1.Source = fromProjectile2.Source;
             toProjectile1.Speed = fromProjectile2.Speed;
         }
         public static bool operator ==(Projectile a, Projectile b)
@@ -204,7 +214,15 @@ namespace Common.Simulation
                 return false;
             }
             bool aFieldIsNull, bFieldIsNull;
+            if (Math.Abs(a.Damage - b.Damage) > 0.01f)
+            {
+                return false;
+            }
             if (a.DestroyTick != b.DestroyTick)
+            {
+                return false;
+            }
+            if (a.Source != b.Source)
             {
                 return false;
             }
@@ -215,6 +233,60 @@ namespace Common.Simulation
             return true;
         }
         public static bool operator !=(Projectile a, Projectile b)
+        {
+            return !(a == b);
+        }
+    }
+    // DO NOT EDIT - generated from Generator/EC/Simulation/RemoveEntityComponent.cs
+    public sealed class RemoveEntityComponent : IComponent
+    {
+        public void Reset()
+        {
+        }
+        public static bool DifferForPack(RemoveEntityComponent c1, RemoveEntityComponent c2)
+        {
+            bool null1, null2;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is RemoveEntityComponent && (RemoveEntityComponent) obj == this;
+        }
+        public static void CopyRemoveEntityComponent(TableSet from, TableSet to, uint id)
+        {
+            if (to[id].RemoveEntityComponent == null && from[id].RemoveEntityComponent != null)
+            {
+                to[id].AddRemoveEntityComponent();
+            }
+        }
+        public static void CopyRemoveEntityComponentPassive(TableSet from, TableSet to, uint id)
+        {
+        }
+        public static bool operator ==(RemoveEntityComponent a, RemoveEntityComponent b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            return true;
+        }
+        public static bool operator !=(RemoveEntityComponent a, RemoveEntityComponent b)
         {
             return !(a == b);
         }
@@ -339,6 +411,7 @@ namespace Common.Simulation
             public uint[] EntityUseCount = new uint[1024];
             public Pool<MovementComponent> MovementComponent = new Pool<MovementComponent>();
             public Pool<Projectile> Projectile = new Pool<Projectile>();
+            public Pool<RemoveEntityComponent> RemoveEntityComponent = new Pool<RemoveEntityComponent>();
             public Pool<Transform> Transform = new Pool<Transform>();
             public Pools()
             {
@@ -354,6 +427,7 @@ namespace Common.Simulation
                 public int Entities;
                 public int Movement;
                 public int Projectile;
+                public int RemoveEntityComponent;
                 public int Transform;
             }
             public void Pack(TableSet ts, BitPacker p)
@@ -418,11 +492,31 @@ namespace Common.Simulation
                         var kv = ts.Projectile.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackFloat(c.Damage);
                         p.PackSInt32(c.DestroyTick);
+                        p.PackUInt32(c.Source);
                         p.PackFloat(c.Speed);
                     }
                 }
                 stats.Projectile += p.BitCount;
+                stats.RemoveEntityComponent = -p.BitCount;
+                if (ts.RemoveEntityComponent.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.RemoveEntityComponent.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.RemoveEntityComponent.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                    }
+                }
+                stats.RemoveEntityComponent += p.BitCount;
                 stats.Transform = -p.BitCount;
                 if (ts.Transform.Count == 0)
                 {
@@ -502,11 +596,31 @@ namespace Common.Simulation
                         var kv = ts.Projectile.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackFloat(c.Damage);
                         p.PackSInt32(c.DestroyTick);
+                        p.PackUInt32(c.Source);
                         p.PackFloat(c.Speed);
                     }
                 }
                 stats.Projectile += p.BitCount;
+                stats.RemoveEntityComponent = -p.BitCount;
+                if (ts.RemoveEntityComponent.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.RemoveEntityComponent.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.RemoveEntityComponent.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                    }
+                }
+                stats.RemoveEntityComponent += p.BitCount;
                 stats.Transform = -p.BitCount;
                 if (ts.Transform.Count == 0)
                 {
@@ -576,8 +690,26 @@ namespace Common.Simulation
                         int id2index;
                         bool isDefault;
                         var c = ts.Projectile.SetAtIndex(i, id);
+                        c.Damage = p.UnpackFloat();
                         c.DestroyTick = p.UnpackSInt32();
+                        c.Source = p.UnpackUInt32();
                         c.Speed = p.UnpackFloat();
+                    }
+                }
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts.RemoveEntityComponent.Clear();
+                }
+                else
+                {
+                    count = (int)p.UnpackUInt32(entityIndexBits);
+                    ts.RemoveEntityComponent.DestructiveResize(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
+                        int id2index;
+                        bool isDefault;
+                        var c = ts.RemoveEntityComponent.SetAtIndex(i, id);
                     }
                 }
                 if (p.UnpackByte(1) == 0)
@@ -669,6 +801,9 @@ namespace Common.Simulation
                 stats.Projectile = -p.BitCount;
                 PackDiffProjectile(ts1, ts2, p);
                 stats.Projectile += p.BitCount;
+                stats.RemoveEntityComponent = -p.BitCount;
+                PackDiffRemoveEntityComponent(ts1, ts2, p);
+                stats.RemoveEntityComponent += p.BitCount;
                 stats.Transform = -p.BitCount;
                 PackDiffTransform(ts1, ts2, p);
                 stats.Transform += p.BitCount;
@@ -739,6 +874,9 @@ namespace Common.Simulation
                 stats.Projectile = -p.BitCount;
                 PackDiffProjectile(ts1, ts2, p);
                 stats.Projectile += p.BitCount;
+                stats.RemoveEntityComponent = -p.BitCount;
+                PackDiffRemoveEntityComponent(ts1, ts2, p);
+                stats.RemoveEntityComponent += p.BitCount;
                 stats.Transform = -p.BitCount;
                 PackDiffTransform(ts1, ts2, p);
                 stats.Transform += p.BitCount;
@@ -793,6 +931,7 @@ namespace Common.Simulation
                 for (int i = 0; i < ts2._entityCount; i++) ts2._entityData[i].Id = ts2._entityIds[i];
                 UnpackDiffMovement(ts1, ts2, p);
                 UnpackDiffProjectile(ts1, ts2, p);
+                UnpackDiffRemoveEntityComponent(ts1, ts2, p);
                 UnpackDiffTransform(ts1, ts2, p);
             }
             private struct UpdatedIndex
@@ -825,7 +964,9 @@ namespace Common.Simulation
             }
             private void PackProjectile(TableSet ts, Projectile c, BitPacker p)
             {
+                p.PackFloat(c.Damage);
                 p.PackSInt32(c.DestroyTick);
+                p.PackUInt32(c.Source);
                 p.PackFloat(c.Speed);
             }
             private void PackTransform(TableSet ts, Transform c, BitPacker p)
@@ -1081,6 +1222,68 @@ namespace Common.Simulation
                     }
                 }
             }
+            private void PackDiffRemoveEntityComponent(TableSet ts1, TableSet ts2, BitPacker p)
+            {
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                var count1 = ts1.RemoveEntityComponent.Count;
+                var count2 = ts2.RemoveEntityComponent.Count;
+                {
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var t1end = count1 == 0;
+                    var t2end = count2 == 0;
+                    while (!t1end && !t2end)
+                    {
+                        var kv1 = ts1.RemoveEntityComponent.At(idx1);
+                        var kv2 = ts2.RemoveEntityComponent.At(idx2);
+                        if (kv1.Key == kv2.Key)
+                        {
+                            idx1++; t1end = idx1 >= count1;
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else if (kv1.Key > kv2.Key)
+                        {
+                            _addIds.Add(kv2.Key);
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else
+                        {
+                            _delIndices.Add(idx1);
+                            idx1++; t1end = idx1 >= count1;
+                        }
+                    }
+                    while (!t1end)
+                    {
+                        _delIndices.Add(idx1);
+                        idx1++; t1end = idx1 >= count1;
+                    }
+                    while (!t2end)
+                    {
+                        _addIds.Add(ts2.RemoveEntityComponent.IdAt(idx2));
+                        idx2++; t2end = idx2 >= count2;
+                    }
+                }
+                if (_delIndices.Count + _addIds.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                    return;
+                }
+                p.PackByte(1, 1);
+                p.PackUInt32((uint)_delIndices.Count, _entityBits);
+                p.PackUInt32((uint)_addIds.Count, _entityBits);
+                var ts2Count = ts2.RemoveEntityComponent.Count;
+                if (ts2Count == 0) return;
+                for (int i = 0; i < _delIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_delIndices[i], _entityBits);
+                }
+                for (int i = 0; i < _addIds.Count; i++)
+                {
+                    p.PackUInt32((uint)ts2._entityIds.BinarySearch(ts2._entityCount, _addIds[i]), _entityBits);
+                }
+            }
             private void PackDiffTransform(TableSet ts1, TableSet ts2, BitPacker p)
             {
                 _addIds.Clear();
@@ -1215,7 +1418,9 @@ namespace Common.Simulation
             {
                 int id2index;
                 bool isDefault;
+                c.Damage = p.UnpackFloat();
                 c.DestroyTick = p.UnpackSInt32();
+                c.Source = p.UnpackUInt32();
                 c.Speed = p.UnpackFloat();
             }
             private void UnpackTransform(TableSet ts, Transform c, BitUnpacker p)
@@ -1391,6 +1596,67 @@ namespace Common.Simulation
                     UnpackProjectile(ts2, c, p);
                 }
             }
+            private void UnpackDiffRemoveEntityComponent(TableSet ts1, TableSet ts2, BitUnpacker p)
+            {
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts2.CopyRemoveEntityComponent(ts1);
+                    return;
+                }
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                int delCount = 0;
+                int addCount = 0;
+                delCount = (int)p.UnpackUInt32(_entityBits);
+                addCount = (int)p.UnpackUInt32(_entityBits);
+                int table2count = ts1.RemoveEntityComponent.Count + addCount - delCount;
+                if (table2count == 0)
+                {
+                    ts2.RemoveEntityComponent.Clear();
+                    return;
+                }
+                for (int i = 0; i < delCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _delIndices.Add(idx);
+                }
+                for (int i = 0; i < addCount; i++)
+                {
+                    uint id = ts2._entityIds[p.UnpackUInt32(_entityBits)];
+                    _addIds.Add(id);
+                }
+                ts2.RemoveEntityComponent.DestructiveResize(table2count);
+                int iadd = 0, idel = 0, iupd = 0;
+                int idx1 = 0, idx2 = 0;
+                var count1 = ts1.RemoveEntityComponent.Count;
+                for (var i = 0; i < count1; i++)
+                {
+                    var kv1 = ts1.RemoveEntityComponent.At(i);
+                    while (iadd < addCount && _addIds[iadd] < kv1.Key)
+                    {
+                        var c = ts2.RemoveEntityComponent.SetAtIndex(idx2++, _addIds[iadd++]);
+                    }
+                    if (idel < delCount)
+                    {
+                        if (_delIndices[idel] == idx1)
+                        {
+                            idel++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    {
+                        var c = ts2.RemoveEntityComponent.SetAtIndex(idx2++, kv1.Key);
+                        ts2.CopyRemoveEntityComponent(c, kv1.Value);
+                    }
+                    idx1++;
+                }
+                while (iadd < addCount)
+                {
+                    var c = ts2.RemoveEntityComponent.SetAtIndex(idx2++, _addIds[iadd++]);
+                }
+            }
             private void UnpackDiffTransform(TableSet ts1, TableSet ts2, BitUnpacker p)
             {
                 if (p.UnpackByte(1) == 0)
@@ -1478,6 +1744,7 @@ namespace Common.Simulation
         public uint NextId = 2;
         public Table<MovementComponent> Movement;
         public Table<Projectile> Projectile;
+        public Table<RemoveEntityComponent> RemoveEntityComponent;
         public Table<Transform> Transform;
         public int EntityCount
         {
@@ -1488,6 +1755,7 @@ namespace Common.Simulation
             _pools = pools;
             Movement = new Table<MovementComponent>(_pools.MovementComponent);
             Projectile = new Table<Projectile>(_pools.Projectile);
+            RemoveEntityComponent = new Table<RemoveEntityComponent>(_pools.RemoveEntityComponent);
             Transform = new Table<Transform>(_pools.Transform);
         }
         public void CopyMovement(TableSet ts2)
@@ -1507,6 +1775,10 @@ namespace Common.Simulation
             {
                 CopyProjectile(Projectile.CmpAt(i), ts2.Projectile.CmpAt(i));
             }
+        }
+        public void CopyRemoveEntityComponent(TableSet ts2)
+        {
+            RemoveEntityComponent.CopyIds(ts2.RemoveEntityComponent);
         }
         public void CopyTransform(TableSet ts2)
         {
@@ -1529,6 +1801,7 @@ namespace Common.Simulation
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyMovement(ts2);
             CopyProjectile(ts2);
+            CopyRemoveEntityComponent(ts2);
             CopyTransform(ts2);
         }
         public void MergeWithPredicted(TableSet ts2)
@@ -1543,6 +1816,7 @@ namespace Common.Simulation
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyMovement(ts2);
             CopyProjectile(ts2);
+            CopyRemoveEntityComponent(ts2);
             CopyTransform(ts2);
         }
         public void DeleteEmptyEntities()
@@ -1561,6 +1835,13 @@ namespace Common.Simulation
             for (int i = 0; i < projectileCount; i++)
             {
                 var id = Projectile.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
+            var removeEntityComponentCount = RemoveEntityComponent.Count;
+            for (int i = 0; i < removeEntityComponentCount; i++)
+            {
+                var id = RemoveEntityComponent.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
@@ -1591,6 +1872,7 @@ namespace Common.Simulation
         {
             Movement.Clear();
             Projectile.Clear();
+            RemoveEntityComponent.Clear();
             Transform.Clear();
             for (var i = 0; i < _entityCount; i++)
             {
@@ -1617,6 +1899,15 @@ namespace Common.Simulation
             else
             {
                 destination.DelProjectile();
+            }
+            if(source.RemoveEntityComponent != null)
+            {
+                var newComponent = destination.AddRemoveEntityComponent();
+                CopyRemoveEntityComponent(newComponent, source.RemoveEntityComponent);
+            }
+            else
+            {
+                destination.DelRemoveEntityComponent();
             }
             if(source.Transform != null)
             {
@@ -1686,6 +1977,9 @@ namespace Common.Simulation
                 Projectile.CmpAt(i).Repack();
             }
         }
+        public void RepackRemoveEntityComponent()
+        {
+        }
         public void RepackTransform()
         {
             var count = Transform.Count;
@@ -1698,6 +1992,7 @@ namespace Common.Simulation
         {
             RepackMovement();
             RepackProjectile();
+            RepackRemoveEntityComponent();
             RepackTransform();
         }
         public void InterpolateBase1(TableSet ts1, TableSet ts2, float normalizedTime)
@@ -1719,9 +2014,12 @@ namespace Common.Simulation
             {
                 var c = Projectile.CmpAt(i);
                 var c1 = ts1.Projectile.CmpAt(i);
+                c.Damage = c1.Damage;
                 c.DestroyTick = c1.DestroyTick;
+                c.Source = c1.Source;
                 c.Speed = c1.Speed;
             }
+            RemoveEntityComponent.CopyIds(ts1.RemoveEntityComponent);
             Transform.CopyIds(ts1.Transform);
             int transformCount = Transform.Count;
             for (int i = 0; i < transformCount; ++i)
@@ -1755,9 +2053,12 @@ namespace Common.Simulation
             {
                 var c = Projectile.CmpAt(i);
                 var c2 = ts2.Projectile.CmpAt(i);
+                c.Damage = c2.Damage;
                 c.DestroyTick = c2.DestroyTick;
+                c.Source = c2.Source;
                 c.Speed = c2.Speed;
             }
+            RemoveEntityComponent.CopyIds(ts2.RemoveEntityComponent);
             Transform.CopyIds(ts2.Transform);
             int transformCount = Transform.Count;
             for (int i = 0; i < transformCount; ++i)
@@ -1794,8 +2095,13 @@ namespace Common.Simulation
         }
         private void CopyProjectile(Projectile c1, Projectile c2)
         {
+            c1.Damage = c2.Damage;
             c1.DestroyTick = c2.DestroyTick;
+            c1.Source = c2.Source;
             c1.Speed = c2.Speed;
+        }
+        private void CopyRemoveEntityComponent(RemoveEntityComponent c1, RemoveEntityComponent c2)
+        {
         }
         private void CopyTransform(Transform c1, Transform c2)
         {
@@ -1838,6 +2144,10 @@ namespace Common.Simulation
         {
             get { return TableSet.Projectile[Id]; }
         }
+        public RemoveEntityComponent RemoveEntityComponent
+        {
+            get { return TableSet.RemoveEntityComponent[Id]; }
+        }
         public Transform Transform
         {
             get { return TableSet.Transform[Id]; }
@@ -1858,6 +2168,14 @@ namespace Common.Simulation
         {
             TableSet.Projectile.Delete(Id);
         }
+        public RemoveEntityComponent AddRemoveEntityComponent()
+        {
+            return TableSet.RemoveEntityComponent.Insert(Id);
+        }
+        public void DelRemoveEntityComponent()
+        {
+            TableSet.RemoveEntityComponent.Delete(Id);
+        }
         public Transform AddTransform()
         {
             return TableSet.Transform.Insert(Id);
@@ -1870,6 +2188,7 @@ namespace Common.Simulation
         {
             DelMovement();
             DelProjectile();
+            DelRemoveEntityComponent();
             DelTransform();
         }
     }

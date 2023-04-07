@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1666971806128524891}
   - component: {fileID: 1666971806128524888}
   - component: {fileID: 1666971806128524889}
-  - component: {fileID: 1666971806128524894}
+  - component: {fileID: 2764429601975455633}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1666971806128524895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -131,39 +131,39 @@ MonoBehaviour:
   - m_Vertices: 0f000000
   m_SharedTextures: []
   m_Positions:
-  - {x: -44.593716, y: 0.0001, z: -47.240345}
-  - {x: -44.593716, y: 0.0001, z: -22.240345}
-  - {x: -19.593716, y: 0.0001, z: -47.240345}
-  - {x: -19.593716, y: 0.0001, z: -22.240345}
-  - {x: -44.593716, y: 0.0001, z: -22.240345}
-  - {x: -44.593716, y: 0.0001, z: 2.759655}
-  - {x: -19.593716, y: 0.0001, z: -22.240345}
-  - {x: -19.593716, y: 0.0001, z: 2.759655}
-  - {x: -19.593716, y: 0.0001, z: -47.240345}
-  - {x: -19.593716, y: 0.0001, z: -22.240345}
-  - {x: 5.4062843, y: 0.0001, z: -47.240345}
-  - {x: 5.4062843, y: 0.0001, z: -22.240345}
-  - {x: -19.593716, y: 0.0001, z: -22.240345}
-  - {x: -19.593716, y: 0.0001, z: 2.759655}
-  - {x: 5.4062843, y: 0.0001, z: -22.240345}
-  - {x: 5.4062843, y: 0.0001, z: 2.759655}
+  - {x: -25, y: 0, z: -25}
+  - {x: -25, y: 0, z: 0}
+  - {x: 0, y: 0, z: -25}
+  - {x: 0, y: 0, z: 0}
+  - {x: -25, y: 0, z: 0}
+  - {x: -25, y: 0, z: 25}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 25}
+  - {x: 0, y: 0, z: -25}
+  - {x: 0, y: 0, z: 0}
+  - {x: 25, y: 0, z: -25}
+  - {x: 25, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 25}
+  - {x: 25, y: 0, z: 0}
+  - {x: 25, y: 0, z: 25}
   m_Textures0:
-  - {x: -44.593716, y: -47.240345}
-  - {x: -44.593716, y: -22.240345}
-  - {x: -19.593716, y: -47.240345}
-  - {x: -19.593716, y: -22.240345}
-  - {x: -44.593716, y: -22.240345}
-  - {x: -44.593716, y: 2.759655}
-  - {x: -19.593716, y: -22.240345}
-  - {x: -19.593716, y: 2.759655}
-  - {x: -19.593716, y: -47.240345}
-  - {x: -19.593716, y: -22.240345}
-  - {x: 5.4062843, y: -47.240345}
-  - {x: 5.4062843, y: -22.240345}
-  - {x: -19.593716, y: -22.240345}
-  - {x: -19.593716, y: 2.759655}
-  - {x: 5.4062843, y: -22.240345}
-  - {x: 5.4062843, y: 2.759655}
+  - {x: -25, y: -25}
+  - {x: -25, y: 0}
+  - {x: 0, y: -25}
+  - {x: 0, y: 0}
+  - {x: -25, y: 0}
+  - {x: -25, y: 25}
+  - {x: 0, y: 0}
+  - {x: 0, y: 25}
+  - {x: 0, y: -25}
+  - {x: 0, y: 0}
+  - {x: 25, y: -25}
+  - {x: 25, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 25}
+  - {x: 25, y: 0}
+  - {x: 25, y: 25}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2209
+  m_VersionIndex: 2215
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -277,7 +277,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1666971806128524895}
   m_Mesh: {fileID: 0}
---- !u!65 &1666971806128524894
+--- !u!65 &2764429601975455633
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,8 +288,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 50, y: 0, z: 50}
-  m_Center: {x: -19.593716, y: 0.0001, z: -22.240345}
+  m_Size: {x: 50, y: 0.0001, z: 50}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1666971807765247534
 GameObject:
   m_ObjectHideFlags: 0

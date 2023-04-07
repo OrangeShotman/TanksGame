@@ -3,16 +3,19 @@ using OrangeShotStudio.Multiplayer.Systems;
 using OrangeShotStudio.TanksGame.Multiplayer;
 using OrangeShotStudio.TanksGame.View;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OrangeShotStudio.TanksGame
 {
     public class PhysicsPrePositionSystem : BaseSystem<GameData>
     {
         private readonly CollectionUpdater<PhysicsObjectWrapper> _collectionUpdater;
+        private PhysicsScene _physicsScene;
 
-        public PhysicsPrePositionSystem(CollectionUpdater<PhysicsObjectWrapper> collectionUpdater)
+        public PhysicsPrePositionSystem(Scene scene, CollectionUpdater<PhysicsObjectWrapper> collectionUpdater)
         {
             _collectionUpdater = collectionUpdater;
+            _physicsScene = scene.GetPhysicsScene();
         }
 
         protected override void InternalUpdate(GameData data, TimeData timeData)
@@ -26,6 +29,7 @@ namespace OrangeShotStudio.TanksGame
                 physicsObjectWrapper.SetPosition(transform);
             }
             Physics.SyncTransforms();
+            _physicsScene.Simulate((float)timeData.DeltaTimeMs);
         }
     }
 }

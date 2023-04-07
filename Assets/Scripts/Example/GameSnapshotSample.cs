@@ -7,16 +7,14 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         public GameData GameData { get; private set; }
         public int SampleTime { get; private set; }
         public int Tick { get; private set; }
-        public int TickDurationMs { get; private set; }
 
         public GameSnapshotSample(GameData gameData)
         {
             GameData = gameData;
         }
 
-        public void SetSample(GameData gameData, int tick, int tickDurationMs)
+        public void SetSample(GameData gameData, int tick)
         {
-            TickDurationMs = tickDurationMs;
             gameData.CopyTo(GameData);
             SampleTime = Environment.TickCount;
             Tick = tick;

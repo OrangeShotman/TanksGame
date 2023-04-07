@@ -5,7 +5,7 @@ namespace OrangeShotStudio.TanksGame
 {
     public class ClientInterpolator
     {
-        private  Interpolator _interpolator;
+        private Interpolator _interpolator;
         private Interpolator _interpolatorOfOtherWorld;
 
         public ClientInterpolator(GameDataFactory gameDataFactory)

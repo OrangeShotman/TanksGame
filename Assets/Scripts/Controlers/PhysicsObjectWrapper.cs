@@ -1,3 +1,4 @@
+using OrangeShotStudio.TanksGame.View;
 using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame
@@ -7,10 +8,12 @@ namespace OrangeShotStudio.TanksGame
         private readonly GameObject _gameObject;
         private readonly CharacterController _characterController;
 
-        public PhysicsObjectWrapper(GameObject gameObject)
+        public PhysicsObjectWrapper(GameObject gameObject, uint entityId)
         {
             _gameObject = gameObject;
             _characterController = gameObject.GetComponent<CharacterController>();
+            var physicsObjectBehaviour = gameObject.GetComponent<PhysicsObjectBehaviour>();
+            physicsObjectBehaviour.EntityId = entityId;
         }
 
         public void SetPosition(Common.World.Transform transform)

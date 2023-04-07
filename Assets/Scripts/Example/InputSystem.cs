@@ -1,6 +1,7 @@
 using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
+using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
@@ -27,6 +28,12 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     var movementComponent = avatarEntity.Movement;
                     if (movementComponent == null)
                         movementComponent = avatarEntity.AddMovement();
+                    if (avatarEntity.Avatar.Destroyed)
+                    {
+                        movementComponent.Movement = Vector2.zero;
+                        continue;
+                    }
+
                     if (input.Input.PlayerInput.Count < 1)
                         continue;
                     var inputSample = input.Input.PlayerInput.CmpAt(0);

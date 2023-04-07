@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using Common.Simulation;
 using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Multiplayer.Systems;
 using OrangeShotStudio.Provider;
-using OrangeShotStudio.TanksGame;
-using OrangeShotStudio.TanksGame.Multiplayer;
 using OrangeShotStudio.TanksGame.View;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,16 +32,23 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 new CreateSceneParameters(LocalPhysicsMode.Physics3D));
 
             var systems = new List<BaseSystem<GameData>>();
+            systems.Add(new EntityClearSystem(simulation));
             systems.Add(new LevelInitializeSystem(scene, _prefabProvider));
             if (isServer)
                 systems.Add(_playerHandlerSystem);
             systems.Add(new InputSystem(inputStorage));
             systems.Add(new PhysicsBodyCreationSystem(_prefabProvider, collectionUpdater, scene));
-            systems.Add(new PhysicsPrePositionSystem(collectionUpdater));
+            systems.Add(new PhysicsPrePositionSystem(scene, collectionUpdater));
             systems.Add(new GunSystem());
             systems.Add(new ProjectileSpawnSystem(simulation));
-            systems.Add(new ProjectilesSystem(simulation));
+            systems.Add(new ProjectilesSystem(simulation, scene));
             systems.Add(new MovementSystem(collectionUpdater));
+            if (isServer)
+            {
+                systems.Add(new DamageSystem());
+                systems.Add(new AvatarHealthSystem());
+                systems.Add(new AvatarRespawnSystem());
+            }
             if (!isServer)
                 systems.Add(new PredictionStoreSystem(_userId));
 

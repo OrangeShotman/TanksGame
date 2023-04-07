@@ -70,10 +70,15 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             avatarComponent.OwnerUserId = player.UserId;
             var transform = avatarEntity.AddTransform();
             transform.Position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+            transform.Forward = Random.insideUnitCircle.normalized;
             var physicsObject = avatarEntity.AddPhysicsObject();
             physicsObject.BodyType = PhysicsBodyType.PlayerBody;
             var gun = avatarEntity.AddGun();
             gun.CooldownDuration = 10;
+            gun.PositionOffset = 0.5f;
+            var health = avatarEntity.AddHealth();
+            health.CurrentHealth = 100;
+            health.MaxHealth = 100;
         }
 
         void IPlayerHandler.OnPlayerAdd(int userId)

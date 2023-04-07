@@ -13,14 +13,17 @@ namespace Common.World
     // DO NOT EDIT - generated from Generator/EC/World/Avatar.cs
     public sealed class Avatar : IComponent
     {
+        public bool Destroyed;
         public int OwnerUserId;
         public void Reset()
         {
+            Destroyed = default(bool);
             OwnerUserId = default(int);
         }
         public static bool DifferForPack(Avatar c1, Avatar c2)
         {
             bool null1, null2;
+            if (c1.Destroyed != c2.Destroyed) return true;
             if (c1.OwnerUserId != c2.OwnerUserId) return true;
             return false;
         }
@@ -58,6 +61,7 @@ namespace Common.World
             {
                 toAvatar1 = to[id].AddAvatar();
             }
+            toAvatar1.Destroyed = fromAvatar2.Destroyed;
             toAvatar1.OwnerUserId = fromAvatar2.OwnerUserId;
         }
         public static void CopyAvatarPassive(TableSet from, TableSet to, uint id)
@@ -82,6 +86,7 @@ namespace Common.World
             {
                 return;
             }
+            toAvatar1.Destroyed = fromAvatar2.Destroyed;
             toAvatar1.OwnerUserId = fromAvatar2.OwnerUserId;
         }
         public static bool operator ==(Avatar a, Avatar b)
@@ -99,6 +104,10 @@ namespace Common.World
                 return false;
             }
             bool aFieldIsNull, bFieldIsNull;
+            if (a.Destroyed != b.Destroyed)
+            {
+                return false;
+            }
             if (a.OwnerUserId != b.OwnerUserId)
             {
                 return false;
@@ -110,17 +119,219 @@ namespace Common.World
             return !(a == b);
         }
     }
+    // DO NOT EDIT - generated from Generator/EC/World/AvatarRespawn.cs
+    public sealed class AvatarRespawn : IComponent
+    {
+        public int RespawnTick;
+        public void Reset()
+        {
+            RespawnTick = default(int);
+        }
+        public static bool DifferForPack(AvatarRespawn c1, AvatarRespawn c2)
+        {
+            bool null1, null2;
+            if (c1.RespawnTick != c2.RespawnTick) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is AvatarRespawn && (AvatarRespawn) obj == this;
+        }
+        public static void CopyAvatarRespawn(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromAvatarRespawn2 = fromEntity.AvatarRespawn;
+            if (fromAvatarRespawn2 == null)
+            {
+                to[id].DelAvatarRespawn();
+                return;
+            }
+            var toAvatarRespawn1 = toEntity.AvatarRespawn;
+            if (toAvatarRespawn1 == null)
+            {
+                toAvatarRespawn1 = to[id].AddAvatarRespawn();
+            }
+            toAvatarRespawn1.RespawnTick = fromAvatarRespawn2.RespawnTick;
+        }
+        public static void CopyAvatarRespawnPassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromAvatarRespawn2 = fromEntity.AvatarRespawn;
+            if (fromAvatarRespawn2 == null)
+            {
+                return;
+            }
+            var toAvatarRespawn1 = toEntity.AvatarRespawn;
+            if (toAvatarRespawn1 == null)
+            {
+                return;
+            }
+            toAvatarRespawn1.RespawnTick = fromAvatarRespawn2.RespawnTick;
+        }
+        public static bool operator ==(AvatarRespawn a, AvatarRespawn b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (a.RespawnTick != b.RespawnTick)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(AvatarRespawn a, AvatarRespawn b)
+        {
+            return !(a == b);
+        }
+    }
+    // DO NOT EDIT - generated from Generator/EC/World/Damage.cs
+    public sealed class Damage : IComponent
+    {
+        public float Value;
+        public void Reset()
+        {
+            Value = default(float);
+        }
+        public static bool DifferForPack(Damage c1, Damage c2)
+        {
+            bool null1, null2;
+            if (c1.Value != c2.Value) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is Damage && (Damage) obj == this;
+        }
+        public static void CopyDamage(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromDamage2 = fromEntity.Damage;
+            if (fromDamage2 == null)
+            {
+                to[id].DelDamage();
+                return;
+            }
+            var toDamage1 = toEntity.Damage;
+            if (toDamage1 == null)
+            {
+                toDamage1 = to[id].AddDamage();
+            }
+            toDamage1.Value = fromDamage2.Value;
+        }
+        public static void CopyDamagePassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromDamage2 = fromEntity.Damage;
+            if (fromDamage2 == null)
+            {
+                return;
+            }
+            var toDamage1 = toEntity.Damage;
+            if (toDamage1 == null)
+            {
+                return;
+            }
+            toDamage1.Value = fromDamage2.Value;
+        }
+        public static bool operator ==(Damage a, Damage b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (Math.Abs(a.Value - b.Value) > 0.01f)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(Damage a, Damage b)
+        {
+            return !(a == b);
+        }
+    }
     // DO NOT EDIT - generated from Generator/EC/World/Gun.cs
     public sealed class Gun : IComponent
     {
         public int CooldownDuration;
         public int NextShotTick;
+        public float PositionOffset;
         public int ShotCount;
         public bool Use;
         public void Reset()
         {
             CooldownDuration = default(int);
             NextShotTick = default(int);
+            PositionOffset = default(float);
             ShotCount = default(int);
             Use = default(bool);
         }
@@ -129,6 +340,7 @@ namespace Common.World
             bool null1, null2;
             if (c1.CooldownDuration != c2.CooldownDuration) return true;
             if (c1.NextShotTick != c2.NextShotTick) return true;
+            if (c1.PositionOffset != c2.PositionOffset) return true;
             if (c1.ShotCount != c2.ShotCount) return true;
             if (c1.Use != c2.Use) return true;
             return false;
@@ -169,6 +381,7 @@ namespace Common.World
             }
             toGun1.CooldownDuration = fromGun2.CooldownDuration;
             toGun1.NextShotTick = fromGun2.NextShotTick;
+            toGun1.PositionOffset = fromGun2.PositionOffset;
             toGun1.ShotCount = fromGun2.ShotCount;
             toGun1.Use = fromGun2.Use;
         }
@@ -196,6 +409,7 @@ namespace Common.World
             }
             toGun1.CooldownDuration = fromGun2.CooldownDuration;
             toGun1.NextShotTick = fromGun2.NextShotTick;
+            toGun1.PositionOffset = fromGun2.PositionOffset;
             toGun1.ShotCount = fromGun2.ShotCount;
             toGun1.Use = fromGun2.Use;
         }
@@ -222,6 +436,10 @@ namespace Common.World
             {
                 return false;
             }
+            if (Math.Abs(a.PositionOffset - b.PositionOffset) > 0.01f)
+            {
+                return false;
+            }
             if (a.ShotCount != b.ShotCount)
             {
                 return false;
@@ -233,6 +451,115 @@ namespace Common.World
             return true;
         }
         public static bool operator !=(Gun a, Gun b)
+        {
+            return !(a == b);
+        }
+    }
+    // DO NOT EDIT - generated from Generator/EC/World/Health.cs
+    public sealed class Health : IComponent
+    {
+        public float CurrentHealth;
+        public float MaxHealth;
+        public void Reset()
+        {
+            CurrentHealth = default(float);
+            MaxHealth = default(float);
+        }
+        public static bool DifferForPack(Health c1, Health c2)
+        {
+            bool null1, null2;
+            if (c1.CurrentHealth != c2.CurrentHealth) return true;
+            if (c1.MaxHealth != c2.MaxHealth) return true;
+            return false;
+        }
+        public void Repack()
+        {
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is Health && (Health) obj == this;
+        }
+        public static void CopyHealth(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromHealth2 = fromEntity.Health;
+            if (fromHealth2 == null)
+            {
+                to[id].DelHealth();
+                return;
+            }
+            var toHealth1 = toEntity.Health;
+            if (toHealth1 == null)
+            {
+                toHealth1 = to[id].AddHealth();
+            }
+            toHealth1.CurrentHealth = fromHealth2.CurrentHealth;
+            toHealth1.MaxHealth = fromHealth2.MaxHealth;
+        }
+        public static void CopyHealthPassive(TableSet from, TableSet to, uint id)
+        {
+            var fromEntity = from[id];
+            if (fromEntity == null)
+            {
+                return;
+            }
+            var toEntity = to[id];
+            if (toEntity == null)
+            {
+                return;
+            }
+            var fromHealth2 = fromEntity.Health;
+            if (fromHealth2 == null)
+            {
+                return;
+            }
+            var toHealth1 = toEntity.Health;
+            if (toHealth1 == null)
+            {
+                return;
+            }
+            toHealth1.CurrentHealth = fromHealth2.CurrentHealth;
+            toHealth1.MaxHealth = fromHealth2.MaxHealth;
+        }
+        public static bool operator ==(Health a, Health b)
+        {
+            if ((object)a == null && (object)b == null)
+            {
+                return true;
+            }
+            if ((object)a == null && (object)b != null)
+            {
+                return false;
+            }
+            if ((object)a != null && (object)b == null)
+            {
+                return false;
+            }
+            bool aFieldIsNull, bFieldIsNull;
+            if (Math.Abs(a.CurrentHealth - b.CurrentHealth) > 0.01f)
+            {
+                return false;
+            }
+            if (Math.Abs(a.MaxHealth - b.MaxHealth) > 0.01f)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool operator !=(Health a, Health b)
         {
             return !(a == b);
         }
@@ -674,7 +1001,10 @@ namespace Common.World
             public Pool<Entity> Entity = new Pool<Entity>();
             public uint[] EntityUseCount = new uint[1024];
             public Pool<Avatar> Avatar = new Pool<Avatar>();
+            public Pool<AvatarRespawn> AvatarRespawn = new Pool<AvatarRespawn>();
+            public Pool<Damage> Damage = new Pool<Damage>();
             public Pool<Gun> Gun = new Pool<Gun>();
+            public Pool<Health> Health = new Pool<Health>();
             public Pool<MovementComponent> MovementComponent = new Pool<MovementComponent>();
             public Pool<PhysicsObject> PhysicsObject = new Pool<PhysicsObject>();
             public Pool<Player> Player = new Pool<Player>();
@@ -693,6 +1023,7 @@ namespace Common.World
                 public int Entities;
                 public int Avatar;
                 public int Gun;
+                public int Health;
                 public int PhysicsObject;
                 public int Player;
                 public int Transform;
@@ -740,6 +1071,7 @@ namespace Common.World
                         var kv = ts.Avatar.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackBool(c.Destroyed);
                         p.PackSInt32(c.OwnerUserId);
                     }
                 }
@@ -761,11 +1093,32 @@ namespace Common.World
                         var c = kv.Value;
                         p.PackSInt32(c.CooldownDuration);
                         p.PackSInt32(c.NextShotTick);
+                        p.PackFloat(c.PositionOffset);
                         p.PackSInt32(c.ShotCount);
                         p.PackBool(c.Use);
                     }
                 }
                 stats.Gun += p.BitCount;
+                stats.Health = -p.BitCount;
+                if (ts.Health.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.Health.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.Health.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackFloat(c.CurrentHealth);
+                        p.PackFloat(c.MaxHealth);
+                    }
+                }
+                stats.Health += p.BitCount;
                 stats.PhysicsObject = -p.BitCount;
                 if (ts.PhysicsObject.Count == 0)
                 {
@@ -866,6 +1219,7 @@ namespace Common.World
                         var kv = ts.Avatar.At(i);
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
+                        p.PackBool(c.Destroyed);
                         p.PackSInt32(c.OwnerUserId);
                     }
                 }
@@ -887,11 +1241,32 @@ namespace Common.World
                         var c = kv.Value;
                         p.PackSInt32(c.CooldownDuration);
                         p.PackSInt32(c.NextShotTick);
+                        p.PackFloat(c.PositionOffset);
                         p.PackSInt32(c.ShotCount);
                         p.PackBool(c.Use);
                     }
                 }
                 stats.Gun += p.BitCount;
+                stats.Health = -p.BitCount;
+                if (ts.Health.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    var tableCount = ts.Health.Count;
+                    p.PackUInt32((uint)tableCount, entityIndexBits);
+                    for (var i = 0; i < tableCount; i++)
+                    {
+                        var kv = ts.Health.At(i);
+                        p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
+                        var c = kv.Value;
+                        p.PackFloat(c.CurrentHealth);
+                        p.PackFloat(c.MaxHealth);
+                    }
+                }
+                stats.Health += p.BitCount;
                 stats.PhysicsObject = -p.BitCount;
                 if (ts.PhysicsObject.Count == 0)
                 {
@@ -984,9 +1359,12 @@ namespace Common.World
                         int id2index;
                         bool isDefault;
                         var c = ts.Avatar.SetAtIndex(i, id);
+                        c.Destroyed = p.UnpackBool();
                         c.OwnerUserId = p.UnpackSInt32();
                     }
                 }
+                ts.AvatarRespawn.Clear();
+                ts.Damage.Clear();
                 if (p.UnpackByte(1) == 0)
                 {
                     ts.Gun.Clear();
@@ -1003,11 +1381,30 @@ namespace Common.World
                         var c = ts.Gun.SetAtIndex(i, id);
                         c.CooldownDuration = p.UnpackSInt32();
                         c.NextShotTick = p.UnpackSInt32();
+                        c.PositionOffset = p.UnpackFloat();
                         c.ShotCount = p.UnpackSInt32();
                         c.Use = p.UnpackBool();
                     }
                 }
                 ts.GunPredicted.Clear();
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts.Health.Clear();
+                }
+                else
+                {
+                    count = (int)p.UnpackUInt32(entityIndexBits);
+                    ts.Health.DestructiveResize(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint id = ts._entityIds[p.UnpackUInt32(entityIndexBits)];
+                        int id2index;
+                        bool isDefault;
+                        var c = ts.Health.SetAtIndex(i, id);
+                        c.CurrentHealth = p.UnpackFloat();
+                        c.MaxHealth = p.UnpackFloat();
+                    }
+                }
                 ts.Movement.Clear();
                 if (p.UnpackByte(1) == 0)
                 {
@@ -1135,6 +1532,9 @@ namespace Common.World
                 stats.Gun = -p.BitCount;
                 PackDiffGun(ts1, ts2, p);
                 stats.Gun += p.BitCount;
+                stats.Health = -p.BitCount;
+                PackDiffHealth(ts1, ts2, p);
+                stats.Health += p.BitCount;
                 stats.PhysicsObject = -p.BitCount;
                 PackDiffPhysicsObject(ts1, ts2, p);
                 stats.PhysicsObject += p.BitCount;
@@ -1211,6 +1611,9 @@ namespace Common.World
                 stats.Gun = -p.BitCount;
                 PackDiffGun(ts1, ts2, p);
                 stats.Gun += p.BitCount;
+                stats.Health = -p.BitCount;
+                PackDiffHealth(ts1, ts2, p);
+                stats.Health += p.BitCount;
                 stats.PhysicsObject = -p.BitCount;
                 PackDiffPhysicsObject(ts1, ts2, p);
                 stats.PhysicsObject += p.BitCount;
@@ -1270,8 +1673,11 @@ namespace Common.World
                 }
                 for (int i = 0; i < ts2._entityCount; i++) ts2._entityData[i].Id = ts2._entityIds[i];
                 UnpackDiffAvatar(ts1, ts2, p);
+                ts2.AvatarRespawn.Clear();
+                ts2.Damage.Clear();
                 UnpackDiffGun(ts1, ts2, p);
                 ts2.GunPredicted.Clear();
+                UnpackDiffHealth(ts1, ts2, p);
                 ts2.Movement.Clear();
                 UnpackDiffPhysicsObject(ts1, ts2, p);
                 UnpackDiffPlayer(ts1, ts2, p);
@@ -1304,14 +1710,21 @@ namespace Common.World
             private List<UpdatedIndex> _updPersonalIndices = new List<UpdatedIndex>(12);
             private void PackAvatar(TableSet ts, Avatar c, BitPacker p)
             {
+                p.PackBool(c.Destroyed);
                 p.PackSInt32(c.OwnerUserId);
             }
             private void PackGun(TableSet ts, Gun c, BitPacker p)
             {
                 p.PackSInt32(c.CooldownDuration);
                 p.PackSInt32(c.NextShotTick);
+                p.PackFloat(c.PositionOffset);
                 p.PackSInt32(c.ShotCount);
                 p.PackBool(c.Use);
+            }
+            private void PackHealth(TableSet ts, Health c, BitPacker p)
+            {
+                p.PackFloat(c.CurrentHealth);
+                p.PackFloat(c.MaxHealth);
             }
             private void PackPhysicsObject(TableSet ts, PhysicsObject c, BitPacker p)
             {
@@ -1571,6 +1984,130 @@ namespace Common.World
                     {
                         var cur = ts2.Gun.CmpAt(idx2);
                         PackGun(ts2, cur, p);
+                        idx2++;
+                        iadd++;
+                    }
+                }
+            }
+            private void PackDiffHealth(TableSet ts1, TableSet ts2, BitPacker p)
+            {
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                var count1 = ts1.Health.Count;
+                var count2 = ts2.Health.Count;
+                {
+                    var idx1 = 0;
+                    var idx2 = 0;
+                    var t1end = count1 == 0;
+                    var t2end = count2 == 0;
+                    while (!t1end && !t2end)
+                    {
+                        var kv1 = ts1.Health.At(idx1);
+                        var kv2 = ts2.Health.At(idx2);
+                        if (kv1.Key == kv2.Key)
+                        {
+                            if (Common.World.Health.DifferForPack(kv1.Value, kv2.Value))
+                            {
+                                _updIndices.Add(idx1);
+                            }
+                            idx1++; t1end = idx1 >= count1;
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else if (kv1.Key > kv2.Key)
+                        {
+                            _addIds.Add(kv2.Key);
+                            idx2++; t2end = idx2 >= count2;
+                        }
+                        else
+                        {
+                            _delIndices.Add(idx1);
+                            idx1++; t1end = idx1 >= count1;
+                        }
+                    }
+                    while (!t1end)
+                    {
+                        _delIndices.Add(idx1);
+                        idx1++; t1end = idx1 >= count1;
+                    }
+                    while (!t2end)
+                    {
+                        _addIds.Add(ts2.Health.IdAt(idx2));
+                        idx2++; t2end = idx2 >= count2;
+                    }
+                }
+                if (_delIndices.Count + _addIds.Count + _updIndices.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                    return;
+                }
+                p.PackByte(1, 1);
+                if (_delIndices.Count + _addIds.Count == 0)
+                {
+                    p.PackByte(0, 1);
+                }
+                else
+                {
+                    p.PackByte(1, 1);
+                    p.PackUInt32((uint)_delIndices.Count, _entityBits);
+                    p.PackUInt32((uint)_addIds.Count, _entityBits);
+                }
+                p.PackUInt32((uint)_updIndices.Count, _entityBits);
+                var ts2Count = ts2.Health.Count;
+                if (ts2Count == 0) return;
+                for (int i = 0; i < _delIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_delIndices[i], _entityBits);
+                }
+                for (int i = 0; i < _addIds.Count; i++)
+                {
+                    p.PackUInt32((uint)ts2._entityIds.BinarySearch(ts2._entityCount, _addIds[i]), _entityBits);
+                }
+                for (int i = 0; i < _updIndices.Count; i++)
+                {
+                    p.PackUInt32((uint)_updIndices[i], _entityBits);
+                }
+                {
+                    int iadd = 0, iupd = 0, idel = 0;
+                    int idx1 = 0, idx2 = 0;
+                    for (int i = 0; i < count1; i++)
+                    {
+                        var kv1 = ts1.Health.At(i);
+                        while (iadd < _addIds.Count && _addIds[iadd] < kv1.Key)
+                        {
+                            var cur = ts2.Health.CmpAt(idx2);
+                            PackHealth(ts2, cur, p);
+                            idx2++;
+                            iadd++;
+                        }
+                        if (idel < _delIndices.Count)
+                        {
+                            if (_delIndices[idel] == idx1)
+                            {
+                                idel++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        if (iupd < _updIndices.Count)
+                        {
+                            if (_updIndices[iupd] == idx1)
+                            {
+                                var cur = ts2.Health.CmpAt(idx2);
+                                PackHealth(ts2, cur, p);
+                                idx2++;
+                                iupd++;
+                                idx1++;
+                                continue;
+                            }
+                        }
+                        idx2++;
+                        idx1++;
+                    }
+                    while (iadd < _addIds.Count)
+                    {
+                        var cur = ts2.Health.CmpAt(idx2);
+                        PackHealth(ts2, cur, p);
                         idx2++;
                         iadd++;
                     }
@@ -1952,6 +2489,7 @@ namespace Common.World
             {
                 int id2index;
                 bool isDefault;
+                c.Destroyed = p.UnpackBool();
                 c.OwnerUserId = p.UnpackSInt32();
             }
             private void UnpackGun(TableSet ts, Gun c, BitUnpacker p)
@@ -1960,8 +2498,16 @@ namespace Common.World
                 bool isDefault;
                 c.CooldownDuration = p.UnpackSInt32();
                 c.NextShotTick = p.UnpackSInt32();
+                c.PositionOffset = p.UnpackFloat();
                 c.ShotCount = p.UnpackSInt32();
                 c.Use = p.UnpackBool();
+            }
+            private void UnpackHealth(TableSet ts, Health c, BitUnpacker p)
+            {
+                int id2index;
+                bool isDefault;
+                c.CurrentHealth = p.UnpackFloat();
+                c.MaxHealth = p.UnpackFloat();
             }
             private void UnpackPhysicsObject(TableSet ts, PhysicsObject c, BitUnpacker p)
             {
@@ -2148,6 +2694,89 @@ namespace Common.World
                 {
                     var c = ts2.Gun.SetAtIndex(idx2++, _addIds[iadd++]);
                     UnpackGun(ts2, c, p);
+                }
+            }
+            private void UnpackDiffHealth(TableSet ts1, TableSet ts2, BitUnpacker p)
+            {
+                if (p.UnpackByte(1) == 0)
+                {
+                    ts2.CopyHealth(ts1);
+                    return;
+                }
+                _addIds.Clear();
+                _delIndices.Clear();
+                _updIndices.Clear();
+                int delCount = 0;
+                int addCount = 0;
+                if (p.UnpackByte(1) != 0)
+                {
+                    delCount = (int)p.UnpackUInt32(_entityBits);
+                    addCount = (int)p.UnpackUInt32(_entityBits);
+                }
+                int updCount = (int)p.UnpackUInt32(_entityBits);
+                int table2count = ts1.Health.Count + addCount - delCount;
+                if (table2count == 0)
+                {
+                    ts2.Health.Clear();
+                    return;
+                }
+                for (int i = 0; i < delCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _delIndices.Add(idx);
+                }
+                for (int i = 0; i < addCount; i++)
+                {
+                    uint id = ts2._entityIds[p.UnpackUInt32(_entityBits)];
+                    _addIds.Add(id);
+                }
+                for (int i = 0; i < updCount; i++)
+                {
+                    int idx = (int)p.UnpackUInt32(_entityBits);
+                    _updIndices.Add(idx);
+                }
+                ts2.Health.DestructiveResize(table2count);
+                int iadd = 0, idel = 0, iupd = 0;
+                int idx1 = 0, idx2 = 0;
+                var count1 = ts1.Health.Count;
+                for (var i = 0; i < count1; i++)
+                {
+                    var kv1 = ts1.Health.At(i);
+                    while (iadd < addCount && _addIds[iadd] < kv1.Key)
+                    {
+                        var c = ts2.Health.SetAtIndex(idx2++, _addIds[iadd++]);
+                        UnpackHealth(ts2, c, p);
+                    }
+                    if (idel < delCount)
+                    {
+                        if (_delIndices[idel] == idx1)
+                        {
+                            idel++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    if (iupd < updCount)
+                    {
+                        if (_updIndices[iupd] == idx1)
+                        {
+                            var c = ts2.Health.SetAtIndex(idx2++, kv1.Key);
+                            UnpackHealth(ts2, c, p);
+                            iupd++;
+                            idx1++;
+                            continue;
+                        }
+                    }
+                    {
+                        var c = ts2.Health.SetAtIndex(idx2++, kv1.Key);
+                        ts2.CopyHealth(c, kv1.Value);
+                    }
+                    idx1++;
+                }
+                while (iadd < addCount)
+                {
+                    var c = ts2.Health.SetAtIndex(idx2++, _addIds[iadd++]);
+                    UnpackHealth(ts2, c, p);
                 }
             }
             private void UnpackDiffPhysicsObject(TableSet ts1, TableSet ts2, BitUnpacker p)
@@ -2402,8 +3031,11 @@ namespace Common.World
         }
         public uint NextId = 2;
         public Table<Avatar> Avatar;
+        public Table<AvatarRespawn> AvatarRespawn;
+        public Table<Damage> Damage;
         public Table<Gun> Gun;
         public Table<Gun> GunPredicted;
+        public Table<Health> Health;
         public Table<MovementComponent> Movement;
         public Table<PhysicsObject> PhysicsObject;
         public Table<Player> Player;
@@ -2417,8 +3049,11 @@ namespace Common.World
         {
             _pools = pools;
             Avatar = new Table<Avatar>(_pools.Avatar);
+            AvatarRespawn = new Table<AvatarRespawn>(_pools.AvatarRespawn);
+            Damage = new Table<Damage>(_pools.Damage);
             Gun = new Table<Gun>(_pools.Gun);
             GunPredicted = new Table<Gun>(_pools.Gun);
+            Health = new Table<Health>(_pools.Health);
             Movement = new Table<MovementComponent>(_pools.MovementComponent);
             PhysicsObject = new Table<PhysicsObject>(_pools.PhysicsObject);
             Player = new Table<Player>(_pools.Player);
@@ -2429,6 +3064,7 @@ namespace Common.World
         {
             c1.CooldownDuration = c2.CooldownDuration;
             c1.NextShotTick = c2.NextShotTick;
+            c1.PositionOffset = c2.PositionOffset;
             c1.ShotCount = c2.ShotCount;
             c1.Use = c2.Use;
         }
@@ -2444,6 +3080,24 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 CopyAvatar(Avatar.CmpAt(i), ts2.Avatar.CmpAt(i));
+            }
+        }
+        public void CopyAvatarRespawn(TableSet ts2)
+        {
+            AvatarRespawn.CopyIds(ts2.AvatarRespawn);
+            var count = AvatarRespawn.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyAvatarRespawn(AvatarRespawn.CmpAt(i), ts2.AvatarRespawn.CmpAt(i));
+            }
+        }
+        public void CopyDamage(TableSet ts2)
+        {
+            Damage.CopyIds(ts2.Damage);
+            var count = Damage.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyDamage(Damage.CmpAt(i), ts2.Damage.CmpAt(i));
             }
         }
         public void CopyGun(TableSet ts2)
@@ -2462,6 +3116,15 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 CopyGunPredicted(GunPredicted.CmpAt(i), ts2.GunPredicted.CmpAt(i));
+            }
+        }
+        public void CopyHealth(TableSet ts2)
+        {
+            Health.CopyIds(ts2.Health);
+            var count = Health.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                CopyHealth(Health.CmpAt(i), ts2.Health.CmpAt(i));
             }
         }
         public void CopyMovement(TableSet ts2)
@@ -2520,8 +3183,11 @@ namespace Common.World
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
+            CopyAvatarRespawn(ts2);
+            CopyDamage(ts2);
             CopyGun(ts2);
             CopyGunPredicted(ts2);
+            CopyHealth(ts2);
             CopyMovement(ts2);
             CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
@@ -2539,8 +3205,11 @@ namespace Common.World
             for (var i = 0; i < ts2._entityCount; i++) _entityData[i].Id = ts2._entityIds[i];
             Buffer.BlockCopy(ts2._entityIds, 0, _entityIds, 0, ts2._entityCount * sizeof(uint));
             CopyAvatar(ts2);
+            CopyAvatarRespawn(ts2);
+            CopyDamage(ts2);
             CopyGun(ts2);
             ApplyGunPredicted();
+            CopyHealth(ts2);
             CopyMovement(ts2);
             CopyPhysicsObject(ts2);
             CopyPlayer(ts2);
@@ -2559,6 +3228,20 @@ namespace Common.World
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
+            var avatarRespawnCount = AvatarRespawn.Count;
+            for (int i = 0; i < avatarRespawnCount; i++)
+            {
+                var id = AvatarRespawn.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
+            var damageCount = Damage.Count;
+            for (int i = 0; i < damageCount; i++)
+            {
+                var id = Damage.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
             var gunCount = Gun.Count;
             for (int i = 0; i < gunCount; i++)
             {
@@ -2570,6 +3253,13 @@ namespace Common.World
             for (int i = 0; i < gunPredictedCount; i++)
             {
                 var id = GunPredicted.IdAt(i);
+                var idx = _entityIds.BinarySearch(_entityCount, id);
+                count[idx]++;
+            }
+            var healthCount = Health.Count;
+            for (int i = 0; i < healthCount; i++)
+            {
+                var id = Health.IdAt(i);
                 var idx = _entityIds.BinarySearch(_entityCount, id);
                 count[idx]++;
             }
@@ -2627,8 +3317,11 @@ namespace Common.World
         public void Clear()
         {
             Avatar.Clear();
+            AvatarRespawn.Clear();
+            Damage.Clear();
             Gun.Clear();
             GunPredicted.Clear();
+            Health.Clear();
             Movement.Clear();
             PhysicsObject.Clear();
             Player.Clear();
@@ -2651,6 +3344,24 @@ namespace Common.World
             {
                 destination.DelAvatar();
             }
+            if(source.AvatarRespawn != null)
+            {
+                var newComponent = destination.AddAvatarRespawn();
+                CopyAvatarRespawn(newComponent, source.AvatarRespawn);
+            }
+            else
+            {
+                destination.DelAvatarRespawn();
+            }
+            if(source.Damage != null)
+            {
+                var newComponent = destination.AddDamage();
+                CopyDamage(newComponent, source.Damage);
+            }
+            else
+            {
+                destination.DelDamage();
+            }
             if(source.Gun != null)
             {
                 var newComponent = destination.AddGun();
@@ -2668,6 +3379,15 @@ namespace Common.World
             else
             {
                 destination.DelGunPredicted();
+            }
+            if(source.Health != null)
+            {
+                var newComponent = destination.AddHealth();
+                CopyHealth(newComponent, source.Health);
+            }
+            else
+            {
+                destination.DelHealth();
             }
             if(source.Movement != null)
             {
@@ -2765,6 +3485,22 @@ namespace Common.World
                 Avatar.CmpAt(i).Repack();
             }
         }
+        public void RepackAvatarRespawn()
+        {
+            var count = AvatarRespawn.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                AvatarRespawn.CmpAt(i).Repack();
+            }
+        }
+        public void RepackDamage()
+        {
+            var count = Damage.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                Damage.CmpAt(i).Repack();
+            }
+        }
         public void RepackGun()
         {
             var count = Gun.Count;
@@ -2779,6 +3515,14 @@ namespace Common.World
             for (int i = 0; i < count; ++i)
             {
                 GunPredicted.CmpAt(i).Repack();
+            }
+        }
+        public void RepackHealth()
+        {
+            var count = Health.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                Health.CmpAt(i).Repack();
             }
         }
         public void RepackMovement()
@@ -2825,6 +3569,7 @@ namespace Common.World
         {
             RepackAvatar();
             RepackGun();
+            RepackHealth();
             RepackPhysicsObject();
             RepackPlayer();
             RepackTransform();
@@ -2840,7 +3585,24 @@ namespace Common.World
             {
                 var c = Avatar.CmpAt(i);
                 var c1 = ts1.Avatar.CmpAt(i);
+                c.Destroyed = c1.Destroyed;
                 c.OwnerUserId = c1.OwnerUserId;
+            }
+            AvatarRespawn.CopyIds(ts1.AvatarRespawn);
+            int avatarRespawnCount = AvatarRespawn.Count;
+            for (int i = 0; i < avatarRespawnCount; ++i)
+            {
+                var c = AvatarRespawn.CmpAt(i);
+                var c1 = ts1.AvatarRespawn.CmpAt(i);
+                c.RespawnTick = c1.RespawnTick;
+            }
+            Damage.CopyIds(ts1.Damage);
+            int damageCount = Damage.Count;
+            for (int i = 0; i < damageCount; ++i)
+            {
+                var c = Damage.CmpAt(i);
+                var c1 = ts1.Damage.CmpAt(i);
+                c.Value = c1.Value;
             }
             Gun.CopyIds(ts1.Gun);
             int gunCount = Gun.Count;
@@ -2850,6 +3612,7 @@ namespace Common.World
                 var c1 = ts1.Gun.CmpAt(i);
                 c.CooldownDuration = c1.CooldownDuration;
                 c.NextShotTick = c1.NextShotTick;
+                c.PositionOffset = c1.PositionOffset;
                 c.ShotCount = c1.ShotCount;
                 c.Use = c1.Use;
             }
@@ -2861,8 +3624,18 @@ namespace Common.World
                 var c1 = ts1.GunPredicted.CmpAt(i);
                 c.CooldownDuration = c1.CooldownDuration;
                 c.NextShotTick = c1.NextShotTick;
+                c.PositionOffset = c1.PositionOffset;
                 c.ShotCount = c1.ShotCount;
                 c.Use = c1.Use;
+            }
+            Health.CopyIds(ts1.Health);
+            int healthCount = Health.Count;
+            for (int i = 0; i < healthCount; ++i)
+            {
+                var c = Health.CmpAt(i);
+                var c1 = ts1.Health.CmpAt(i);
+                c.CurrentHealth = c1.CurrentHealth;
+                c.MaxHealth = c1.MaxHealth;
             }
             Movement.CopyIds(ts1.Movement);
             int movementCount = Movement.Count;
@@ -2928,7 +3701,24 @@ namespace Common.World
             {
                 var c = Avatar.CmpAt(i);
                 var c2 = ts2.Avatar.CmpAt(i);
+                c.Destroyed = c2.Destroyed;
                 c.OwnerUserId = c2.OwnerUserId;
+            }
+            AvatarRespawn.CopyIds(ts2.AvatarRespawn);
+            int avatarRespawnCount = AvatarRespawn.Count;
+            for (int i = 0; i < avatarRespawnCount; ++i)
+            {
+                var c = AvatarRespawn.CmpAt(i);
+                var c2 = ts2.AvatarRespawn.CmpAt(i);
+                c.RespawnTick = c2.RespawnTick;
+            }
+            Damage.CopyIds(ts2.Damage);
+            int damageCount = Damage.Count;
+            for (int i = 0; i < damageCount; ++i)
+            {
+                var c = Damage.CmpAt(i);
+                var c2 = ts2.Damage.CmpAt(i);
+                c.Value = c2.Value;
             }
             Gun.CopyIds(ts2.Gun);
             int gunCount = Gun.Count;
@@ -2938,6 +3728,7 @@ namespace Common.World
                 var c2 = ts2.Gun.CmpAt(i);
                 c.CooldownDuration = c2.CooldownDuration;
                 c.NextShotTick = c2.NextShotTick;
+                c.PositionOffset = c2.PositionOffset;
                 c.ShotCount = c2.ShotCount;
                 c.Use = c2.Use;
             }
@@ -2949,8 +3740,18 @@ namespace Common.World
                 var c2 = ts2.GunPredicted.CmpAt(i);
                 c.CooldownDuration = c2.CooldownDuration;
                 c.NextShotTick = c2.NextShotTick;
+                c.PositionOffset = c2.PositionOffset;
                 c.ShotCount = c2.ShotCount;
                 c.Use = c2.Use;
+            }
+            Health.CopyIds(ts2.Health);
+            int healthCount = Health.Count;
+            for (int i = 0; i < healthCount; ++i)
+            {
+                var c = Health.CmpAt(i);
+                var c2 = ts2.Health.CmpAt(i);
+                c.CurrentHealth = c2.CurrentHealth;
+                c.MaxHealth = c2.MaxHealth;
             }
             Movement.CopyIds(ts2.Movement);
             int movementCount = Movement.Count;
@@ -3023,14 +3824,29 @@ namespace Common.World
         private const int EntityCountBits = 16;
         private void CopyAvatar(Avatar c1, Avatar c2)
         {
+            c1.Destroyed = c2.Destroyed;
             c1.OwnerUserId = c2.OwnerUserId;
+        }
+        private void CopyAvatarRespawn(AvatarRespawn c1, AvatarRespawn c2)
+        {
+            c1.RespawnTick = c2.RespawnTick;
+        }
+        private void CopyDamage(Damage c1, Damage c2)
+        {
+            c1.Value = c2.Value;
         }
         private void CopyGun(Gun c1, Gun c2)
         {
             c1.CooldownDuration = c2.CooldownDuration;
             c1.NextShotTick = c2.NextShotTick;
+            c1.PositionOffset = c2.PositionOffset;
             c1.ShotCount = c2.ShotCount;
             c1.Use = c2.Use;
+        }
+        private void CopyHealth(Health c1, Health c2)
+        {
+            c1.CurrentHealth = c2.CurrentHealth;
+            c1.MaxHealth = c2.MaxHealth;
         }
         private void CopyMovement(MovementComponent c1, MovementComponent c2)
         {
@@ -3107,6 +3923,14 @@ namespace Common.World
         {
             get { return TableSet.Avatar[Id]; }
         }
+        public AvatarRespawn AvatarRespawn
+        {
+            get { return TableSet.AvatarRespawn[Id]; }
+        }
+        public Damage Damage
+        {
+            get { return TableSet.Damage[Id]; }
+        }
         public Gun Gun
         {
             get { return TableSet.Gun[Id]; }
@@ -3114,6 +3938,10 @@ namespace Common.World
         public Gun GunPredicted
         {
             get { return TableSet.GunPredicted[Id]; }
+        }
+        public Health Health
+        {
+            get { return TableSet.Health[Id]; }
         }
         public MovementComponent Movement
         {
@@ -3143,6 +3971,22 @@ namespace Common.World
         {
             TableSet.Avatar.Delete(Id);
         }
+        public AvatarRespawn AddAvatarRespawn()
+        {
+            return TableSet.AvatarRespawn.Insert(Id);
+        }
+        public void DelAvatarRespawn()
+        {
+            TableSet.AvatarRespawn.Delete(Id);
+        }
+        public Damage AddDamage()
+        {
+            return TableSet.Damage.Insert(Id);
+        }
+        public void DelDamage()
+        {
+            TableSet.Damage.Delete(Id);
+        }
         public Gun AddGun()
         {
             return TableSet.Gun.Insert(Id);
@@ -3158,6 +4002,14 @@ namespace Common.World
         public void DelGunPredicted()
         {
             TableSet.GunPredicted.Delete(Id);
+        }
+        public Health AddHealth()
+        {
+            return TableSet.Health.Insert(Id);
+        }
+        public void DelHealth()
+        {
+            TableSet.Health.Delete(Id);
         }
         public MovementComponent AddMovement()
         {
@@ -3202,8 +4054,11 @@ namespace Common.World
         public void DeleteAll()
         {
             DelAvatar();
+            DelAvatarRespawn();
+            DelDamage();
             DelGun();
             DelGunPredicted();
+            DelHealth();
             DelMovement();
             DelPhysicsObject();
             DelPlayer();

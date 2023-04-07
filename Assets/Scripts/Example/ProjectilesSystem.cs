@@ -1,43 +1,70 @@
 using Common.Simulation;
 using OrangeShotStudio.Multiplayer.Structuries;
-using OrangeShotStudio.Multiplayer.Systems;
+using OrangeShotStudio.TanksGame.View;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
-    public class ProjectilesSystem : BaseSystem<GameData>
+    public class ProjectilesSystem : SimulationBaseSystem
     {
-        private readonly TableSet _simulation;
-        private int _lastTickUpdate;
+        private PhysicsScene _physicsScene;
+        private readonly RaycastHit[] _raycastHits = new RaycastHit[10];
 
-        public ProjectilesSystem(TableSet simulation)
+        public ProjectilesSystem(TableSet simulation, Scene scene) : base(simulation)
         {
-            _simulation = simulation;
+            _physicsScene = scene.GetPhysicsScene();
         }
-        protected override void InternalUpdate(GameData data, TimeData timeData)
+
+        protected override void SimulationUpdate(GameData data, TimeData timeData)
         {
-            if(_lastTickUpdate>=data.Tick)
-                return;
-            _lastTickUpdate = data.Tick;
-            var clearEmptyEntities = false;
-            var count = _simulation.Projectile.Count;
+            var count = Simulation.Projectile.Count;
             for (int i = count - 1; i >= 0; i--)
             {
-                var projectile = _simulation.Projectile.CmpAt(i);
-                var id = _simulation.Projectile.IdAt(i);
-                var entity = _simulation[id];
-                if (projectile.DestroyTick > _lastTickUpdate)
-                {
-                    var transform = entity.Transform;
-                    var movement = entity.Movement;
-                    transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
-                    continue;
-                }
-                entity.DeleteAll();
-                clearEmptyEntities = true;
+                var id = Simulation.Projectile.IdAt(i);
+                ProcessProjectile(data, Simulation[id]);
             }
-            if(clearEmptyEntities)
-                _simulation.DeleteEmptyEntities();
+        }
+
+        private void ProcessProjectile(GameData data, Entity entity)
+        {
+            var projectile = entity.Projectile;
+            if (projectile.DestroyTick > data.Tick)
+            {
+                var transform = entity.Transform;
+                var movement = entity.Movement;
+                var forward = new Vector3(transform.Forward.x, 0, transform.Forward.y);
+                var hitsCount = _physicsScene.Raycast(transform.Position, forward, _raycastHits,
+                    movement.Movement.magnitude, ~(1 << 10));
+                for (int j = 0; j < hitsCount; j++)
+                {
+                    var hit = _raycastHits[j];
+                    var physicsObjectBehaviour = hit.collider.GetComponent<PhysicsObjectBehaviour>();
+                    if (physicsObjectBehaviour && physicsObjectBehaviour.EntityId == projectile.Source)
+                        continue;
+                    entity.AddRemoveEntityComponent();
+                    transform.Position = hit.point;
+                    DamageEntity(data, projectile, physicsObjectBehaviour);
+                    break;
+                }
+
+                if (hitsCount == 0)
+                    transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
+                return;
+            }
+
+            entity.AddRemoveEntityComponent();
+        }
+
+        private void DamageEntity(GameData gameData, Projectile projectile, PhysicsObjectBehaviour damaged)
+        {
+            if(!damaged)
+                return;
+            var damagedEntity = gameData.World[damaged.EntityId];
+            if(damagedEntity == null)
+                return;
+            var damage = damagedEntity.AddDamage();
+            damage.Value = projectile.Damage;
         }
     }
 }
