@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
-    public class GameData : IGameData<GameData>, IMessageData, IInputSample
+    public class GameData : IGameData<GameData>, IMessageData, IInputSample, IInterpolatable<GameData>
     {
         private readonly TableSet.Packer _inputPacker;
         private readonly Common.World.TableSet.Packer _worldPacker;

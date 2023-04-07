@@ -2,21 +2,24 @@ using System;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
-    public class Interpolator
+    public class Interpolator<T> where T : IInterpolatable<T>
     {
-        private GameSnapshotSample _baseSample;
-        private GameSnapshotSample _nextSample;
-        private GameData _interpolatedSample;
+        private readonly IInterpolationStrategy<T> _interpolationStrategy;
+        private GameSnapshotSample<T> _baseSample;
+        private GameSnapshotSample<T> _nextSample;
+        private T _interpolatedResult;
         private int _delta;
 
-        public Interpolator(GameDataFactory gameDataFactory)
+        public Interpolator(T interpolatableBase, T interpolatableNext, T interpolatedResult,
+            IInterpolationStrategy<T> interpolationStrategy)
         {
-            _interpolatedSample = gameDataFactory.CreateMessage();
-            _baseSample = new GameSnapshotSample(gameDataFactory.CreateMessage());
-            _nextSample = new GameSnapshotSample(gameDataFactory.CreateMessage());
+            _interpolationStrategy = interpolationStrategy;
+            _interpolatedResult = interpolatedResult;
+            _baseSample = new GameSnapshotSample<T>(interpolatableBase);
+            _nextSample = new GameSnapshotSample<T>(interpolatableNext);
         }
 
-        public void UpdateNextState(GameData currentState, int tick)
+        public void UpdateNextState(T currentState, int tick)
         {
             if (currentState == null)
                 return;
@@ -27,18 +30,19 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             _delta = _nextSample.SampleTime - _baseSample.SampleTime;
         }
 
-        public GameData Interpolate()
+        public T Interpolate()
         {
             var normalizedValue = (Environment.TickCount - _nextSample.SampleTime) / (float)_delta;
-            _interpolatedSample.World.Interpolate(_baseSample.GameData.World, _nextSample.GameData.World,
+            _interpolationStrategy.Interpolate(_interpolatedResult, _baseSample.GameData, _nextSample.GameData,
                 normalizedValue);
-            return _interpolatedSample;
+            return _interpolatedResult;
         }
 
         public void Dispose()
         {
             _baseSample.GameData.Dispose();
             _nextSample.GameData.Dispose();
+            _interpolatedResult.Dispose();
         }
     }
 }

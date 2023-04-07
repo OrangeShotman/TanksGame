@@ -40,9 +40,9 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             systems.Add(new PhysicsBodyCreationSystem(_prefabProvider, collectionUpdater, scene));
             systems.Add(new PhysicsPrePositionSystem(scene, collectionUpdater));
             systems.Add(new GunSystem());
-            systems.Add(new ProjectileSpawnSystem(simulation));
             systems.Add(new ProjectilesSystem(simulation, scene));
             systems.Add(new MovementSystem(collectionUpdater));
+            systems.Add(new ProjectileSpawnSystem(simulation));
             if (isServer)
             {
                 systems.Add(new DamageSystem());
