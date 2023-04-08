@@ -1,6 +1,5 @@
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
-using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
@@ -21,6 +20,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     entity.Avatar.Destroyed = true;
                     var respawn = entity.AddAvatarRespawn();
                     respawn.RespawnTick = data.Tick + 15;
+                    entity.DelPhysicsObject();
                 }
             }
         }

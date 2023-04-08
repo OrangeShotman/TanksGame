@@ -1,3 +1,4 @@
+using Common.World;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.Multiplayer.Systems;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     var position = Random.insideUnitCircle.normalized * 22;
                     transform.Position = new Vector3(position.x, 0, position.y);
                     transform.Forward = Random.insideUnitCircle.normalized;
+                    var physicsObject = entity.AddPhysicsObject();
+                    physicsObject.BodyType = PhysicsBodyType.PlayerBody;
                 }
             }
         }

@@ -4,11 +4,11 @@ namespace OrangeShotStudio.TanksGame.View
 {
     public class ProjectileView
     {
-        private readonly GameObject _projectile;
+        private readonly ProjectileBehaviour _projectile;
 
         public ProjectileView(GameObject projectile)
         {
-            _projectile = projectile;
+            _projectile = projectile.GetComponent<ProjectileBehaviour>();
         }
 
         public void Update(Common.Simulation.Transform transform)
@@ -23,7 +23,11 @@ namespace OrangeShotStudio.TanksGame.View
 
         public void Dispose()
         {
-            Object.Destroy(_projectile);
+            var instance = Object.Instantiate(_projectile.ExplosionFxPrefab, _projectile.transform.position,
+                _projectile.transform.rotation);
+            Object.Destroy(instance, 1);
+            Object.Destroy(_projectile.gameObject, 1);
+            _projectile.ProjectileRender.SetActive(false);
         }
     }
 }

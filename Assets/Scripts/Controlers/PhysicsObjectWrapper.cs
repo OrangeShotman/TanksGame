@@ -21,6 +21,11 @@ namespace OrangeShotStudio.TanksGame
             _gameObject.transform.position = transform.Position;
         }
 
+        public void SetActive(bool active)
+        {
+            _gameObject.SetActive(active);
+        }
+
         public Vector3 Move(Vector3 motion)
         {
             _characterController.Move(motion);
