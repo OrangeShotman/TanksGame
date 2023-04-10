@@ -10,5 +10,6 @@ namespace OrangeShotStudio.Multiplayer.Ecs
         public int NextShotTick;
         public int CooldownDuration;
         public float PositionOffset;
+        public int ShotTick;
     }
 }

@@ -40,12 +40,12 @@ namespace OrangeShotStudio.TanksGame
             _collectionUpdater.Dispose(this);
         }
 
-        public ITable GetTable()
+        ITable IUpdateImplementer<PhysicsObjectWrapper>.GetTable()
         {
             return _gameData.World.PhysicsObject;
         }
 
-        public CreationResult<PhysicsObjectWrapper> Factory(uint entityId, int entityIndex)
+        CreationResult<PhysicsObjectWrapper> IUpdateImplementer<PhysicsObjectWrapper>.Factory(uint entityId, int entityIndex)
         {
             var entity = _gameData.World[entityId];
             var physicsObject = entity.PhysicsObject;
@@ -61,16 +61,16 @@ namespace OrangeShotStudio.TanksGame
             };
         }
 
-        public void Update(uint entityId, int entityIndex, PhysicsObjectWrapper shotCounter)
+        void IUpdateImplementer<PhysicsObjectWrapper>.Update(uint entityId, int entityIndex, PhysicsObjectWrapper shotCounter)
         {
         }
 
-        public void Dispose(uint entityId, PhysicsObjectWrapper viewElement)
+        void IUpdateImplementer<PhysicsObjectWrapper>.Dispose(uint entityId, PhysicsObjectWrapper viewElement)
         {
             viewElement.Dispose();
         }
 
-        public bool HasEntityWithId(uint entityId, int entityIndex)
+        bool IUpdateImplementer<PhysicsObjectWrapper>.HasEntityWithId(uint entityId, int entityIndex)
         {
             return _gameData.World.PhysicsObject.CmpAt(entityIndex) != null;
         }

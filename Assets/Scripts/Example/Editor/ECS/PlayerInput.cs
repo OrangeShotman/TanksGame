@@ -8,5 +8,6 @@ namespace OrangeShotStudio.Multiplayer.Ecs
     {
         public Vector2 Movement;
         public bool Shot;
+        public int OtherWorldTick;
     }
 }

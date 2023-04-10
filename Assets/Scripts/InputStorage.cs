@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Network;
 using OrangeShotStudio.Network.Messages;
+using OrangeShotStudio.Network.Pools;
 using OrangeShotStudio.TanksGame.Multiplayer;
 
 namespace OrangeShotStudio.TanksGame
@@ -10,30 +11,27 @@ namespace OrangeShotStudio.TanksGame
     {
         private readonly IMessageDataFactory<GameData> _messageDataFactory;
         private readonly int _inputHistorySize;
-        private readonly Dictionary<int, History<GameData>> _inputs;
+        private readonly Dictionary<int, History<PoolObject<GameData>>> _inputs;
         
         public InputStorage(IMessageDataFactory<GameData> messageDataFactory, int inputHistorySize)
         {
             _messageDataFactory = messageDataFactory;
             _inputHistorySize = inputHistorySize;
-            _inputs = new Dictionary<int, History<GameData>>();
+            _inputs = new Dictionary<int, History<PoolObject<GameData>>>();
         }
 
-        public void AddInput(int userId, GameData input)
+        public void AddInput(int userId, PoolObject<GameData>input)
         {
             if (!_inputs.TryGetValue(userId, out var history))
             {
-                var array = new GameData[_inputHistorySize];
-                for (int i = 0; i < array.Length; i++)
-                {
-                    array[i] = _messageDataFactory.CreateMessage();
-                }
-                history = new History<GameData>(array);
+                history = new History<PoolObject<GameData>>(_inputHistorySize);
                 _inputs[userId] = history;
             }
-            var cache = history.Get(input.ApplyToTick);
-            input.CopyTo(cache);
-            history.Put(cache, input.ApplyToTick);
+
+            var cachedInput = history.Get(input.Value.ApplyToTick);
+            if(cachedInput != null)
+                cachedInput.Dispose();
+            history.Put(input, input.Value.ApplyToTick);
         }
 
         public bool TryGetInput(int userId, int tick, out GameData input)
@@ -44,9 +42,9 @@ namespace OrangeShotStudio.TanksGame
                 var inputSample = history.Get(tick);
                 if (inputSample == null)
                     return false;
-                if (inputSample.ApplyToTick != tick)
+                if (inputSample.Value.ApplyToTick != tick)
                     return false;
-                input = inputSample;
+                input = inputSample.Value;
                 return true;
             }
 

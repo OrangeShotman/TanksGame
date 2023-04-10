@@ -9,5 +9,6 @@ namespace OrangeShotStudio.Multiplayer.Ecs
         public int DestroyTick;
         public float Speed;
         public float Damage;
+        public int ShotTickOffset;
     }
 }

@@ -43,6 +43,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     {
                         var gun = avatarEntity.Gun;
                         gun.Use = true;
+                        gun.ShotTick = inputSample.OtherWorldTick;
                     }
                 }
             }

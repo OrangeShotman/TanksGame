@@ -115,12 +115,14 @@ namespace Common.Simulation
     {
         public float Damage;
         public int DestroyTick;
+        public int ShotTickOffset;
         public uint Source;
         public float Speed;
         public void Reset()
         {
             Damage = default(float);
             DestroyTick = default(int);
+            ShotTickOffset = default(int);
             Source = default(uint);
             Speed = default(float);
         }
@@ -129,6 +131,7 @@ namespace Common.Simulation
             bool null1, null2;
             if (c1.Damage != c2.Damage) return true;
             if (c1.DestroyTick != c2.DestroyTick) return true;
+            if (c1.ShotTickOffset != c2.ShotTickOffset) return true;
             if (c1.Source != c2.Source) return true;
             if (c1.Speed != c2.Speed) return true;
             return false;
@@ -169,6 +172,7 @@ namespace Common.Simulation
             }
             toProjectile1.Damage = fromProjectile2.Damage;
             toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
+            toProjectile1.ShotTickOffset = fromProjectile2.ShotTickOffset;
             toProjectile1.Source = fromProjectile2.Source;
             toProjectile1.Speed = fromProjectile2.Speed;
         }
@@ -196,6 +200,7 @@ namespace Common.Simulation
             }
             toProjectile1.Damage = fromProjectile2.Damage;
             toProjectile1.DestroyTick = fromProjectile2.DestroyTick;
+            toProjectile1.ShotTickOffset = fromProjectile2.ShotTickOffset;
             toProjectile1.Source = fromProjectile2.Source;
             toProjectile1.Speed = fromProjectile2.Speed;
         }
@@ -219,6 +224,10 @@ namespace Common.Simulation
                 return false;
             }
             if (a.DestroyTick != b.DestroyTick)
+            {
+                return false;
+            }
+            if (a.ShotTickOffset != b.ShotTickOffset)
             {
                 return false;
             }
@@ -494,6 +503,7 @@ namespace Common.Simulation
                         var c = kv.Value;
                         p.PackFloat(c.Damage);
                         p.PackSInt32(c.DestroyTick);
+                        p.PackSInt32(c.ShotTickOffset);
                         p.PackUInt32(c.Source);
                         p.PackFloat(c.Speed);
                     }
@@ -598,6 +608,7 @@ namespace Common.Simulation
                         var c = kv.Value;
                         p.PackFloat(c.Damage);
                         p.PackSInt32(c.DestroyTick);
+                        p.PackSInt32(c.ShotTickOffset);
                         p.PackUInt32(c.Source);
                         p.PackFloat(c.Speed);
                     }
@@ -692,6 +703,7 @@ namespace Common.Simulation
                         var c = ts.Projectile.SetAtIndex(i, id);
                         c.Damage = p.UnpackFloat();
                         c.DestroyTick = p.UnpackSInt32();
+                        c.ShotTickOffset = p.UnpackSInt32();
                         c.Source = p.UnpackUInt32();
                         c.Speed = p.UnpackFloat();
                     }
@@ -966,6 +978,7 @@ namespace Common.Simulation
             {
                 p.PackFloat(c.Damage);
                 p.PackSInt32(c.DestroyTick);
+                p.PackSInt32(c.ShotTickOffset);
                 p.PackUInt32(c.Source);
                 p.PackFloat(c.Speed);
             }
@@ -1420,6 +1433,7 @@ namespace Common.Simulation
                 bool isDefault;
                 c.Damage = p.UnpackFloat();
                 c.DestroyTick = p.UnpackSInt32();
+                c.ShotTickOffset = p.UnpackSInt32();
                 c.Source = p.UnpackUInt32();
                 c.Speed = p.UnpackFloat();
             }
@@ -2016,6 +2030,7 @@ namespace Common.Simulation
                 var c1 = ts1.Projectile.CmpAt(i);
                 c.Damage = c1.Damage;
                 c.DestroyTick = c1.DestroyTick;
+                c.ShotTickOffset = c1.ShotTickOffset;
                 c.Source = c1.Source;
                 c.Speed = c1.Speed;
             }
@@ -2055,6 +2070,7 @@ namespace Common.Simulation
                 var c2 = ts2.Projectile.CmpAt(i);
                 c.Damage = c2.Damage;
                 c.DestroyTick = c2.DestroyTick;
+                c.ShotTickOffset = c2.ShotTickOffset;
                 c.Source = c2.Source;
                 c.Speed = c2.Speed;
             }
@@ -2097,6 +2113,7 @@ namespace Common.Simulation
         {
             c1.Damage = c2.Damage;
             c1.DestroyTick = c2.DestroyTick;
+            c1.ShotTickOffset = c2.ShotTickOffset;
             c1.Source = c2.Source;
             c1.Speed = c2.Speed;
         }

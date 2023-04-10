@@ -9,13 +9,15 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 {
     public class ProjectileSpawnSystem : SimulationBaseSystem, IUpdateImplementer<ShotCounter>
     {
+        private readonly int _userId;
         private GameData _data;
         private CollectionUpdater<ShotCounter> _collectionUpdater = new CollectionUpdater<ShotCounter>();
         private TimeData _timeData;
         private int _lastTickUpdate;
 
-        public ProjectileSpawnSystem(TableSet simulation) : base(simulation)
+        public ProjectileSpawnSystem(TableSet simulation, int userId) : base(simulation)
         {
+            _userId = userId;
         }
 
         protected override void SimulationUpdate(GameData data, TimeData timeData)
@@ -38,6 +40,9 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             projectile.DestroyTick = gameData.Tick + 10 * 2;
             projectile.Damage = 35;
             projectile.Source = sourceEntity.Id;
+            var isLocalPlayerProjectile = sourceEntity.Avatar.OwnerUserId == _userId;
+            var shotTickOffset = gun.ShotTick - (isLocalPlayerProjectile ? gameData.ServerTick : gameData.Tick);
+            projectile.ShotTickOffset = shotTickOffset;
             movement.Movement = transform.Forward * projectile.Speed * (float)(timeData.DeltaTimeMs / 1000);
         }
 

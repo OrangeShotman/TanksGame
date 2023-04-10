@@ -48,7 +48,7 @@ namespace OrangeShotStudio.TanksGame
                 _userId, "127.0.0.1", 3239, 5000, ConnectionType.WebSockets,
                 GameClientSettings.GameClientUpdateType.InCoroutine, 10, 3);
             _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
-                new ClientGameLogicFactory(simulationProvider, _prefabProvider, _userId),
+                new ClientGameLogicFactory(simulationProvider, _prefabProvider, gameDataFactory, _userId),
                 new MisPredictionChecker(_userId),
                 _inputStorageFactory, new UnityLogger());
             _inputProvider = new InputProvider(gameDataFactory);
@@ -57,7 +57,8 @@ namespace OrangeShotStudio.TanksGame
 
         public override void Update(TimeData timeData)
         {
-            var input = _inputProvider.GetInput(_tankCollectionView.CameraProjection);
+            var input = _inputProvider.GetInput(_tankCollectionView.CameraProjection,
+                _gameClientFacade.CurrentSnapshot.ServerTick);
             input.Tick = _gameClientFacade.CurrentSnapshot.Tick;
             _gameClientFacade.Update(input);
             var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.CurrentSnapshot, _simulation);

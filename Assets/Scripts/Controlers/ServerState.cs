@@ -23,12 +23,12 @@ namespace OrangeShotStudio.TanksGame
             var logger = new UnityLogger();
             var inputPool = new Common.Input.TableSet.Pools();
             var worldPool = new Common.World.TableSet.Pools();
-            var gameSnapshotFactory = new GameDataFactory(inputPool, worldPool);
-            _inputStorageFactory = new InputStorageFactory(gameSnapshotFactory);
+            var gameDataFactory = new GameDataFactory(inputPool, worldPool);
+            _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var playerHandlerSystem = new PlayerHandlerSystem(logger);
             var settings = new GameServerSettings(3239, 5000, 10, 8, ConnectionType.WebSockets);
-            _serverFacade = ServerFacadeFactory.CreateServer(gameSnapshotFactory,
-                new ServerGameLogicFactory(playerHandlerSystem, _prefabProvider),
+            _serverFacade = ServerFacadeFactory.CreateServer(gameDataFactory,
+                new ServerGameLogicFactory(playerHandlerSystem, _prefabProvider, gameDataFactory),
                 playerHandlerSystem, logger, settings);
         }
 

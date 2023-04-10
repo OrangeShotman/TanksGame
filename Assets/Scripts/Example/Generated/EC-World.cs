@@ -326,6 +326,7 @@ namespace Common.World
         public int NextShotTick;
         public float PositionOffset;
         public int ShotCount;
+        public int ShotTick;
         public bool Use;
         public void Reset()
         {
@@ -333,6 +334,7 @@ namespace Common.World
             NextShotTick = default(int);
             PositionOffset = default(float);
             ShotCount = default(int);
+            ShotTick = default(int);
             Use = default(bool);
         }
         public static bool DifferForPack(Gun c1, Gun c2)
@@ -342,6 +344,7 @@ namespace Common.World
             if (c1.NextShotTick != c2.NextShotTick) return true;
             if (c1.PositionOffset != c2.PositionOffset) return true;
             if (c1.ShotCount != c2.ShotCount) return true;
+            if (c1.ShotTick != c2.ShotTick) return true;
             if (c1.Use != c2.Use) return true;
             return false;
         }
@@ -383,6 +386,7 @@ namespace Common.World
             toGun1.NextShotTick = fromGun2.NextShotTick;
             toGun1.PositionOffset = fromGun2.PositionOffset;
             toGun1.ShotCount = fromGun2.ShotCount;
+            toGun1.ShotTick = fromGun2.ShotTick;
             toGun1.Use = fromGun2.Use;
         }
         public static void CopyGunPassive(TableSet from, TableSet to, uint id)
@@ -411,6 +415,7 @@ namespace Common.World
             toGun1.NextShotTick = fromGun2.NextShotTick;
             toGun1.PositionOffset = fromGun2.PositionOffset;
             toGun1.ShotCount = fromGun2.ShotCount;
+            toGun1.ShotTick = fromGun2.ShotTick;
             toGun1.Use = fromGun2.Use;
         }
         public static bool operator ==(Gun a, Gun b)
@@ -441,6 +446,10 @@ namespace Common.World
                 return false;
             }
             if (a.ShotCount != b.ShotCount)
+            {
+                return false;
+            }
+            if (a.ShotTick != b.ShotTick)
             {
                 return false;
             }
@@ -1095,6 +1104,7 @@ namespace Common.World
                         p.PackSInt32(c.NextShotTick);
                         p.PackFloat(c.PositionOffset);
                         p.PackSInt32(c.ShotCount);
+                        p.PackSInt32(c.ShotTick);
                         p.PackBool(c.Use);
                     }
                 }
@@ -1243,6 +1253,7 @@ namespace Common.World
                         p.PackSInt32(c.NextShotTick);
                         p.PackFloat(c.PositionOffset);
                         p.PackSInt32(c.ShotCount);
+                        p.PackSInt32(c.ShotTick);
                         p.PackBool(c.Use);
                     }
                 }
@@ -1383,6 +1394,7 @@ namespace Common.World
                         c.NextShotTick = p.UnpackSInt32();
                         c.PositionOffset = p.UnpackFloat();
                         c.ShotCount = p.UnpackSInt32();
+                        c.ShotTick = p.UnpackSInt32();
                         c.Use = p.UnpackBool();
                     }
                 }
@@ -1719,6 +1731,7 @@ namespace Common.World
                 p.PackSInt32(c.NextShotTick);
                 p.PackFloat(c.PositionOffset);
                 p.PackSInt32(c.ShotCount);
+                p.PackSInt32(c.ShotTick);
                 p.PackBool(c.Use);
             }
             private void PackHealth(TableSet ts, Health c, BitPacker p)
@@ -2500,6 +2513,7 @@ namespace Common.World
                 c.NextShotTick = p.UnpackSInt32();
                 c.PositionOffset = p.UnpackFloat();
                 c.ShotCount = p.UnpackSInt32();
+                c.ShotTick = p.UnpackSInt32();
                 c.Use = p.UnpackBool();
             }
             private void UnpackHealth(TableSet ts, Health c, BitUnpacker p)
@@ -3066,6 +3080,7 @@ namespace Common.World
             c1.NextShotTick = c2.NextShotTick;
             c1.PositionOffset = c2.PositionOffset;
             c1.ShotCount = c2.ShotCount;
+            c1.ShotTick = c2.ShotTick;
             c1.Use = c2.Use;
         }
         public void CopyTransformPredicted(Transform c1, Transform c2)
@@ -3614,6 +3629,7 @@ namespace Common.World
                 c.NextShotTick = c1.NextShotTick;
                 c.PositionOffset = c1.PositionOffset;
                 c.ShotCount = c1.ShotCount;
+                c.ShotTick = c1.ShotTick;
                 c.Use = c1.Use;
             }
             GunPredicted.CopyIds(ts1.GunPredicted);
@@ -3626,6 +3642,7 @@ namespace Common.World
                 c.NextShotTick = c1.NextShotTick;
                 c.PositionOffset = c1.PositionOffset;
                 c.ShotCount = c1.ShotCount;
+                c.ShotTick = c1.ShotTick;
                 c.Use = c1.Use;
             }
             Health.CopyIds(ts1.Health);
@@ -3730,6 +3747,7 @@ namespace Common.World
                 c.NextShotTick = c2.NextShotTick;
                 c.PositionOffset = c2.PositionOffset;
                 c.ShotCount = c2.ShotCount;
+                c.ShotTick = c2.ShotTick;
                 c.Use = c2.Use;
             }
             GunPredicted.CopyIds(ts2.GunPredicted);
@@ -3742,6 +3760,7 @@ namespace Common.World
                 c.NextShotTick = c2.NextShotTick;
                 c.PositionOffset = c2.PositionOffset;
                 c.ShotCount = c2.ShotCount;
+                c.ShotTick = c2.ShotTick;
                 c.Use = c2.Use;
             }
             Health.CopyIds(ts2.Health);
@@ -3841,6 +3860,7 @@ namespace Common.World
             c1.NextShotTick = c2.NextShotTick;
             c1.PositionOffset = c2.PositionOffset;
             c1.ShotCount = c2.ShotCount;
+            c1.ShotTick = c2.ShotTick;
             c1.Use = c2.Use;
         }
         private void CopyHealth(Health c1, Health c2)

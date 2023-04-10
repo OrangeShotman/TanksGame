@@ -14,16 +14,19 @@ namespace Common.Input
     public sealed class PlayerInput : IComponent
     {
         public Vector2 Movement;
+        public int OtherWorldTick;
         public bool Shot;
         public void Reset()
         {
             Movement = default(Vector2);
+            OtherWorldTick = default(int);
             Shot = default(bool);
         }
         public static bool DifferForPack(PlayerInput c1, PlayerInput c2)
         {
             bool null1, null2;
             if (c1.Movement.x != c2.Movement.x || c1.Movement.y != c2.Movement.y) return true;
+            if (c1.OtherWorldTick != c2.OtherWorldTick) return true;
             if (c1.Shot != c2.Shot) return true;
             return false;
         }
@@ -62,6 +65,7 @@ namespace Common.Input
                 toPlayerInput1 = to[id].AddPlayerInput();
             }
             toPlayerInput1.Movement = fromPlayerInput2.Movement;
+            toPlayerInput1.OtherWorldTick = fromPlayerInput2.OtherWorldTick;
             toPlayerInput1.Shot = fromPlayerInput2.Shot;
         }
         public static void CopyPlayerInputPassive(TableSet from, TableSet to, uint id)
@@ -87,6 +91,7 @@ namespace Common.Input
                 return;
             }
             toPlayerInput1.Movement = fromPlayerInput2.Movement;
+            toPlayerInput1.OtherWorldTick = fromPlayerInput2.OtherWorldTick;
             toPlayerInput1.Shot = fromPlayerInput2.Shot;
         }
         public static bool operator ==(PlayerInput a, PlayerInput b)
@@ -105,6 +110,10 @@ namespace Common.Input
             }
             bool aFieldIsNull, bFieldIsNull;
             if (Math.Abs(a.Movement.x - b.Movement.x) > 0.01f || Math.Abs(a.Movement.y - b.Movement.y) > 0.01f)
+            {
+                return false;
+            }
+            if (a.OtherWorldTick != b.OtherWorldTick)
             {
                 return false;
             }
@@ -187,6 +196,7 @@ namespace Common.Input
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
                         p.PackVector2(c.Movement);
+                        p.PackSInt32(c.OtherWorldTick);
                         p.PackBool(c.Shot);
                     }
                 }
@@ -232,6 +242,7 @@ namespace Common.Input
                         p.PackUInt32((uint)ts._entityIds.BinarySearch(ts._entityCount, kv.Key), entityIndexBits);
                         var c = kv.Value;
                         p.PackVector2(c.Movement);
+                        p.PackSInt32(c.OtherWorldTick);
                         p.PackBool(c.Shot);
                     }
                 }
@@ -269,6 +280,7 @@ namespace Common.Input
                         bool isDefault;
                         var c = ts.PlayerInput.SetAtIndex(i, id);
                         c.Movement = p.UnpackVector2();
+                        c.OtherWorldTick = p.UnpackSInt32();
                         c.Shot = p.UnpackBool();
                     }
                 }
@@ -482,6 +494,7 @@ namespace Common.Input
             private void PackPlayerInput(TableSet ts, PlayerInput c, BitPacker p)
             {
                 p.PackVector2(c.Movement);
+                p.PackSInt32(c.OtherWorldTick);
                 p.PackBool(c.Shot);
             }
             private void PackDiffPlayerInput(TableSet ts1, TableSet ts2, BitPacker p)
@@ -613,6 +626,7 @@ namespace Common.Input
                 int id2index;
                 bool isDefault;
                 c.Movement = p.UnpackVector2();
+                c.OtherWorldTick = p.UnpackSInt32();
                 c.Shot = p.UnpackBool();
             }
             private void UnpackDiffPlayerInput(TableSet ts1, TableSet ts2, BitUnpacker p)
@@ -719,7 +733,6 @@ namespace Common.Input
                 CopyPlayerInput(PlayerInput.CmpAt(i), ts2.PlayerInput.CmpAt(i));
             }
         }
-        
         public void Copy(TableSet ts2)
         {
             if( this == ts2 )
@@ -859,6 +872,7 @@ namespace Common.Input
                 var c = PlayerInput.CmpAt(i);
                 var c1 = ts1.PlayerInput.CmpAt(i);
                 c.Movement = c1.Movement;
+                c.OtherWorldTick = c1.OtherWorldTick;
                 c.Shot = c1.Shot;
             }
         }
@@ -874,6 +888,7 @@ namespace Common.Input
                 var c = PlayerInput.CmpAt(i);
                 var c2 = ts2.PlayerInput.CmpAt(i);
                 c.Movement = c2.Movement;
+                c.OtherWorldTick = c2.OtherWorldTick;
                 c.Shot = c2.Shot;
             }
         }
@@ -896,6 +911,7 @@ namespace Common.Input
         private void CopyPlayerInput(PlayerInput c1, PlayerInput c2)
         {
             c1.Movement = c2.Movement;
+            c1.OtherWorldTick = c2.OtherWorldTick;
             c1.Shot = c2.Shot;
         }
         private void DiscardAndResizeEntities(int size)

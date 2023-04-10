@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Capabilities: 7
   - m_Id: scoped:My Tools
     m_Name: My Tools
-    m_Url: http://18.118.102.166:4873
+    m_Url: http://18.222.30.156:4873
     m_Scopes:
     - com.orangeshotstudio
     m_IsDefault: 0
