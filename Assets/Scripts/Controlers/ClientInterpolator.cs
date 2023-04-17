@@ -1,42 +1,49 @@
 using Common.Simulation;
 using OrangeShotStudio.Network;
 using OrangeShotStudio.TanksGame.Multiplayer;
+using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame
 {
+    //теперь лаг компенсация не работает. чини
     public class ClientInterpolator
     {
-        private Interpolator<GameData> _interpolator;
-        private Interpolator<GameData> _interpolatorOfOtherWorld;
+        private InterpolatorByHistory<GameData> _interpolator;
+        private InterpolatorByHistory<GameData> _interpolatorOfOtherWorld;
         private Interpolator<SimulationData> _simulationInterpolator;
 
         public ClientInterpolator(GameDataFactory gameDataFactory, Common.Simulation.TableSet.Pools pools)
         {
             var gameDataInterpolationStrategy = new GameDataInterpolationStrategy();
-            _interpolator = new Interpolator<GameData>(
+            _interpolator = new InterpolatorByHistory<GameData>(
                 gameDataFactory.CreateMessage(),
+                new PredictedTargetFrameCalculator(),
+                gameDataInterpolationStrategy,
+                new GameDataCopier(),
+                1 / 10f,
+                1 / 12f,
+                2);
+            _interpolatorOfOtherWorld = new InterpolatorByHistory<GameData>(
                 gameDataFactory.CreateMessage(),
-                gameDataFactory.CreateMessage(),
-                gameDataInterpolationStrategy);
-            _interpolatorOfOtherWorld = new Interpolator<GameData>(
-                gameDataFactory.CreateMessage(),
-                gameDataFactory.CreateMessage(),
-                gameDataFactory.CreateMessage(), 
-                gameDataInterpolationStrategy);
+                new ServerTargetFrameCalculator(),
+                gameDataInterpolationStrategy,
+                new GameDataCopier(),
+                1 / 10f,
+                1 / 12f,
+                2);
             _simulationInterpolator = new Interpolator<SimulationData>(
                 new SimulationData(new TableSet(pools)),
                 new SimulationData(new TableSet(pools)),
                 new SimulationData(new TableSet(pools)),
-                    new SimulationInterpolationStrategy());
+                new SimulationInterpolationStrategy());
         }
 
-        public InterpolationResult Interpolate(GameData gameData, SimulationData simulationData)
+        public InterpolationResult Interpolate(History<GameData> history, GameData gameData,
+            SimulationData simulationData)
         {
-            _interpolator.UpdateNextState(gameData, gameData.Tick);
-            _interpolatorOfOtherWorld.UpdateNextState(gameData, gameData.ServerTick);
             _simulationInterpolator.UpdateNextState(simulationData, gameData.Tick);
-            var interpolatedData = _interpolator.Interpolate();
-            var otherWorldInterpolation = _interpolatorOfOtherWorld.Interpolate();
+            var interpolatedData = _interpolator.GetInterpolatedSnapshot(history, Time.time);
+            var otherWorldInterpolation = _interpolatorOfOtherWorld.GetInterpolatedSnapshot(history, Time.time);
             otherWorldInterpolation.MergeWithPredicted(interpolatedData);
             var interpolatedSimulation = _simulationInterpolator.Interpolate();
             return new InterpolationResult()
@@ -48,11 +55,9 @@ namespace OrangeShotStudio.TanksGame
 
         public void Dispose()
         {
-            _interpolator.Dispose();
-            _interpolatorOfOtherWorld.Dispose();
             _simulationInterpolator.Dispose();
         }
-        
+
         public struct InterpolationResult
         {
             public GameData GameData;

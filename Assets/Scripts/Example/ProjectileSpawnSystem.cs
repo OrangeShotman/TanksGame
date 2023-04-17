@@ -41,9 +41,10 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             projectile.Damage = 35;
             projectile.Source = sourceEntity.Id;
             var isLocalPlayerProjectile = sourceEntity.Avatar.OwnerUserId == _userId;
-            var shotTickOffset = gun.ShotTick - (isLocalPlayerProjectile ? gameData.ServerTick : gameData.Tick);
+            var shotTickOffset = gun.ShotTick - gameData.Tick;
             projectile.ShotTickOffset = shotTickOffset;
             movement.Movement = transform.Forward * projectile.Speed * (float)(timeData.DeltaTimeMs / 1000);
+            // Debug.LogError($"input spawn:{gun.ShotTick}, ServerTick:{gameData.ServerTick}, current{gameData.Tick}, offset:{shotTickOffset}");
         }
 
         ITable IUpdateImplementer<ShotCounter>.GetTable()

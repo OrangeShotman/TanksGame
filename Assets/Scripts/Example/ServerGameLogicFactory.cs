@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using OrangeShotStudio.Multiplayer.Facade;
 using OrangeShotStudio.Multiplayer.Input;
 using OrangeShotStudio.Multiplayer.Systems;
+using OrangeShotStudio.Network;
 using OrangeShotStudio.Provider;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
@@ -10,17 +11,16 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
     {
         private SystemsFactory _systemsFactory;
 
-        public ServerGameLogicFactory(BaseSystem<GameData> playerHandlerSystem, IPrefabProvider prefabProvider,
-            GameDataFactory gameDataFactory)
+        public ServerGameLogicFactory(BaseSystem<GameData> playerHandlerSystem, IPrefabProvider prefabProvider)
         {
             var simulationFactory = new SimulationFactory();
             _systemsFactory =
-                new SystemsFactory(simulationFactory, prefabProvider, gameDataFactory, playerHandlerSystem, 0);
+                new SystemsFactory(simulationFactory, prefabProvider, playerHandlerSystem, 0);
         }
 
-        public List<BaseSystem<GameData>> CreateLogic(IInputStorage<GameData> inputStorage)
+        public List<BaseSystem<GameData>> CreateLogic(IInputStorage<GameData> inputStorage, History<GameData> history)
         {
-            return _systemsFactory.CreateSystems(inputStorage, true);
+            return _systemsFactory.CreateSystems(inputStorage, history, true);
         }
     }
 }

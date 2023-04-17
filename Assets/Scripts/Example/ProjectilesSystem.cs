@@ -17,7 +17,6 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         public ProjectilesSystem(TableSet simulation, Scene scene, PhysicsRewinder physicsRewinder) :
             base(simulation)
         {
-            _scene = scene;
             _physicsRewinder = physicsRewinder;
             _physicsScene = scene.GetPhysicsScene();
         }
@@ -37,9 +36,6 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             _physicsRewinder.Dispose();
         }
 
-        private StringBuilder _stringBuilder = new StringBuilder();
-        private Scene _scene;
-
         private void ProcessProjectile(GameData data, Entity entity, TimeData timeData)
         {
             var projectile = entity.Projectile;
@@ -52,7 +48,10 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 var rewindTo = data.Tick + projectile.ShotTickOffset;
                 var rewinded = _physicsRewinder.TryRewind(rewindTo, timeData);
                 if (!rewinded)
+                {
                     _physicsRewinder.ReturnToCurrent(data, timeData);
+                }
+
                 var hitsCount = _physicsScene.Raycast(transform.Position, forward, _raycastHits,
                     movement.Movement.magnitude, ~(1 << 10));
                 for (int j = 0; j < hitsCount; j++)
@@ -70,6 +69,17 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
 
                 if (hitsCount == 0)
                     transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
+                // _stringBuilder.Clear();
+                // _stringBuilder.AppendLine($"rewindTo:{rewindTo}, current:{data.Tick}, projectilePos:{transform.Position} ");
+                // foreach (var gameObject in _scene.GetRootGameObjects())
+                // {
+                //     var p = gameObject.GetComponent<PhysicsObjectBehaviour>();
+                //     if (!p)
+                //         continue;
+                //     _stringBuilder.AppendLine($"id:{p.EntityId}, pos:{p.transform.position} ");
+                // }
+                //
+                // Debug.Log(_stringBuilder.ToString());
 
                 return;
             }

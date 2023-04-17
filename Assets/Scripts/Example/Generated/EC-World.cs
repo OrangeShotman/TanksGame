@@ -3902,6 +3902,11 @@ namespace Common.World
         private void ApplyTransformPredicted()
         {
             var count = TransformPredicted.Count;
+            // if(count == 0)
+            //     Debug.LogError("COUNT 0");
+            // else 
+            //     Debug.Log("COUNT 1");
+
             for (int i = 0; i < count; ++i)
             {
                 var id = TransformPredicted.IdAt(i);
