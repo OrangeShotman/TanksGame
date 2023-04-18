@@ -20,7 +20,7 @@ namespace OrangeShotStudio.TanksGame
     {
         public int GetTargetBaseState(History<GameData> history)
         {
-            return history.Get(history.LastTick).ServerTick - 1;
+            return history.Get(history.LastTick).ServerTick - 7;
         }
     }
 }

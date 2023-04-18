@@ -52,7 +52,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     _physicsRewinder.ReturnToCurrent(data, timeData);
                 }
 
-                var hitsCount = _physicsScene.Raycast(transform.Position, forward, _raycastHits,
+                var hitsCount = _physicsScene.SphereCast(transform.Position, 0.1f, forward, _raycastHits,
                     movement.Movement.magnitude, ~(1 << 10));
                 for (int j = 0; j < hitsCount; j++)
                 {
@@ -64,11 +64,11 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                     entity.AddRemoveEntityComponent();
                     transform.Position = hit.point;
                     DamageEntity(data, projectile, physicsObjectBehaviour);
-                    break;
+                    return;
                 }
 
-                if (hitsCount == 0)
-                    transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
+
+                transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
                 // _stringBuilder.Clear();
                 // _stringBuilder.AppendLine($"rewindTo:{rewindTo}, current:{data.Tick}, projectilePos:{transform.Position} ");
                 // foreach (var gameObject in _scene.GetRootGameObjects())

@@ -63,14 +63,14 @@ namespace OrangeShotStudio.TanksGame
             if (targetBaseState - newBaseTick > 1 && Math.Abs(_currentTickDuration - _normalTickDuration) < 0.000001)
             {
                 _currentTickDuration = _fastTickDuration;
-                Debug.LogError(
+                Debug.Log(
                     $"targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, fast tick duration:{_currentTickDuration}");
             }
             else if (targetBaseState - newBaseTick <= 1 &&
                      Math.Abs(_currentTickDuration - _fastTickDuration) < 0.000001)
             {
                 _currentTickDuration = _normalTickDuration;
-                Debug.LogError(
+                Debug.Log(
                     $"targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, normal tick duration:{_currentTickDuration}");
             }
 

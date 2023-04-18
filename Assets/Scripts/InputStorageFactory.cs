@@ -10,7 +10,7 @@ namespace OrangeShotStudio.TanksGame
 
         public InputStorageFactory(IMessageDataFactory<GameData> messageDataFactory)
         {
-            _inputStorage = new InputStorage(messageDataFactory, 300);
+            _inputStorage = new InputStorage(messageDataFactory, StaticSettings.TickRate * 10);
         }
 
         public IInputStorage<GameData> CreateInputStorage()

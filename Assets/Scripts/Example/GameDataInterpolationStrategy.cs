@@ -5,6 +5,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
         public void Interpolate(GameData result, GameData baseData, GameData nextData, float normalizedValue)
         {
             result.World.Interpolate(baseData.World, nextData.World, normalizedValue);
+            result.ServerTick = baseData.ServerTick;
         }
     }
 }

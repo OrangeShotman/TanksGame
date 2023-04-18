@@ -19,7 +19,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 {
                     entity.Avatar.Destroyed = true;
                     var respawn = entity.AddAvatarRespawn();
-                    respawn.RespawnTick = data.Tick + 15;
+                    respawn.RespawnTick = data.Tick + StaticSettings.TickRate * 2;
                     entity.DelPhysicsObject();
                 }
             }

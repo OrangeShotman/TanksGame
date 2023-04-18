@@ -5,14 +5,13 @@ using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame
 {
-    //теперь лаг компенсация не работает. чини
     public class ClientInterpolator
     {
         private InterpolatorByHistory<GameData> _interpolator;
         private InterpolatorByHistory<GameData> _interpolatorOfOtherWorld;
         private Interpolator<SimulationData> _simulationInterpolator;
 
-        public ClientInterpolator(GameDataFactory gameDataFactory, Common.Simulation.TableSet.Pools pools)
+        public ClientInterpolator(GameDataFactory gameDataFactory, TableSet.Pools pools)
         {
             var gameDataInterpolationStrategy = new GameDataInterpolationStrategy();
             _interpolator = new InterpolatorByHistory<GameData>(
@@ -20,17 +19,17 @@ namespace OrangeShotStudio.TanksGame
                 new PredictedTargetFrameCalculator(),
                 gameDataInterpolationStrategy,
                 new GameDataCopier(),
-                1 / 10f,
-                1 / 12f,
-                2);
+                StaticSettings.TickDurationSec,
+                1f /(StaticSettings.TickRate + StaticSettings.TickRateChange),
+                StaticSettings.TickRateChange);
             _interpolatorOfOtherWorld = new InterpolatorByHistory<GameData>(
                 gameDataFactory.CreateMessage(),
                 new ServerTargetFrameCalculator(),
                 gameDataInterpolationStrategy,
                 new GameDataCopier(),
-                1 / 10f,
-                1 / 12f,
-                2);
+                StaticSettings.TickDurationSec,
+                1f /(StaticSettings.TickRate + StaticSettings.TickRateChange),
+                StaticSettings.TickRateChange);
             _simulationInterpolator = new Interpolator<SimulationData>(
                 new SimulationData(new TableSet(pools)),
                 new SimulationData(new TableSet(pools)),

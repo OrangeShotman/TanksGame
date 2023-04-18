@@ -8,7 +8,7 @@
         "com.unity.addressables": "1.16.10",
         "com.unity.nuget.newtonsoft-json": "2.0.0-preview"
       },
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.orangeshotstudio.ecsgenerator": {
       "version": "1.0.8",
@@ -17,16 +17,16 @@
       "dependencies": {
         "com.orangeshotstudio.packer": "1.0.1"
       },
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.orangeshotstudio.multiplayer": {
-      "version": "0.2.0",
+      "version": "0.2.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.orangeshotstudio.network": "0.3.0"
       },
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.orangeshotstudio.network": {
       "version": "0.3.0",
@@ -36,21 +36,21 @@
         "com.orangeshotstudio.pixockets": "1.1.6",
         "com.orangeshotstudio.packer": "1.0.1"
       },
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.orangeshotstudio.packer": {
       "version": "1.0.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.orangeshotstudio.pixockets": {
       "version": "1.1.6",
       "depth": 2,
       "source": "registry",
       "dependencies": {},
-      "url": "http://18.222.30.156:4873"
+      "url": "http://52.14.234.88:4873"
     },
     "com.unity.addressables": {
       "version": "1.19.19",

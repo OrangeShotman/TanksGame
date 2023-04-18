@@ -23,7 +23,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                 input += Vector2.right;
             var angle = Vector2.SignedAngle(Vector2.up, cameraProjection);
             input = Rotate(input, angle);
-            // input = new Vector2(Mathf.Sin(Time.time), 0);
+            input = new Vector2(Mathf.Sin(Time.time), 0);
             if (_input.Input.PlayerInput.Count == 0)
                 _input.Input.CreateEntity().AddPlayerInput();
             var playerInput = _input.Input.PlayerInput.CmpAt(0);

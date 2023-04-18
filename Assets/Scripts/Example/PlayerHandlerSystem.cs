@@ -44,9 +44,11 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                         var player = data.World.Player.CmpAt(i);
                         if (player.UserId == userId)
                         {
+                            var avatarEntity = data.GetAvatarEntity(player);
                             var id = data.World.Player.IdAt(i);
                             var entity = data.World[id];
                             entity.DeleteAll();
+                            avatarEntity.DeleteAll();
                             _logger.Info($"remove: {userId}");
                             break;
                         }
@@ -75,7 +77,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             var physicsObject = avatarEntity.AddPhysicsObject();
             physicsObject.BodyType = PhysicsBodyType.PlayerBody;
             var gun = avatarEntity.AddGun();
-            gun.CooldownDuration = 10;
+            gun.CooldownDuration = StaticSettings.TickRate;
             gun.PositionOffset = 0.5f;
             var health = avatarEntity.AddHealth();
             health.CurrentHealth = 100;

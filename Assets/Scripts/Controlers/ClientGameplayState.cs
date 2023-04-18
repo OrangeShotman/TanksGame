@@ -7,6 +7,7 @@ using OrangeShotStudio.Scripts.Tools;
 using OrangeShotStudio.Structuries;
 using OrangeShotStudio.TanksGame.View;
 using OrangeShotStudio.View;
+using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame
 {
@@ -23,6 +24,7 @@ namespace OrangeShotStudio.TanksGame
         private ClientInterpolator _clientInterpolator;
         private ProjectileCollectionView _projectileCollectionView;
         private SimulationData _simulation;
+        private int _lastRenderedServerTick;
 
         public ClientGameplayState(IPrefabProvider prefabProvider, InterfaceView interfaceView,
             ClientTanksGameStateFactory factory, int userId)
@@ -45,8 +47,8 @@ namespace OrangeShotStudio.TanksGame
             var gameDataFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var settings = new GameClientSettings(
-                _userId, "127.0.0.1", 3239, 5000, ConnectionType.WebSockets,
-                GameClientSettings.GameClientUpdateType.InCoroutine, 10, 3);
+                _userId, "52.14.234.88", 3239, 5000, StaticSettings.ConnectionType, StaticSettings.GameClientUpdateType,
+                StaticSettings.TickRate, StaticSettings.TickRateChange);
             _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
                 new ClientGameLogicFactory(simulationProvider, _prefabProvider, _userId),
                 new MisPredictionChecker(_userId),
@@ -58,13 +60,14 @@ namespace OrangeShotStudio.TanksGame
         public override void Update(TimeData timeData)
         {
             var input = _inputProvider.GetInput(_tankCollectionView.CameraProjection,
-                _gameClientFacade.CurrentSnapshot.ServerTick);
+                _lastRenderedServerTick);
             input.Tick = _gameClientFacade.CurrentSnapshot.Tick;
             _gameClientFacade.Update(input);
             var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.SnapshotsHistory,
                 _gameClientFacade.CurrentSnapshot, _simulation);
             _tankCollectionView.Update(interpolated.GameData);
             _projectileCollectionView.Update(interpolated.SimulationData.Data);
+            _lastRenderedServerTick = interpolated.GameData.ServerTick;
         }
 
         public override void OnQuit()

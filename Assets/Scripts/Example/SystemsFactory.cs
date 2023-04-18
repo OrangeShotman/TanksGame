@@ -49,7 +49,7 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             systems.Add(physicsBodyCreationSystem);
             systems.Add(prePositionSystem);
             systems.Add(new MovementSystem(collectionUpdater));
-            systems.Add(new ProjectileSpawnSystem(simulation, _userId));
+            systems.Add(new ProjectileSpawnSystem(simulation));
             if (isServer)
             {
                 systems.Add(new DamageSystem());
