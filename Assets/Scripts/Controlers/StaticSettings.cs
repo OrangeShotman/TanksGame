@@ -5,32 +5,33 @@ namespace OrangeShotStudio.TanksGame
     public static class StaticSettings
     {
         public const ConnectionType ConnectionType =
-            OrangeShotStudio.Multiplayer.Facade.ConnectionType.WebSockets;
+            OrangeShotStudio.Multiplayer.Facade.ConnectionType.Pixockets;
 
         public const GameClientSettings.GameClientUpdateType GameClientUpdateType =
-            GameClientSettings.GameClientUpdateType.InCoroutine;
+            GameClientSettings.GameClientUpdateType.InThread;
 
-        public const int TickRate = 30;
-        public const int TickRateChange = 6;
-        public const float TickDurationSec = 1f / TickRate;
-        public const float TickDurationMs = 1000f / TickRate;
+        public const int TickRate = 20;
+        public const int TickRateChange = 4;
+        public const double TickDurationSec = 1d / TickRate;
+        public const int TickDurationMs = (int)(1000d / TickRate);
+        public const int FastTickDurationMs = (int)(1000d / (TickRateChange + TickRate));
 
-        public static float TickToSec(this int tick)
+        public static double TickToSec(this int tick)
         {
             return tick * TickDurationSec;
         }
 
-        public static float TickToMs(this int tick)
+        public static double TickToMs(this int tick)
         {
             return tick * TickDurationMs;
         }
 
-        public static float SecToTick(this float sec)
+        public static double SecToTick(this float sec)
         {
             return sec / TickDurationSec;
         }
 
-        public static float MsToTick(this float ms)
+        public static double MsToTick(this float ms)
         {
             return ms / TickDurationMs;
         }

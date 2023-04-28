@@ -7,7 +7,6 @@ using OrangeShotStudio.Scripts.Tools;
 using OrangeShotStudio.Structuries;
 using OrangeShotStudio.TanksGame.View;
 using OrangeShotStudio.View;
-using UnityEngine;
 
 namespace OrangeShotStudio.TanksGame
 {
@@ -47,7 +46,7 @@ namespace OrangeShotStudio.TanksGame
             var gameDataFactory = new GameDataFactory(inputPool, worldPool);
             _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var settings = new GameClientSettings(
-                _userId, "52.14.234.88", 3239, 5000, StaticSettings.ConnectionType, StaticSettings.GameClientUpdateType,
+                _userId, "127.0.0.1", 3239, 5000, StaticSettings.ConnectionType, StaticSettings.GameClientUpdateType,
                 StaticSettings.TickRate, StaticSettings.TickRateChange);
             _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
                 new ClientGameLogicFactory(simulationProvider, _prefabProvider, _userId),

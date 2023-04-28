@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Common.Simulation;
 using OrangeShotStudio.Network;
 using OrangeShotStudio.TanksGame.Multiplayer;
@@ -19,16 +20,16 @@ namespace OrangeShotStudio.TanksGame
                 new PredictedTargetFrameCalculator(),
                 gameDataInterpolationStrategy,
                 new GameDataCopier(),
-                StaticSettings.TickDurationSec,
-                1f /(StaticSettings.TickRate + StaticSettings.TickRateChange),
+                StaticSettings.TickDurationMs * 0.001f,
+                StaticSettings.FastTickDurationMs * 0.001f,
                 StaticSettings.TickRateChange);
             _interpolatorOfOtherWorld = new InterpolatorByHistory<GameData>(
                 gameDataFactory.CreateMessage(),
                 new ServerTargetFrameCalculator(),
                 gameDataInterpolationStrategy,
                 new GameDataCopier(),
-                StaticSettings.TickDurationSec,
-                1f /(StaticSettings.TickRate + StaticSettings.TickRateChange),
+                StaticSettings.TickDurationMs * 0.001f,
+                StaticSettings.FastTickDurationMs * 0.001f,
                 StaticSettings.TickRateChange);
             _simulationInterpolator = new Interpolator<SimulationData>(
                 new SimulationData(new TableSet(pools)),
@@ -40,6 +41,11 @@ namespace OrangeShotStudio.TanksGame
         public InterpolationResult Interpolate(History<GameData> history, GameData gameData,
             SimulationData simulationData)
         {
+            // return new InterpolationResult()
+            // {
+            //     GameData = gameData,
+            //     SimulationData = simulationData
+            // };
             _simulationInterpolator.UpdateNextState(simulationData, gameData.Tick);
             var interpolatedData = _interpolator.GetInterpolatedSnapshot(history, Time.time);
             var otherWorldInterpolation = _interpolatorOfOtherWorld.GetInterpolatedSnapshot(history, Time.time);

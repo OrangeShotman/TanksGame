@@ -62,7 +62,7 @@ namespace OrangeShotStudio.TanksGame
             {
                 foreach (var gameData in input.Value)
                 {
-                    gameData.Dispose();
+                    gameData?.Dispose();
                 }
             }
         }

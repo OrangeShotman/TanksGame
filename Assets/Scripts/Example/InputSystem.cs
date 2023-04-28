@@ -21,6 +21,8 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             {
                 var player = data.World.Player.CmpAt(i);
                 player.InputIsAcknowledged = _inputStorage.TryGetInput(player.UserId, data.Tick, out var input);
+                if(!player.InputIsAcknowledged)
+                    Debug.LogError($"Input missed. tick:{data.Tick}");
 
                 if (player.InputIsAcknowledged)
                 {

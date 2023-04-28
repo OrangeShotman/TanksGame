@@ -1,7 +1,7 @@
 using System;
 using OrangeShotStudio.Network;
 using OrangeShotStudio.TanksGame.Multiplayer;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace OrangeShotStudio.TanksGame
 {
@@ -28,11 +28,12 @@ namespace OrangeShotStudio.TanksGame
             _targetFrameCalculator = targetFrameCalculator;
             _interpolationStrategy = interpolationStrategy;
             _frameCopier = frameCopier;
-            _normalTickDuration = normalTickDuration;
+            _normalTickDuration = normalTickDuration;// + 0.0001f; //somehow simulation a little slower. this trick slow down interpolation module  
             _fastTickDuration = fastTickDuration;
             _maxLag = maxLag;
             _interpolatedState = interpolatedState;
         }
+
 
         public T GetInterpolatedSnapshot(History<T> history, float time)
         {
@@ -49,18 +50,20 @@ namespace OrangeShotStudio.TanksGame
             int newBaseTick = _baseTick.Value + baseTickDelta;
             if (targetBaseState - newBaseTick > _maxLag)
             {
-                Debug.LogError($"targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, time:{time}");
+                Debug.LogError(
+                    $"targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, tick duration:{_currentTickDuration}");
                 return ResetBaseTick(history, time);
             }
 
-            if (history.LastTick <= newBaseTick)
+            var maxAllowedTick = _targetFrameCalculator.GetMaxAllowedTick(history);
+            if (maxAllowedTick <= newBaseTick)
             {
                 Debug.LogError(
-                    $"LastTick:{history.LastTick}, targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, time:{time}");
+                    $"maxAllowedTick:{maxAllowedTick}, targetBaseState:{targetBaseState}, newBaseTick{newBaseTick}, tick duration:{_currentTickDuration}");
                 return ResetBaseTick(history, time);
             }
 
-            if (targetBaseState - newBaseTick > 1 && Math.Abs(_currentTickDuration - _normalTickDuration) < 0.000001)
+            if (targetBaseState - newBaseTick > 2 && Math.Abs(_currentTickDuration - _normalTickDuration) < 0.000001)
             {
                 _currentTickDuration = _fastTickDuration;
                 Debug.Log(
