@@ -5,7 +5,7 @@ namespace OrangeShotStudio.TanksGame
     public static class StaticSettings
     {
         public const ConnectionType ConnectionType =
-            OrangeShotStudio.Multiplayer.Facade.ConnectionType.Pixockets;
+            OrangeShotStudio.Multiplayer.Facade.ConnectionType.WebSockets;
 
         public const GameClientSettings.GameClientUpdateType GameClientUpdateType =
             GameClientSettings.GameClientUpdateType.InThread;

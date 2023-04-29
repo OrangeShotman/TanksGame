@@ -8,6 +8,7 @@ namespace OrangeShotStudio.TanksGame
     {
         public void Launch()
         {
+            UnityEngine.Application.targetFrameRate = StaticSettings.TickRate * 2;
             var prefabProvider = new PrefabProvider();
             var stateFactory = new ServerTanksGameStateFactory(prefabProvider);
             var analyticManager = new AnalyticManager();

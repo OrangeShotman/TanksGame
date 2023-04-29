@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Text;
 using Common.Simulation;
 using OrangeShotStudio.Multiplayer.Structuries;
 using OrangeShotStudio.TanksGame.View;
@@ -62,25 +60,14 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
                         continue;
 
                     entity.AddRemoveEntityComponent();
-                    transform.Position = hit.point;
+                    if (hit.point != Vector3.zero)
+                        transform.Position = hit.point;
                     DamageEntity(data, projectile, physicsObjectBehaviour);
                     return;
                 }
 
 
                 transform.Position += new Vector3(movement.Movement.x, 0, movement.Movement.y);
-                // _stringBuilder.Clear();
-                // _stringBuilder.AppendLine($"rewindTo:{rewindTo}, current:{data.Tick}, projectilePos:{transform.Position} ");
-                // foreach (var gameObject in _scene.GetRootGameObjects())
-                // {
-                //     var p = gameObject.GetComponent<PhysicsObjectBehaviour>();
-                //     if (!p)
-                //         continue;
-                //     _stringBuilder.AppendLine($"id:{p.EntityId}, pos:{p.transform.position} ");
-                // }
-                //
-                // Debug.Log(_stringBuilder.ToString());
-
                 return;
             }
 

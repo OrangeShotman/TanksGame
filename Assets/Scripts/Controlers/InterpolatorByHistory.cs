@@ -63,7 +63,7 @@ namespace OrangeShotStudio.TanksGame
                 return ResetBaseTick(history, time);
             }
 
-            if (targetBaseState - newBaseTick > 2 && Math.Abs(_currentTickDuration - _normalTickDuration) < 0.000001)
+            if (targetBaseState - newBaseTick > 1 && Math.Abs(_currentTickDuration - _normalTickDuration) < 0.000001)
             {
                 _currentTickDuration = _fastTickDuration;
                 Debug.Log(

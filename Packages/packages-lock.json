@@ -20,16 +20,16 @@
       "url": "http://18.189.28.22:4873"
     },
     "com.orangeshotstudio.multiplayer": {
-      "version": "0.2.8",
+      "version": "0.2.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.orangeshotstudio.network": "0.3.3"
+        "com.orangeshotstudio.network": "0.3.4"
       },
       "url": "http://18.189.28.22:4873"
     },
     "com.orangeshotstudio.network": {
-      "version": "0.3.3",
+      "version": "0.3.4",
       "depth": 1,
       "source": "registry",
       "dependencies": {
