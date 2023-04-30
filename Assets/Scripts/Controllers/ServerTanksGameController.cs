@@ -12,8 +12,6 @@ namespace OrangeShotStudio.TanksGame
             GameState.Initialize();
         }
 
-        protected override void PreStateChange()
-        {
-        }
+        protected override void PreStateChange() { }
     }
 }
