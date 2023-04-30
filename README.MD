@@ -3,7 +3,7 @@
 This is my project which can provide understanding of my code writing approach.
 ### Notice
 
-There are some modules which are not presented in this repository, so you can't launch the game or take a look at the multiplayer core part. The main goal of the repository is introduce myself as a game developer and show my approach. If you want to try playing the game, you can use this link to play the demo.
+There are some modules which are not presented in this repository, so you can't launch the game or take a look at the multiplayer core part. The main goal of the repository is introduce myself as a game developer and show my approach. If you want to try playing the game, you can use [this link](http://18.189.28.22) to play the demo. You can play together with your friends.
 ## Project Structure
 
 - **/Scripts**: This folder contains the source code for the project.
@@ -25,7 +25,7 @@ As was mentioned above there are some modules which are not included into the re
 
 - Transport layer. I am using a custom lightweight UDP library and WebSocket plugin for WebGL.
 - Network service layer. Responsibilities of this layer is to process new connections, messages and authorizing.
-- Multiplayer game facade. Responsibilities of this layer is ticking the logic and snapshot syncing. I am using the "Overwatch" approach to synchronize snapshots.
+- Multiplayer game facade. Responsibilities of this layer is ticking the logic and snapshot syncing. I am using the ["Overwatch"](https://www.youtube.com/watch?v=zrIY0eIyqmI) approach to synchronize snapshots.
 - ECS. I am using table based ECS with code generation. There are some features such as data compression, serialization, interpolation, snapshot merge, etc.
 
 
