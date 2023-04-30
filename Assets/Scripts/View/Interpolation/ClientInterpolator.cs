@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Common.Simulation;
 using OrangeShotStudio.Network;
 using OrangeShotStudio.TanksGame.Multiplayer;
