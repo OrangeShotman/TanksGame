@@ -14,7 +14,7 @@ There are some modules which are not presented in this repository, so you can't 
 ## Features
 
 - Prediction and reconciliation. Player input applies before sending to the server. Every received snapshot is compared with prediction and the input is reapplied in case of misprediction.
-- Lag compensation. Every launched projectile is marked by a tick, which the player saw when a projectile was created. Also there is a system which makes a history record of snapshots. It helps to calculate collisions in the past.
+- Lag compensation. Every launched projectile is marked with a tick number, which the player saw when a projectile was created. Also there is a system which makes a history record of snapshots. It helps to calculate collisions in the past.
 - Interpolation. There are two different approaches to interpolating in the repository.
   - Without history and only by the last received snapshot.
   - Interpolation by history. It is a more flexible approach which allows you to hide network's fluctuations.
