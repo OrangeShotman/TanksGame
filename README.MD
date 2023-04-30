@@ -1,6 +1,8 @@
 #Code example project
+
 This is my project which can provide understanding of my code writing approach.
 ###Notice
+
 There are some modules which are not presented in this repository, so you can't launch the game or take a look at the multiplayer core part. The main goal of the repository is introducing myself as a game developer and showing my approach. If you want to try playing the game, you can use this link to play the demo.
 ## Project Structure
 
