@@ -28,7 +28,7 @@ namespace OrangeShotStudio.TanksGame
             _inputStorageFactory = new InputStorageFactory(gameDataFactory);
             var playerHandlerSystem = new PlayerHandlerSystem(logger);
             var settings = new GameServerSettings(3239, 5000, StaticSettings.TickRate, StaticSettings.TickRateChange,
-                StaticSettings.ConnectionType);
+                StaticSettings.ConnectionType, StaticSettings.UpdateType);
             _serverFacade = ServerFacadeFactory.CreateServer(gameDataFactory,
                 new ServerGameLogicFactory(playerHandlerSystem, _prefabProvider), _inputStorageFactory,
                 playerHandlerSystem, logger, settings);
