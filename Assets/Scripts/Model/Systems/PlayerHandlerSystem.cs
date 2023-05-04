@@ -25,16 +25,19 @@ namespace OrangeShotStudio.TanksGame.Multiplayer
             data.ServerTick = data.Tick + 1;
             lock (_locker)
             {
-                foreach (var userId in _toAdd)
+                if (data.World.Player.Count < 10)
                 {
-                    var entity = data.World.CreateEntity();
-                    var player = entity.AddPlayer();
-                    player.UserId = userId;
-                    _logger.Info($"add: {userId}");
-                    AttachAvatar(data, player);
-                }
+                    foreach (var userId in _toAdd)
+                    {
+                        var entity = data.World.CreateEntity();
+                        var player = entity.AddPlayer();
+                        player.UserId = userId;
+                        _logger.Info($"add: {userId}");
+                        AttachAvatar(data, player);
+                    }
 
-                _toAdd.Clear();
+                    _toAdd.Clear();
+                }
 
                 foreach (var userId in _toRemove)
                 {
