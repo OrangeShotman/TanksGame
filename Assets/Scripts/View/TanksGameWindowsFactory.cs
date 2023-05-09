@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BaseCode.Scripts.Templates.Controller;
 using OrangeShotStudio.Provider;
+using OrangeShotStudio.TanksGame.View;
 using OrangeShotStudio.View;
 
 namespace OrangeShotStudio.TanksGame
@@ -18,7 +19,8 @@ namespace OrangeShotStudio.TanksGame
         {
             return new List<IWindow>()
             {
-                new SimpleMainMenuWindow(_prefabProvider)
+                new SimpleMainMenuWindow(_prefabProvider),
+                new HudWindow(_prefabProvider)
             };
         }
     }

@@ -14,25 +14,18 @@ namespace OrangeShotStudio.TanksGame
     {
         private readonly IPrefabProvider _prefabProvider;
         private readonly InterfaceView _interfaceView;
-        private readonly ClientTanksGameStateFactory _factory;
         private readonly int _userId;
-        private readonly TankCollectionView _tankCollectionView;
         private ClientGameFacade<GameData> _gameClientFacade;
         private InputStorageFactory _inputStorageFactory;
         private InputProvider _inputProvider;
-        private ClientInterpolator _clientInterpolator;
-        private ProjectileCollectionView _projectileCollectionView;
         private SimulationData _simulation;
-        private int _lastRenderedServerTick;
+        private IHudWindow _hudWindow;
+        private GameplayView _gameplayView;
 
-        public ClientGameplayState(IPrefabProvider prefabProvider, InterfaceView interfaceView,
-            ClientTanksGameStateFactory factory, int userId)
+        public ClientGameplayState(IPrefabProvider prefabProvider, InterfaceView interfaceView, int userId)
         {
-            _tankCollectionView = new TankCollectionView(prefabProvider, userId);
-            _projectileCollectionView = new ProjectileCollectionView(prefabProvider);
             _prefabProvider = prefabProvider;
             _interfaceView = interfaceView;
-            _factory = factory;
             _userId = userId;
         }
 
@@ -41,32 +34,22 @@ namespace OrangeShotStudio.TanksGame
             var inputPool = new Common.Input.TableSet.Pools();
             var worldPool = new Common.World.TableSet.Pools();
             var simulationPool = new Common.Simulation.TableSet.Pools();
-            _simulation = new SimulationData(new Common.Simulation.TableSet(simulationPool));
-            var simulationProvider = new InjectedSimulationProvider(_simulation.Data);
             var gameDataFactory = new GameDataFactory(inputPool, worldPool);
-            _inputStorageFactory = new InputStorageFactory(gameDataFactory);
-            var settings = new GameClientSettings(
-                _userId, "127.0.0.1", 3239, 5000, StaticSettings.ConnectionType, StaticSettings.UpdateType,
-                StaticSettings.TickRate, StaticSettings.TickRateChange);
-            _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
-                new ClientGameLogicFactory(simulationProvider, _prefabProvider, _userId),
-                new MisPredictionChecker(_userId),
-                _inputStorageFactory, new UnityLogger());
-            _inputProvider = new InputProvider(gameDataFactory);
-            _clientInterpolator = new ClientInterpolator(gameDataFactory, simulationPool);
+            CreateGame(gameDataFactory, simulationPool);
+            _hudWindow = _interfaceView.GetWindow<IHudWindow>();
+            _inputProvider = new InputProvider(gameDataFactory, _hudWindow);
+            if (UnityEngine.Application.isMobilePlatform)
+                _hudWindow.Show();
+            _gameplayView = new GameplayView(_hudWindow, _prefabProvider, gameDataFactory, simulationPool, _userId);
         }
 
         public override void Update(TimeData timeData)
         {
-            var input = _inputProvider.GetInput(_tankCollectionView.CameraProjection,
-                _lastRenderedServerTick);
+            var input = _inputProvider.GetInput(_gameplayView.CameraProjection,
+                _gameplayView.LastRenderedServerTick);
             input.Tick = _gameClientFacade.CurrentSnapshot.Tick;
             _gameClientFacade.Update(input);
-            var interpolated = _clientInterpolator.Interpolate(_gameClientFacade.SnapshotsHistory,
-                _gameClientFacade.CurrentSnapshot, _simulation);
-            _tankCollectionView.Update(interpolated.GameData);
-            _projectileCollectionView.Update(interpolated.SimulationData.Data);
-            _lastRenderedServerTick = interpolated.GameData.ServerTick;
+            _gameplayView.Update(_gameClientFacade.SnapshotsHistory, _gameClientFacade.CurrentSnapshot, _simulation);
         }
 
         public override void OnQuit()
@@ -74,10 +57,22 @@ namespace OrangeShotStudio.TanksGame
             _gameClientFacade.Dispose();
             _inputStorageFactory.Dispose();
             _inputProvider.Dispose();
-            _tankCollectionView.Dispose();
-            _clientInterpolator.Dispose();
-            _projectileCollectionView.Dispose();
+            _gameplayView.Dispose();
             _simulation.Dispose();
+        }
+
+        private void CreateGame(GameDataFactory gameDataFactory, Common.Simulation.TableSet.Pools simulationPool)
+        {
+            _simulation = new SimulationData(new Common.Simulation.TableSet(simulationPool));
+            var simulationProvider = new SimulationTableProvider(_simulation.Data);
+            _inputStorageFactory = new InputStorageFactory(gameDataFactory);
+            var settings = new GameClientSettings(
+                _userId, "18.189.28.22", 3239, 5000, StaticSettings.ConnectionType, StaticSettings.UpdateType,
+                StaticSettings.TickRate, StaticSettings.TickRateChange);
+            _gameClientFacade = ClientFacadeFactory.CreateClient(settings, gameDataFactory,
+                new ClientGameLogicFactory(simulationProvider, _prefabProvider, _userId),
+                new MisPredictionChecker(_userId),
+                _inputStorageFactory, new UnityLogger());
         }
     }
 
@@ -85,7 +80,7 @@ namespace OrangeShotStudio.TanksGame
     {
         public IGameState CreateGameplayState()
         {
-            return new ClientGameplayState(PrefabProvider, InterfaceView, this, _userId);
+            return new ClientGameplayState(PrefabProvider, InterfaceView, _userId);
         }
     }
 }

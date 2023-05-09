@@ -5,10 +5,10 @@ namespace OrangeShotStudio.TanksGame
     public static class StaticSettings
     {
         public const ConnectionType ConnectionType =
-            OrangeShotStudio.Multiplayer.Facade.ConnectionType.Pixockets;
+            OrangeShotStudio.Multiplayer.Facade.ConnectionType.WebSockets;
 
         public const UpdateStrategyType UpdateType =
-            UpdateStrategyType.InThread;
+            UpdateStrategyType.InCoroutine;
 
         public const int TickRate = 20;
         public const int TickRateChange = 4;

@@ -2,11 +2,11 @@ using Common.Simulation;
 
 namespace OrangeShotStudio.TanksGame.Multiplayer
 {
-    public class InjectedSimulationProvider : ISimulationFactory
+    public class SimulationTableProvider : ISimulationFactory
     {
         private readonly TableSet _simulation;
 
-        public InjectedSimulationProvider(TableSet simulation)
+        public SimulationTableProvider(TableSet simulation)
         {
             _simulation = simulation;
         }
